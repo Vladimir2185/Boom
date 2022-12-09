@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Boom</string>
+    <string name="hintSearch">Поиск в Boom</string>
+    <string name="best">Лучшее</string>
+    <string name="sale">Sale</string>
+    <string name="holidays_Icon">holidays</string>
+</resources>
