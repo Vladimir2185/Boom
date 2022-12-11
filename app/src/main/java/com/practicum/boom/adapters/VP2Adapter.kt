@@ -1,4 +1,4 @@
-package com.practicum.boom
+package com.practicum.boom.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -12,5 +12,7 @@ class VP2Adapter(fragAct: FragmentActivity, private val fragList: List<Fragment>
 
     override fun createFragment(position: Int): Fragment {
         return fragList[position]
+
     }
+
 }
