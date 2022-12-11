@@ -31,7 +31,7 @@ class FragmentHome1(private val numCol:Int, private val heightProduct:Int) : Fra
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val productAdapter= context?.let { ProductAdapter(it,heightProduct) }
+        val productAdapter= context?.let { ProductAdapter(it,numCol,heightProduct) }
         rvProductsBest.adapter=productAdapter
         rvProductsBest.layoutManager= GridLayoutManager(this.activity,numCol)
 

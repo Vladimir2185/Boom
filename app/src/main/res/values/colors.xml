@@ -9,4 +9,5 @@
     <color name="black_low">#141414</color>
     <color name="white">#FFFFFFFF</color>
     <color name="main_gray">#E6E6E6</color>
+    <color name="transparent">#00E6E6E6</color>
 </resources>
