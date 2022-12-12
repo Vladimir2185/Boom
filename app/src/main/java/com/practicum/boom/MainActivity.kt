@@ -3,10 +3,12 @@ package com.practicum.boom
 // Ctrl+Alt+O    clear empty import
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayoutMediator
+import com.practicum.boom.adapters.ProductAdapter
 import com.practicum.boom.adapters.VP2Adapter
 import com.practicum.boom.fragments.FragmentHome1
 import com.practicum.boom.fragments.FragmentHome2
@@ -22,6 +24,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
 
         val fragList = listOf(
             FragmentHome1.newInstance(getColumnCount(),heightProduct/getColumnCount()),
@@ -58,5 +62,7 @@ class MainActivity : AppCompatActivity() {
         val widthScreen = (displayMetrics.widthPixels / displayMetrics.density).toInt()
         return if (widthScreen / 250 > 2) widthScreen / 250 else 2 //если больше 2, то 250/2, иначе 2
     }
+
+
 
 }

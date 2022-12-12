@@ -6,14 +6,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams
-import android.widget.Toast
-import androidx.core.view.marginStart
 import androidx.recyclerview.widget.RecyclerView
+import com.practicum.boom.MainActivity
 import com.practicum.boom.Product
 import com.practicum.boom.R
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.item_product_info.view.*
+import kotlinx.android.synthetic.main.item_product_info.view.cardView_itemProduct
 import kotlinx.android.synthetic.main.item_promo.view.*
 
 class ProductAdapter(
@@ -30,11 +30,13 @@ class ProductAdapter(
 
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val ivProduct = itemView.ivProduct
-        val cvInner1 = itemView.cardInner1
-        val cv1 = itemView.cardView1
-        val cl1 = itemView.conLayout1
+        val ivProduct = itemView.imageView_itemProduct
+        val cvInner1 = itemView.cardInner_itemProduct
+        val cv1 = itemView.cardView_itemProduct
+        val cl1 = itemView.conLayout_itemProduct
         val clButton = itemView.clButton
+        val scrollView = itemView.scrollView1
+        val search = itemView.svSearch
 
     }
 
@@ -48,13 +50,19 @@ class ProductAdapter(
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        fragment1LayoutDrawing(holder)
+        with(holder) {
+            itemView.setOnClickListener() {
+                //Log.i("test", "num view " + position)
 
+
+            }
+            fragment1LayoutDrawing(holder)
+        }
     }
 
     //помещает в метод кол-во элентов массива productList т.е. сколько будет в RecyclerView
     override fun getItemCount(): Int {
-        return numCol + 7//productList.size
+        return numCol + 14//productList.size
     }
 
 
