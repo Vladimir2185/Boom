@@ -3,66 +3,56 @@ package com.practicum.boom
 // Ctrl+Alt+O    clear empty import
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
-import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.tabs.TabLayoutMediator
-import com.practicum.boom.adapters.ProductAdapter
-import com.practicum.boom.adapters.VP2Adapter
-import com.practicum.boom.fragments.FragmentHome1
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.practicum.boom.fragments.FragmentHome2
-import com.practicum.boom.fragments.FragmentHome3
+import com.practicum.boom.fragments.MainHomeFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.main_home_fragment.*
 
 
 class MainActivity : AppCompatActivity() {
-    private var textFragTitle = mutableListOf<String>()
-    private var heightProduct=0
-    private val HIGHT_OF_PRODUCT_ICON=1.3
+    private val HIGHT_OF_PRODUCT_ICON = 1.3
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //find-out screen resolution of current device and place it into screenInfo class
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val screenInfo =
+            ScreenInfo(displayMetrics.widthPixels, displayMetrics.density, HIGHT_OF_PRODUCT_ICON)
 
-
-        val fragList = listOf(
-            FragmentHome1.newInstance(getColumnCount(),heightProduct/getColumnCount()),
-            FragmentHome2.newInstance(),
-            FragmentHome3.newInstance()
+        //creation of main navigation fragments
+        val listOfMainFragments = listOf(
+            MainHomeFragment.newInstance(screenInfo),
+            FragmentHome2.newInstance()
         )
 
 
-
-
-        for (i in 0 until fragList.size) {
-            textFragTitle.add(tabLayoutHome.getTabAt(i)?.text.toString())
+        val bottomNavView = bottomNavigationView
+        //lambda of attaching main navigation fragments to activity
+        val frag = { it: Fragment ->
+            supportFragmentManager.beginTransaction().replace(R.id.mainWindow, it).commit()
         }
 
-        val vp2Adapter = VP2Adapter(this, fragList)
-        vp2Home.adapter = vp2Adapter
-        TabLayoutMediator(tabLayoutHome, vp2Home) { tab, pos ->
-            tab.text = textFragTitle[pos]
-
-        }.attach()
-
-        ivIconTrees.visibility = View.VISIBLE
-
-        tabLayoutHome.getTabAt(2)?.customView = ivIconTrees
-
+        //loading of first main navigation fragment
+        frag(listOfMainFragments[0])
+        //selector of loading fragments by bottom navigation view
+        bottomNavView.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.item_1 -> frag(listOfMainFragments[0])
+                R.id.item_2 -> frag(listOfMainFragments[1])
+                R.id.item_3 -> it
+                R.id.item_4 -> it
+                R.id.item_5 -> bottomNavView.background = getDrawable(R.color.purple_200)
+            }
+            true
+        }
 
     }
-
-
-    private fun getColumnCount(): Int {
-        val displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-        heightProduct=(displayMetrics.widthPixels*HIGHT_OF_PRODUCT_ICON).toInt()
-        val widthScreen = (displayMetrics.widthPixels / displayMetrics.density).toInt()
-        return if (widthScreen / 250 > 2) widthScreen / 250 else 2 //если больше 2, то 250/2, иначе 2
-    }
-
 
 
 }

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.practicum.boom.MainActivity
 import com.practicum.boom.Product
 import com.practicum.boom.R
+import com.practicum.boom.ScreenInfo
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.item_product_info.view.*
@@ -18,8 +19,7 @@ import kotlinx.android.synthetic.main.item_promo.view.*
 
 class ProductAdapter(
     private val context: Context,
-    private val numCol: Int,
-    private val heightProduct: Int
+    private val screenInfo: ScreenInfo,
 ) :
     RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
@@ -34,9 +34,7 @@ class ProductAdapter(
         val cvInner1 = itemView.cardInner_itemProduct
         val cv1 = itemView.cardView_itemProduct
         val cl1 = itemView.conLayout_itemProduct
-        val clButton = itemView.clButton
-        val scrollView = itemView.scrollView1
-        val search = itemView.svSearch
+
 
     }
 
@@ -62,7 +60,7 @@ class ProductAdapter(
 
     //помещает в метод кол-во элентов массива productList т.е. сколько будет в RecyclerView
     override fun getItemCount(): Int {
-        return numCol + 14//productList.size
+        return screenInfo.columnCount() + 14//productList.size
     }
 
 
@@ -82,7 +80,7 @@ class ProductAdapter(
                 (cl1.layoutParams as ViewGroup.MarginLayoutParams).marginStart = 35
 
 
-            } else if (i == numCol) {
+            } else if (i == screenInfo.columnCount()) {
 
                 (cvInner1.layoutParams as ViewGroup.MarginLayoutParams).marginEnd = -35
                 (cl1.layoutParams as ViewGroup.MarginLayoutParams).marginEnd = 35
@@ -90,7 +88,7 @@ class ProductAdapter(
                 i = 0
             }
 
-            cv1.layoutParams.height = heightProduct
+            cv1.layoutParams.height = screenInfo.heightOfProductIcon()
 
             Picasso.get() //загрузка изображений с помощью Picasso
                 //.load(R.drawable.christmas_trees)
