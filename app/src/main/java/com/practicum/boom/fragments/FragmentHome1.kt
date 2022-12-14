@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.view.menu.MenuView.ItemView
 
 import androidx.core.view.doOnLayout
 import androidx.core.view.marginTop
@@ -13,6 +14,7 @@ import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.practicum.boom.MainViewModel
 import com.practicum.boom.R
 import com.practicum.boom.ScreenInfo
@@ -45,10 +47,20 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
             //h /= getSystem().displayMetrics.density//px -> dp
         }
         var deltaY = 0
+        recyclerView_fragmentHome1.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+            }
+
+        })
         productAdapter?.onFragmentClickListener = object : ProductAdapter.OnFragmentClickListener {
             override fun onFragmentClick() {
-                textView_fragmentHome1.text = h.toString()
 
+                Log.i("test ", " 564654646 ")
+
+                // Log.i("test ","  "+recyclerView_fragmentHome1.getChildAdapterPosition())
+                textView_fragmentHome1.text = h.toString()
                 if (deltaY <= h + 8 * 2.75) {
                     (promoImage_fragmentHome1.layoutParams as ViewGroup.MarginLayoutParams).topMargin -= 0
                     deltaY += 30
@@ -56,6 +68,10 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
             }
 
         }
+
+
+
+
 
 
 

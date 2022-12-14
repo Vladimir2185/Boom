@@ -6,16 +6,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.view.menu.MenuView.ItemView
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.boom.*
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_home1.view.*
 import kotlinx.android.synthetic.main.item_product_info.view.*
 import kotlinx.android.synthetic.main.item_product_info.view.cardView_itemProduct
-import kotlinx.android.synthetic.main.item_promo.view.*
 
 class ProductAdapter(
     private val context: Context,
@@ -33,12 +29,14 @@ class ProductAdapter(
         val cvInner1 = itemView.cardInner_itemProduct
         val cv1 = itemView.cardView_itemProduct
         val cl1 = itemView.conLayout_itemProduct
-        val recyclerView=itemView.recyclerView_fragmentHome1
+        val recyclerView = itemView.recyclerView_fragmentHome1
+
     }
 
     interface OnFragmentClickListener {
         fun onFragmentClick()
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val view =
@@ -49,13 +47,10 @@ class ProductAdapter(
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         with(holder) {
             itemView.setOnClickListener() {
-                onFragmentClickListener?.onFragmentClick()
+
+                //Log.i("test ", " " + itemView)
                 notifyDataSetChanged()
             }
-            /*itemView.setOnScrollChangeListener(View.OnScrollChangeListener(){
-
-            })*/
-                //Log.i("test "," "+position)
 
             fragment1LayoutDrawing(holder)
         }
@@ -63,7 +58,7 @@ class ProductAdapter(
 
     //помещает в метод кол-во элентов массива productList т.е. сколько будет в RecyclerView
     override fun getItemCount(): Int {
-        return screenInfo.columnCount() + 8//productList.size
+        return (screenInfo.columnCount() + 8)//productList.size
     }
 
 

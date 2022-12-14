@@ -45,7 +45,7 @@ class MainHomeFragment(private val screenInfo: ScreenInfo) : Fragment() {
         TabLayoutMediator(tabLayoutHome, vp2Home) { tab, pos ->
             tab.text = textFragTitle[pos]
         }.attach()
-
+//attaching image to tabItem3,because inbuilt set image cant change size of image
         ivIconTrees.visibility = View.VISIBLE
         tabLayoutHome.getTabAt(2)?.customView = ivIconTrees
     }
