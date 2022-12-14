@@ -29,8 +29,7 @@ class MainHomeFragment(private val screenInfo: ScreenInfo) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ivIconTrees.visibility = View.VISIBLE
-        tabLayoutHome.getTabAt(2)?.customView = ivIconTrees
+
 
         val fragList = listOf(
             FragmentHome1.newInstance(screenInfo),
@@ -47,6 +46,8 @@ class MainHomeFragment(private val screenInfo: ScreenInfo) : Fragment() {
             tab.text = textFragTitle[pos]
         }.attach()
 
+        ivIconTrees.visibility = View.VISIBLE
+        tabLayoutHome.getTabAt(2)?.customView = ivIconTrees
     }
 
     companion object {

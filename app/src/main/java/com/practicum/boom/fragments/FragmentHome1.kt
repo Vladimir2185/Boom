@@ -6,22 +6,23 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.getDrawable
 
 import androidx.core.view.doOnLayout
+import androidx.core.view.marginTop
+import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.practicum.boom.MainViewModel
 import com.practicum.boom.R
 import com.practicum.boom.ScreenInfo
 import com.practicum.boom.adapters.ProductAdapter
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home1.*
-import kotlinx.android.synthetic.main.item_product_info.*
-import kotlinx.android.synthetic.main.main_home_fragment.*
 
 
 class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
-
+    private val mainViewModel: MainViewModel by activityViewModels()
+    private var h: Int = 1
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -34,19 +35,35 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
 
         val productAdapter = context?.let { ProductAdapter(it, screenInfo) }
         recyclerView_fragmentHome1.adapter = productAdapter
-        recyclerView_fragmentHome1.layoutManager = GridLayoutManager(this.activity, screenInfo.columnCount())
+        recyclerView_fragmentHome1.layoutManager =
+            GridLayoutManager(this.activity, screenInfo.columnCount())
 
 
         //return height of view element
-        imageView.doOnLayout {
+        promoImage_fragmentHome1.doOnLayout {
+            h = it.height
+            //h /= getSystem().displayMetrics.density//px -> dp
+        }
+        var deltaY = 0
+        productAdapter?.onFragmentClickListener = object : ProductAdapter.OnFragmentClickListener {
+            override fun onFragmentClick() {
+                textView_fragmentHome1.text = h.toString()
 
-            var h = it.height.toDouble()
-            h /= getSystem().displayMetrics.density//px -> dp
+                if (deltaY <= h + 8 * 2.75) {
+                    (promoImage_fragmentHome1.layoutParams as ViewGroup.MarginLayoutParams).topMargin -= 0
+                    deltaY += 30
+                }
+            }
 
         }
 
-    }
 
+
+        mainViewModel.liveScrollPromoImage.observe(viewLifecycleOwner, {
+            textView_fragmentHome1.text = it.toString()
+        })
+
+    }
 
 
     companion object {

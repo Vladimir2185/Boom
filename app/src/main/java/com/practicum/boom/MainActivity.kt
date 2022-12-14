@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.main_home_fragment.*
 
 
 class MainActivity : AppCompatActivity() {
+    //relative to width of icon
     private val HIGHT_OF_PRODUCT_ICON = 1.3
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction().replace(R.id.mainWindow, it).commit()
         }
 
-        //loading of first main navigation fragment
+        //loading of start main navigation fragment
         frag(listOfMainFragments[0])
         //selector of loading fragments by bottom navigation view
         bottomNavView.setOnItemSelectedListener {

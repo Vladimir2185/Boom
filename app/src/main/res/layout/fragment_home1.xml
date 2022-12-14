@@ -13,9 +13,10 @@
         android:background="@color/main_gray">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/promoImage_fragmentHome1"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:adjustViewBounds="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +24,7 @@
             app:srcCompat="@drawable/promo01" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/textView_fragmentHome1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
@@ -33,7 +34,7 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintBottom_toBottomOf="@+id/promoImage_fragmentHome1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,12 +43,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
+            android:layout_marginTop="12dp"
             android:scaleX="1.03"
             android:scaleY="1.03"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/promoImage_fragmentHome1"
             app:spanCount="2"
             tools:listitem="@layout/item_product_info" />
 
