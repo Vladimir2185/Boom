@@ -1,15 +1,11 @@
 package com.practicum.boom.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import com.google.android.material.tabs.TabLayoutMediator
-import com.practicum.boom.MainActivity
 import com.practicum.boom.R
 import com.practicum.boom.ScreenInfo
 import com.practicum.boom.adapters.VP2Adapter
@@ -38,16 +34,16 @@ class MainHomeFragment(private val screenInfo: ScreenInfo) : Fragment() {
         )
 
         for (i in 0 until fragList.size) {
-            textFragTitle.add(tabLayoutHome.getTabAt(i)?.text.toString())
+            textFragTitle.add(tabLayout_home_fragment.getTabAt(i)?.text.toString())
         }
         val vp2Adapter = VP2Adapter(requireActivity(), fragList)
-        vp2Home.adapter = vp2Adapter
-        TabLayoutMediator(tabLayoutHome, vp2Home) { tab, pos ->
+        vp2_home_fragment.adapter = vp2Adapter
+        TabLayoutMediator(tabLayout_home_fragment, vp2_home_fragment) { tab, pos ->
             tab.text = textFragTitle[pos]
         }.attach()
 //attaching image to tabItem3,because inbuilt set image cant change size of image
-        ivIconTrees.visibility = View.VISIBLE
-        tabLayoutHome.getTabAt(2)?.customView = ivIconTrees
+        ivIconTrees_home_fragment.visibility = View.VISIBLE
+        tabLayout_home_fragment.getTabAt(2)?.customView = ivIconTrees_home_fragment
     }
 
     companion object {

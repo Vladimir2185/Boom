@@ -10,7 +10,7 @@
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView_itemProduct"
+        android:id="@+id/cardView_home_fragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -38,14 +38,14 @@
     </androidx.cardview.widget.CardView>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayoutHome"
+        android:id="@+id/tabLayout_home_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:theme="@style/Theme.Boom2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView_itemProduct"
+        app:layout_constraintTop_toBottomOf="@+id/cardView_home_fragment"
         app:tabIconTintMode="add"
         app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium">
 
@@ -71,7 +71,7 @@
     </com.google.android.material.tabs.TabLayout>
 
     <ImageView
-        android:id="@+id/ivIconTrees"
+        android:id="@+id/ivIconTrees_home_fragment"
         android:layout_width="133dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -79,19 +79,19 @@
         android:padding="8dp"
         android:scaleX="0.75"
         android:scaleY="0.75"
-        app:layout_constraintBottom_toBottomOf="@+id/tabLayoutHome"
+        app:layout_constraintBottom_toBottomOf="@+id/tabLayout_home_fragment"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tabLayoutHome"
+        app:layout_constraintTop_toTopOf="@id/tabLayout_home_fragment"
         app:srcCompat="@drawable/christmas_trees" />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/vp2Home"
+        android:id="@+id/vp2_home_fragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="#3F51B5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayoutHome">
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout_home_fragment">
 
     </androidx.viewpager2.widget.ViewPager2>
 

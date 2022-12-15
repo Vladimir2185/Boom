@@ -14,17 +14,20 @@ import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.practicum.boom.CustomGridLayoutManager
 import com.practicum.boom.MainViewModel
 import com.practicum.boom.R
 import com.practicum.boom.ScreenInfo
 import com.practicum.boom.adapters.ProductAdapter
 import kotlinx.android.synthetic.main.fragment_home1.*
+import kotlin.math.absoluteValue
 
 
 class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
     private val mainViewModel: MainViewModel by activityViewModels()
-    private var h: Int = 1
+    private var h: Int = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -38,32 +41,39 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
         val productAdapter = context?.let { ProductAdapter(it, screenInfo) }
         recyclerView_fragmentHome1.adapter = productAdapter
         recyclerView_fragmentHome1.layoutManager =
-            GridLayoutManager(this.activity, screenInfo.columnCount())
+            CustomGridLayoutManager(this.activity, screenInfo.columnCount(),false)
 
+
+        val marginTopSearch =
+            (promoImage_fragmentHome1.layoutParams as ViewGroup.MarginLayoutParams)
 
         //return height of view element
         promoImage_fragmentHome1.doOnLayout {
-            h = it.height
+            h = it.height //- marginTopSearch.topMargin
             //h /= getSystem().displayMetrics.density//px -> dp
         }
-        var deltaY = 0
+
         recyclerView_fragmentHome1.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
+                /* if (h-marginTopSearch.topMargin.absoluteValue>=dy) {
+                     marginTopSearch.topMargin -= dy
+                 } else {
+                     marginTopSearch.topMargin = -h
+                 }
+                 recyclerView_fragmentHome1.adapter?.notifyDataSetChanged()*/
             }
-
         })
         productAdapter?.onFragmentClickListener = object : ProductAdapter.OnFragmentClickListener {
             override fun onFragmentClick() {
-
-                Log.i("test ", " 564654646 ")
-
-                // Log.i("test ","  "+recyclerView_fragmentHome1.getChildAdapterPosition())
-                textView_fragmentHome1.text = h.toString()
-                if (deltaY <= h + 8 * 2.75) {
-                    (promoImage_fragmentHome1.layoutParams as ViewGroup.MarginLayoutParams).topMargin -= 0
-                    deltaY += 30
+                 Log.i("test "," 56758 ")
+                if (h - marginTopSearch.topMargin.absoluteValue >= 50) {
+                    marginTopSearch.topMargin -= 50
+                } else {
+                    marginTopSearch.topMargin = -h
+                    recyclerView_fragmentHome1.layoutManager =
+                        CustomGridLayoutManager(requireContext(), screenInfo.columnCount(),true)
                 }
             }
 

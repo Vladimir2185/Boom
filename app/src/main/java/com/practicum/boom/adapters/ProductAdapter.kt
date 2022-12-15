@@ -2,7 +2,6 @@ package com.practicum.boom.adapters
 
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import com.practicum.boom.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_home1.view.*
 import kotlinx.android.synthetic.main.item_product_info.view.*
-import kotlinx.android.synthetic.main.item_product_info.view.cardView_itemProduct
+import kotlinx.android.synthetic.main.item_product_info.view.cardView_home_fragment
 
 class ProductAdapter(
     private val context: Context,
@@ -27,7 +26,7 @@ class ProductAdapter(
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ivProduct = itemView.imageView_itemProduct
         val cvInner1 = itemView.cardInner_itemProduct
-        val cv1 = itemView.cardView_itemProduct
+        val cv1 = itemView.cardView_home_fragment
         val cl1 = itemView.conLayout_itemProduct
         val recyclerView = itemView.recyclerView_fragmentHome1
 
@@ -47,8 +46,7 @@ class ProductAdapter(
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         with(holder) {
             itemView.setOnClickListener() {
-
-                //Log.i("test ", " " + itemView)
+                onFragmentClickListener?.onFragmentClick()
                 notifyDataSetChanged()
             }
 
