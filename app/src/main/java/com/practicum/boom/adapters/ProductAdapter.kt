@@ -6,11 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.practicum.boom.*
+import com.practicum.boom.Product
+import com.practicum.boom.R
+import com.practicum.boom.ScreenInfo
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_home1.view.*
 import kotlinx.android.synthetic.main.item_product_info.view.*
-import kotlinx.android.synthetic.main.item_product_info.view.cardView_home_fragment
 
 class ProductAdapter(
     private val context: Context,
@@ -26,9 +26,8 @@ class ProductAdapter(
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ivProduct = itemView.imageView_itemProduct
         val cvInner1 = itemView.cardInner_itemProduct
-        val cv1 = itemView.cardView_home_fragment
+        val cv1 = itemView.root_item_product
         val cl1 = itemView.conLayout_itemProduct
-        val recyclerView = itemView.recyclerView_fragmentHome1
 
     }
 
@@ -47,7 +46,7 @@ class ProductAdapter(
         with(holder) {
             itemView.setOnClickListener() {
                 onFragmentClickListener?.onFragmentClick()
-                notifyDataSetChanged()
+                //notifyDataSetChanged()
             }
 
             fragment1LayoutDrawing(holder)
@@ -64,11 +63,9 @@ class ProductAdapter(
         count++
         with(holder) {
 
-            cv1.visibility = View.VISIBLE
             i++
             (cv1.layoutParams as ViewGroup.MarginLayoutParams).marginEnd = 16
             if (i == 1) {
-
                 (cvInner1.layoutParams as ViewGroup.MarginLayoutParams).marginStart = -35
                 (cl1.layoutParams as ViewGroup.MarginLayoutParams).marginStart = 35
 

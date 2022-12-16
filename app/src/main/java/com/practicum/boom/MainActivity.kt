@@ -4,12 +4,10 @@ package com.practicum.boom
 import android.os.Bundle
 import android.util.DisplayMetrics
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.practicum.boom.fragments.FragmentHome2
 import com.practicum.boom.fragments.MainHomeFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.main_home_fragment.*
 
 
 class MainActivity : AppCompatActivity() {
