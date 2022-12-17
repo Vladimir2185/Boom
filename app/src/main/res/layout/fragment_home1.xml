@@ -7,11 +7,12 @@
     android:layout_height="match_parent"
     android:background="@color/main_gray">
 
+
     <ScrollView
         android:id="@+id/scrollView_fragmentHome1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbarSize="20dp"
+        android:scrollbars="none"
         android:verticalScrollbarPosition="left">
 
         <androidx.constraintlayout.widget.ConstraintLayout

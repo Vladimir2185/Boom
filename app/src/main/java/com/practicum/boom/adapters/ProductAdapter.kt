@@ -2,6 +2,7 @@ package com.practicum.boom.adapters
 
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import com.practicum.boom.Product
 import com.practicum.boom.R
 import com.practicum.boom.ScreenInfo
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_home1.*
 import kotlinx.android.synthetic.main.item_product_info.view.*
 
 class ProductAdapter(
@@ -44,9 +46,10 @@ class ProductAdapter(
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         with(holder) {
+            //Log.i("test", "position"+bindingAdapterPosition)
             itemView.setOnClickListener() {
                 onFragmentClickListener?.onFragmentClick()
-                //notifyDataSetChanged()
+               // notifyDataSetChanged()
             }
 
             fragment1LayoutDrawing(holder)
@@ -55,7 +58,7 @@ class ProductAdapter(
 
     //помещает в метод кол-во элентов массива productList т.е. сколько будет в RecyclerView
     override fun getItemCount(): Int {
-        return (screenInfo.columnCount() + 8)//productList.size
+        return (screenInfo.columnCount() + 10)//productList.size
     }
 
 
