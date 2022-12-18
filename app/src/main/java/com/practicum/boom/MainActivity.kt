@@ -3,6 +3,7 @@ package com.practicum.boom
 // Ctrl+Alt+O    clear empty import
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.practicum.boom.fragments.FragmentHome2
@@ -13,6 +14,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
     //relative to width of icon
     private val HIGHT_OF_PRODUCT_ICON = 1.3
+
+    //intercept all events if you need
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+         //ev?.let { it.setLocation(it.x,(it.y*0.5f))}
+        return super.dispatchTouchEvent(ev)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +57,12 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-
+/*object : MyFrameLayout(requireContext()){
+            override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+                ev?.let { it.action=MotionEvent.ACTION_DOWN}
+                return super.dispatchTouchEvent(ev)
+            }
+        }*/
     }
 
 

@@ -35,6 +35,7 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
 
         val productAdapter = context?.let { ProductAdapter(it, screenInfo) }
         recyclerView_fragmentHome1.adapter = productAdapter
+
         //setup CustomGridLayoutManager and freezing/unfreezing recyclerView scrolling by isScrollEnabled param
         recyclerView_fragmentHome1.layoutManager =
             CustomGridLayoutManager(this.activity, screenInfo.columnCount(), true)
@@ -46,20 +47,30 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
                         as ViewGroup.MarginLayoutParams).topMargin
         }
 
+
         //when promoImage reached offset=(hightPromoImage + marginTop.topMargin)
         //switching recyclerViewTouchBlock and scrollViewTouchBlock and  lock
         //in switchEventToRecView transferring control of event from scrollView to recyclerView
         scrollView_fragmentHome1.setOnScrollChangeListener(object : View.OnScrollChangeListener {
             override fun onScrollChange(
                 v: View, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int
-            ) {
-                if (hightPromoImage - scrollY <= 0 && oldScrollY < scrollY) {
+            ) {Log.i("test", "scrollY: " + scrollY)
+                if (lock==false&&hightPromoImage - scrollY <= 0 && oldScrollY < scrollY) {
                     scrollView_fragmentHome1.scrollY = hightPromoImage
                     if (lock == false) {
                         switchEventToRecView(true)
+
                         Log.i("test", "stop")
                     }
                 }
+                else if (lock&&oldScrollY > scrollY&&scrollView_fragmentHome1.scrollY<hightPromoImage)
+                {switchEventToRecView(false)
+                    Log.i("test", "speed")
+
+                   // scrollView_fragmentHome1.smoothScrollTo(0,150)
+
+                }
+                else if(oldScrollY > scrollY&&scrollView_fragmentHome1.scrollY<hightPromoImage){scrollView_fragmentHome1.scrollY = (hightPromoImage*0.8).toInt()}
             }
         })
         //when recyclerView scrolling reached top and canScrollVertically=false
@@ -70,12 +81,11 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
                 super.onScrolled(recyclerView, dx, dy)
 
                 if (!recyclerView.canScrollVertically(-1) && lock) {
-                    switchEventToRecView(false)
+                    //switchEventToRecView(false)
                     Log.i("test", "test " + motionEvent)
                 }
             }
         })
-
 
         scrollView_fragmentHome1.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(view: View?, event: MotionEvent?): Boolean {
@@ -84,46 +94,59 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
                     //closer()
 
                 }
-                Log.i("test", "onTouch " + motionEvent)
+                Log.i("test", "scrollView: " + motionEvent)
+
                 //InterceptTouchEvent false by default
                 return false// scrollViewTouchBlock
             }
         })
-        recyclerView_fragmentHome1.addOnItemTouchListener(object :
-            RecyclerView.OnItemTouchListener {
-            override fun onInterceptTouchEvent(rv: RecyclerView, event: MotionEvent): Boolean {
+        recyclerView_fragmentHome1.setOnTouchListener(object :View.OnTouchListener{
+            override fun onTouch(p0: View?, event: MotionEvent?): Boolean {
                 event?.let { motionEvent = it }
-                Log.i("test", "onInterceptTouchEvent " + motionEvent)
+                Log.i("test", "recyclerView: " + motionEvent)
+                Log.i("test", "recyclerView isInTouchMode: " + recyclerView_fragmentHome1.isInTouchMode)
                 if (motionEvent.action == MotionEvent.ACTION_UP && lock == true) {
                     //closer()
                     Log.i("test2", "catch true")
                 }
                 //InterceptTouchEvent true by default
-                return recyclerViewTouchBlock
+                return false//recyclerViewTouchBlock
             }
-
-            override fun onTouchEvent(rv: RecyclerView, event: MotionEvent) {}
-            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
         })
 
 
         productAdapter?.onFragmentClickListener = object : ProductAdapter.OnFragmentClickListener {
             override fun onFragmentClick() {
+                //Log.i("test", "recyclerView: ")
             }
         }
-
         mainViewModel.liveScrollPromoImage.observe(viewLifecycleOwner, {
             textView_fragmentHome1.text = it.toString()
         })
     }
+
+
     // transferring control of event from recyclerView to scrollView and vice versa
     fun switchEventToRecView(actionDown: Boolean) {
         lock = !lock
-        recyclerViewTouchBlock = !recyclerViewTouchBlock
-        scrollViewTouchBlock = !scrollViewTouchBlock
-        if (actionDown) motionEvent.action = MotionEvent.ACTION_DOWN
-        else motionEvent.action = MotionEvent.ACTION_UP
-        scrollView_fragmentHome1.dispatchTouchEvent(motionEvent)
+       // recyclerViewTouchBlock = !recyclerViewTouchBlock
+        //scrollViewTouchBlock = !scrollViewTouchBlock
+        if (actionDown){ motionEvent.action = MotionEvent.ACTION_DOWN
+            recyclerView_fragmentHome1.isNestedScrollingEnabled=true
+            recyclerViewTouchBlock = !recyclerViewTouchBlock
+            scrollView_fragmentHome1.dispatchTouchEvent(motionEvent)
+            }
+        else {
+            recyclerView_fragmentHome1.isNestedScrollingEnabled=false
+            recyclerViewTouchBlock = !recyclerViewTouchBlock
+            motionEvent.action = MotionEvent.ACTION_UP
+            scrollView_fragmentHome1.dispatchTouchEvent(motionEvent)
+
+
+
+
+        }
+
     }
     //smoothly brings to the position
     fun closer() {
