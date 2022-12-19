@@ -5,8 +5,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 
 
 open class CustomGridLayoutManager(
-    context: Context?,
-    int: Int,
+    context: Context?, int: Int,
     private val isScrollEnabled: Boolean = true
 ) : GridLayoutManager(context, int) {
 

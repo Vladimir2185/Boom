@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     //intercept all events if you need
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
          //ev?.let { it.setLocation(it.x,(it.y*0.5f))}
-        Log.i("test", "ACTIVITY: "+ev)
+        //Log.i("test", "ACTIVITY: "+ev)
         return super.dispatchTouchEvent(ev)
     }
 

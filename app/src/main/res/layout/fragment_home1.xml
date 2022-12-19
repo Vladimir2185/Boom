@@ -9,7 +9,7 @@
     android:background="@color/main_gray">
 
 
-    <ScrollView
+    <com.practicum.boom.CustomScrollView
         android:id="@+id/scrollView_fragmentHome1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -65,6 +65,6 @@
                 tools:listitem="@layout/item_product_info" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </com.practicum.boom.CustomScrollView>
 
 </FrameLayout>
