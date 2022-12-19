@@ -3,7 +3,6 @@ package com.practicum.boom.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,10 +16,12 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
     private val mainViewModel: MainViewModel by activityViewModels()
     private var hightPromoImage: Int = 0
     private var lock = false
-    private var lockToRecView = false
+    private var lockScrollGap = false
+    private var lockOnScreenFinger = false
     private var recyclerViewTouchBlock = true
     private var scrollViewTouchBlock = false
-    private var oldScrollY = 0.0f
+    private var countGap = 0
+    private var lockOnScreenFingerCount = 0
     private lateinit var motionEvent: MotionEvent
 
     override fun onCreateView(
@@ -54,23 +55,42 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
         scrollView_fragmentHome1.setOnScrollChangeListener(object : View.OnScrollChangeListener {
             override fun onScrollChange(
                 v: View, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int
-            ) {Log.i("test", "scrollY: " + scrollY)
-                if (lock==false&&hightPromoImage - scrollY <= 0 && oldScrollY < scrollY) {
+            ) {
+                Log.i("test", "scrollY: " + scrollY)
+                if (!lock  && hightPromoImage - scrollY <= 0 && oldScrollY < scrollY) {
                     scrollView_fragmentHome1.scrollY = hightPromoImage
-                    if (lock == false) {
-                        switchEventToRecView(true)
-
+                    if (!lock ) {
+                       // switchEventToRecView(true)
+                        //motionEvent.action = MotionEvent.ACTION_UP
+                       // requireActivity().dispatchTouchEvent(motionEvent)
+                        recyclerView_fragmentHome1.isNestedScrollingEnabled = true
+                        motionEvent.action = MotionEvent.ACTION_DOWN
+                        requireActivity().dispatchTouchEvent(motionEvent)
+                        lock=!lock
                         Log.i("test", "stop")
                     }
-                }
-                else if (lock&&oldScrollY > scrollY&&scrollView_fragmentHome1.scrollY<hightPromoImage)
-                {switchEventToRecView(false)
+                } else if (lock && oldScrollY > scrollY && scrollView_fragmentHome1.scrollY < hightPromoImage) {
+                   // switchEventToRecView(false)
+                    /*motionEvent.action = MotionEvent.ACTION_UP
+                    requireActivity().dispatchTouchEvent(motionEvent)
+                    recyclerView_fragmentHome1.isNestedScrollingEnabled = false
+                    motionEvent.action = MotionEvent.ACTION_DOWN
+                    requireActivity().dispatchTouchEvent(motionEvent)
+                    lock=!lock*/
                     Log.i("test", "speed")
 
-                   // scrollView_fragmentHome1.smoothScrollTo(0,150)
-
                 }
-                else if(oldScrollY > scrollY&&scrollView_fragmentHome1.scrollY<hightPromoImage){scrollView_fragmentHome1.scrollY = (hightPromoImage*0.8).toInt()}
+                // scroll gap normalization
+                if (oldScrollY > scrollY && lockScrollGap) {
+                    if ((oldScrollY - scrollY > 20) && oldScrollY >= 20) {
+                        scrollView_fragmentHome1.scrollY = oldScrollY - 20
+                    }
+                    countGap++
+                    if (countGap == 3) {
+                        lockScrollGap = false
+                        countGap = 0
+                    }
+                }
             }
         })
         //when recyclerView scrolling reached top and canScrollVertically=false
@@ -80,44 +100,43 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                if (!recyclerView.canScrollVertically(-1) && lock) {
+                /*if (!recyclerView.canScrollVertically(-1) && lock) {
                     //switchEventToRecView(false)
                     Log.i("test", "test " + motionEvent)
-                }
+                }*/
             }
         })
 
         scrollView_fragmentHome1.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(view: View?, event: MotionEvent?): Boolean {
                 event?.let { motionEvent = it }
-                if (motionEvent.action == MotionEvent.ACTION_UP && lock == false) {
-                    //closer()
+                lockOnScreenFingerListener()
 
+                if (!lockOnScreenFinger && motionEvent.action == MotionEvent.ACTION_UP
+                    && !lock
+                ) {
+                    closer()
                 }
                 Log.i("test", "scrollView: " + motionEvent)
-
-                //InterceptTouchEvent false by default
-                return false// scrollViewTouchBlock
+                return false
             }
         })
-        recyclerView_fragmentHome1.setOnTouchListener(object :View.OnTouchListener{
+        recyclerView_fragmentHome1.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(p0: View?, event: MotionEvent?): Boolean {
                 event?.let { motionEvent = it }
+                lockOnScreenFingerListener()
                 Log.i("test", "recyclerView: " + motionEvent)
-                Log.i("test", "recyclerView isInTouchMode: " + recyclerView_fragmentHome1.isInTouchMode)
-                if (motionEvent.action == MotionEvent.ACTION_UP && lock == true) {
-                    //closer()
-                    Log.i("test2", "catch true")
+                if (motionEvent.action == MotionEvent.ACTION_UP && lock ) {
+                    lockScrollGap = true
                 }
-                //InterceptTouchEvent true by default
-                return false//recyclerViewTouchBlock
+                return false
             }
         })
-
+       // recyclerView_fragmentHome1.listener
 
         productAdapter?.onFragmentClickListener = object : ProductAdapter.OnFragmentClickListener {
             override fun onFragmentClick() {
-                //Log.i("test", "recyclerView: ")
+
             }
         }
         mainViewModel.liveScrollPromoImage.observe(viewLifecycleOwner, {
@@ -128,31 +147,35 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
 
     // transferring control of event from recyclerView to scrollView and vice versa
     fun switchEventToRecView(actionDown: Boolean) {
-        lock = !lock
-       // recyclerViewTouchBlock = !recyclerViewTouchBlock
-        //scrollViewTouchBlock = !scrollViewTouchBlock
-        if (actionDown){ motionEvent.action = MotionEvent.ACTION_DOWN
-            recyclerView_fragmentHome1.isNestedScrollingEnabled=true
-            recyclerViewTouchBlock = !recyclerViewTouchBlock
-            scrollView_fragmentHome1.dispatchTouchEvent(motionEvent)
-            }
-        else {
-            recyclerView_fragmentHome1.isNestedScrollingEnabled=false
-            recyclerViewTouchBlock = !recyclerViewTouchBlock
+        if (actionDown) {
+            motionEvent.action = MotionEvent.ACTION_DOWN
+            recyclerView_fragmentHome1.isNestedScrollingEnabled = true
+        } else {
+
             motionEvent.action = MotionEvent.ACTION_UP
-            scrollView_fragmentHome1.dispatchTouchEvent(motionEvent)
-
-
-
-
+            recyclerView_fragmentHome1.isNestedScrollingEnabled = false
         }
+        scrollView_fragmentHome1.dispatchTouchEvent(motionEvent)
 
+        lock = !lock
+        lockOnScreenFinger = true
     }
+
     //smoothly brings to the position
     fun closer() {
-        if (scrollView_fragmentHome1.scrollY > hightPromoImage / 2)
-            scrollView_fragmentHome1.scrollY= hightPromoImage
-        else scrollView_fragmentHome1.scrollY=0
+        with(scrollView_fragmentHome1) {
+            if (scrollY > hightPromoImage * 0.6 && scrollY < hightPromoImage)
+                scrollY = hightPromoImage
+            else if (scrollY <= hightPromoImage * 0.6) scrollY = 0
+        }
+    }
+
+    fun lockOnScreenFingerListener() {
+        lockOnScreenFingerCount++
+        if (lockOnScreenFingerCount >= 10) {
+            lockOnScreenFingerCount = 0
+            lockOnScreenFinger = false
+        }
     }
 
     companion object {

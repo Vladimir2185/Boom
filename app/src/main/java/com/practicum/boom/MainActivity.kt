@@ -3,6 +3,7 @@ package com.practicum.boom
 // Ctrl+Alt+O    clear empty import
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -18,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     //intercept all events if you need
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
          //ev?.let { it.setLocation(it.x,(it.y*0.5f))}
+        Log.i("test", "ACTIVITY: "+ev)
         return super.dispatchTouchEvent(ev)
     }
 
