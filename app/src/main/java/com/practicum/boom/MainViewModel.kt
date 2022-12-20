@@ -4,5 +4,5 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 open class MainViewModel : ViewModel() {
-    val liveScrollPromoImage: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
+    val liveScrollSearch: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
 }

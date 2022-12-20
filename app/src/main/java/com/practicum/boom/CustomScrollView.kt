@@ -26,7 +26,7 @@ open class CustomScrollView @JvmOverloads constructor(
             }
             oldScrollY = it.y
         }
-        //Log.i("test", "CustomScrollView2 : " + ev)
+       // Log.i("test", "CustomScrollView2 $id : " + ev)
         return super.dispatchTouchEvent(ev)
     }
 }
