@@ -16,7 +16,7 @@ open class CustomScrollView @JvmOverloads constructor(
     private var lock = false
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        ev?.let {
+       /* ev?.let {
             if (oldScrollY > it.y && it.action == MotionEvent.ACTION_MOVE && !lock) {
                 it.action = MotionEvent.ACTION_MASK
                 lock = true
@@ -25,7 +25,7 @@ open class CustomScrollView @JvmOverloads constructor(
                 lock = false
             }
             oldScrollY = it.y
-        }
+        }*/
        // Log.i("test", "CustomScrollView2 $id : " + ev)
         return super.dispatchTouchEvent(ev)
     }
