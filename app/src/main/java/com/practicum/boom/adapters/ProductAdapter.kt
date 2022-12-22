@@ -12,6 +12,7 @@ import com.practicum.boom.R
 import com.practicum.boom.ScreenInfo
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_home1.*
+import kotlinx.android.synthetic.main.fragment_home1.view.*
 import kotlinx.android.synthetic.main.item_product_info.view.*
 
 class ProductAdapter(
@@ -30,6 +31,8 @@ class ProductAdapter(
         val cvInner1 = itemView.cardInner_itemProduct
         val cv1 = itemView.root_item_product
         val cl1 = itemView.conLayout_itemProduct
+        val button = itemView.button_itemProduct
+
 
     }
 
@@ -49,16 +52,27 @@ class ProductAdapter(
             //Log.i("test", "position"+bindingAdapterPosition)
             itemView.setOnClickListener() {
                 onFragmentClickListener?.onFragmentClick()
-               // notifyDataSetChanged()
+                // notifyDataSetChanged()
             }
-
-            fragment1LayoutDrawing(holder)
+            if (position == 0) {
+                button.visibility = View.GONE
+                Picasso.get() //загрузка изображений с помощью Picasso
+                    //.load(R.drawable.christmas_trees)
+                    //.load(file)
+                    .load(R.drawable.promo01)
+                    .placeholder(android.R.drawable.ic_menu_gallery)
+                    .error(android.R.drawable.ic_menu_report_image)
+                    .into(ivProduct)
+            } else if (position > 0) {
+                button.text = "position " + position
+                fragment1LayoutDrawing(holder)
+            }
         }
     }
 
     //помещает в метод кол-во элентов массива productList т.е. сколько будет в RecyclerView
     override fun getItemCount(): Int {
-        return (screenInfo.columnCount() + 10)//productList.size
+        return (screenInfo.columnCount() + 10 + 1)//productList.size
     }
 
 

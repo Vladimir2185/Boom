@@ -1,9 +1,10 @@
 package com.practicum.boom.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
@@ -20,8 +21,9 @@ class MainHomeFragment(private val screenInfo: ScreenInfo) : Fragment() {
     private val mainViewModel: MainViewModel by activityViewModels()
     private var hightSearch = 0
     private var lock = false
-    private var isNested = true
-    private lateinit var motionEvent: MotionEvent
+    private val smoothCount = 20  // responsible for smoothness of closer
+    private val closingTime = 10  // responsible for time of closing of closer
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,12 +61,6 @@ class MainHomeFragment(private val screenInfo: ScreenInfo) : Fragment() {
             tabLayout_home_fragment.getTabAt(2)?.customView = ivIconTrees_home_fragment
 
 
-            scrollView_main_home_fragment.onDispatchTouchEvent =
-                object : CustomScrollView.OnDispatchTouchEvent {
-                    override fun onDispatchTouch(): Boolean {
-                        return lock
-                    }
-                }
             //when promoImage reached offset=(hightSearch + marginTop.topMargin)
             //switching recyclerViewTouchBlock and scrollViewTouchBlock and  lock
             //in switchEventToRecView transferring control of event from scrollView to recyclerView
@@ -87,27 +83,40 @@ class MainHomeFragment(private val screenInfo: ScreenInfo) : Fragment() {
                     }
                 }
             })
-            scrollView_main_home_fragment.setOnTouchListener(object : View.OnTouchListener {
-                override fun onTouch(view: View?, event: MotionEvent?): Boolean {
-                    event?.let {
-                        motionEvent = it
+
+            scrollView_main_home_fragment.onDispatchTouchEvent =
+                object : CustomScrollView.OnDispatchTouchEvent {
+                    override fun onDispatchTouch(action_up: Boolean): Boolean {
+                        if (action_up) closer()
+                        return lock
                     }
-                    if (motionEvent.action == MotionEvent.ACTION_UP) {
-                        closer()
-                    }
-                    Log.i("test", "scrollViewOnTouch: " + motionEvent)
-                    return false
                 }
-            })
         }
     }
 
     //smoothly brings to the position
     fun closer() {
+
         with(scrollView_main_home_fragment) {
-            if (scrollY > hightSearch * 0.55 && scrollY < hightSearch)
-                scrollY = hightSearch
-            else if (scrollY <= hightSearch * 0.55) scrollY = 0
+            if (scrollY > hightSearch * 0.55 && scrollY < hightSearch) {
+                val temp = (hightSearch - scrollY) / smoothCount
+                for (i in 1..smoothCount) {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        if (i == smoothCount && scrollY != hightSearch - 1) scrollY =
+                            hightSearch - 1
+                        else scrollY += temp
+                    }, (closingTime * i).toLong())
+                }
+            }
+            if (scrollY <= hightSearch * 0.55) {
+                val temp = scrollY / smoothCount
+                for (i in 1..smoothCount) {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        if (i == smoothCount && scrollY != 1) scrollY = 1
+                        else scrollY -= temp
+                    }, (closingTime * i).toLong())
+                }
+            }
         }
     }
 

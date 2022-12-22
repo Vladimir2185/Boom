@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.boom.*
 import com.practicum.boom.adapters.ProductAdapter
@@ -38,9 +39,21 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
             recyclerView_fragmentHome1.adapter = productAdapter
 
             //setup CustomGridLayoutManager and freezing/unfreezing recyclerView scrolling by isScrollEnabled param
-            recyclerView_fragmentHome1.layoutManager =
+            val layoutManager =
                 CustomGridLayoutManager(requireContext(), screenInfo.columnCount(), true)
+            
+            layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    // 5 is the sum of items in one repeated section
+                    return when (position) {
+                        0 -> screenInfo.columnCount()
+                        else -> 1
+                    }
+                    //throw IllegalStateException("internal error")
 
+                }
+            }
+            recyclerView_fragmentHome1.layoutManager = layoutManager
 
             recyclerView_fragmentHome1.addOnScrollListener(object :
                 RecyclerView.OnScrollListener() {
@@ -54,12 +67,6 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
                 }
             })
 
-            productAdapter?.onFragmentClickListener =
-                object : ProductAdapter.OnFragmentClickListener {
-                    override fun onFragmentClick() {
-                        Log.i("test", "recyclerclick: ")
-                    }
-                }
         }
     }
 
