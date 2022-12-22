@@ -9,13 +9,7 @@
     android:background="@color/main_gray">
 
 
-    <com.practicum.boom.CustomScrollView
-        android:id="@+id/scrollView_fragmentHome1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:nestedScrollingEnabled="true"
-        android:scrollbars="none"
-        android:verticalScrollbarPosition="left">
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout_fragmentHome1"
@@ -55,7 +49,7 @@
                 android:layout_height="wrap_content"
 
                 android:layout_marginTop="12dp"
-                android:nestedScrollingEnabled="false"
+                android:nestedScrollingEnabled="true"
                 android:scaleX="1.03"
                 android:scaleY="1.03"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
@@ -66,6 +60,6 @@
                 tools:listitem="@layout/item_product_info" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.practicum.boom.CustomScrollView>
+
 
 </FrameLayout>

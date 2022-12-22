@@ -18,9 +18,8 @@ import kotlinx.android.synthetic.main.main_home_fragment.*
 
 class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
     private val mainViewModel: MainViewModel by activityViewModels()
-    private var lock = false
-    private lateinit var motionEvent: MotionEvent
-    var onSwitchNestedScroll: OnSwitchNestedScroll? = null
+    private var oldDY = 0
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -31,11 +30,8 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(mainViewModel.liveScrollData) {
+        with(mainViewModel.liveScrollLock) {
             observe(viewLifecycleOwner, {
-                recyclerView_fragmentHome1.isNestedScrollingEnabled = it.isNested
-                lock = it.lock
-
             })
 
             val productAdapter = context?.let { ProductAdapter(it, screenInfo) }
@@ -50,37 +46,14 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
                 RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    Log.i("test", "RecyclerView.OnScroll "+dy)
-                    Log.i("test", "lock "+lock)
-                    Log.i("test", "isNestedScroll "+recyclerView_fragmentHome1.isNestedScrollingEnabled)
-                    if (lock && dy < 0) {
-                        recyclerView_fragmentHome1.scrollBy(0, -dy)
-                        onSwitchNestedScroll?.onSwitch()
+                    if (dy * oldDY < 0) {
+                        recyclerView_fragmentHome1.smoothScrollBy(0, -dy)
+                        value = false
                     }
+                    oldDY = dy
                 }
             })
 
-
-            recyclerView_fragmentHome1.addOnItemTouchListener(object :
-                RecyclerView.OnItemTouchListener {
-                override fun onInterceptTouchEvent(rv: RecyclerView, event: MotionEvent): Boolean {
-                    motionEvent = event
-                    if (motionEvent.action == MotionEvent.ACTION_MASK && !lock) {
-                        //switchNestedScroll(false)
-
-                        Log.i("test", "onInterceptTouch ")
-                    }
-                    if (motionEvent.action == MotionEvent.ACTION_UP && !lock
-                    ) {
-                        //closer()
-                    }
-                    Log.i("test", "recViewINTERCEPT: " + motionEvent)
-                    return false
-                }
-
-                override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
-                override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
-            })
             productAdapter?.onFragmentClickListener =
                 object : ProductAdapter.OnFragmentClickListener {
                     override fun onFragmentClick() {
@@ -90,11 +63,8 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
         }
     }
 
-    interface OnSwitchNestedScroll {
-        fun onSwitch()
-    }
-
     companion object {
+
         @JvmStatic
         fun newInstance(screenInfo: ScreenInfo) = FragmentHome1(screenInfo)
     }
