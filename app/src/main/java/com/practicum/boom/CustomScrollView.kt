@@ -38,7 +38,8 @@ open class CustomScrollView @JvmOverloads constructor(
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (freezeEvents) return false
+        //Log.i("test", "D lock " )
+  /*      if (freezeEvents) return false
 
         ev?.let {
             newX = it.x
@@ -78,12 +79,12 @@ open class CustomScrollView @JvmOverloads constructor(
             oldY = newY
             oldEvent = it.action
         }
-
+*/
         return super.dispatchTouchEvent(ev)
     }
 
     override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
-        Log.i("test", "I lock " + !lock + "   ev  " + ev)
-        return intercept
+        //Log.i("test", "I lock " + !lock + "   ev  " + ev)
+        return super.onInterceptTouchEvent(ev)//intercept
     }
 }

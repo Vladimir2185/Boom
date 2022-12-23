@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.boom.*
 import com.practicum.boom.adapters.VP2Adapter
+import kotlinx.android.synthetic.main.fragment_home1.*
 import kotlinx.android.synthetic.main.main_home_fragment.*
 
 
@@ -71,18 +72,36 @@ class MainHomeFragment(private val screenInfo: ScreenInfo) : Fragment() {
                 ) {
                     with(scrollView_main_home_fragment) {
                         Log.i("test", "scrollViewscrollY: " + scrollY)
-                        if (hightSearch - scrollY <= 0 && oldScrollY < scrollY) {
+                        if (!lock && hightSearch - scrollY <= 0 && oldScrollY < scrollY) {
                             this.scrollY = hightSearch
                             value = true
                             Log.i("test", "stop")
                         }
-                        if (oldScrollY > scrollY && this.scrollY == 0) {
-                            value = true
+                        if (!lock && oldScrollY > scrollY && this.scrollY == 0) {
+                            //value = true
                             Log.i("test", "speed")
                         }
                     }
                 }
             })
+            (fragList[0] as FragmentHome1).onScrollMove = object : FragmentHome1.OnScrollMove {
+                override fun onScroll(dy: Int) {
+                    //super.onScroll()
+                   // conLay_main_home_fragment.scrollBy(0, -10)
+                    /* with(scrollView_main_home_fragment) {
+                         val temp = if ((dy) / 5 > 1) {
+                             (dy) / 5
+                         } else if (dy > 0) 1
+                         else -1
+                         for (i in 1..5) {
+                             Handler(Looper.getMainLooper()).postDelayed({
+                                 scrollBy(0, temp)
+                             }, (20 * i).toLong())
+                         }
+                     }*/
+
+                }
+            }
 
             scrollView_main_home_fragment.onDispatchTouchEvent =
                 object : CustomScrollView.OnDispatchTouchEvent {
