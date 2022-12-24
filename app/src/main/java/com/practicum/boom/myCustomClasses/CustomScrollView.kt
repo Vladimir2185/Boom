@@ -1,4 +1,4 @@
-package com.practicum.boom
+package com.practicum.boom.myCustomClasses
 
 import android.content.Context
 import android.os.Handler
@@ -7,10 +7,6 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.widget.ScrollView
-import androidx.fragment.app.activityViewModels
-import com.practicum.boom.fragments.FragmentHome1
-import kotlinx.android.synthetic.main.main_home_fragment.*
-import kotlinx.android.synthetic.main.main_home_fragment.view.*
 import kotlin.math.absoluteValue
 
 open class CustomScrollView @JvmOverloads constructor(
@@ -24,40 +20,37 @@ open class CustomScrollView @JvmOverloads constructor(
     private var freezeEvents = false
     private var oldEvent = -1
     var onDispatchTouchEvent: OnDispatchTouchEvent? = null
-    private var newX = 0.0f
-    private var oldX = 0.0f
-    private var newY = 0.0f
-    private var oldY = 0.0f
+
 
     interface OnDispatchTouchEvent {
         fun onDispatchTouch(action_up: Boolean): Boolean
     }
 
-    fun horizontalMove(): Boolean {
-        return ((newX - oldX).absoluteValue / (newY - oldY).absoluteValue + 0.00001) > 5
-    }
+//    fun horizontalMove(): Boolean {
+//        return ((newX - oldX).absoluteValue / (newY - oldY).absoluteValue + 0.00001) > 5
+//    }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         //Log.i("test", "D lock " )
-  /*      if (freezeEvents) return false
+       if (freezeEvents) return false
 
         ev?.let {
-            newX = it.x
-            newY = it.y
+           // newX = it.x
+          //  newY = it.y
             onDispatchTouchEvent?.let {
                 if (oldEvent != MotionEvent.ACTION_DOWN && ev.action == MotionEvent.ACTION_UP && !lock) {
                     lock = it.onDispatchTouch(true)
-                    freezeEvents = true
+                   // freezeEvents = true
                     Handler(Looper.getMainLooper()).postDelayed({
-                        freezeEvents = false
+                       // freezeEvents = false
                     }, 200)
                 } else lock = it.onDispatchTouch(false)
             }
             Log.i("test", "D lock " + lock + "   ev  " + ev)
-            Log.i("test", "horizontalMove() " + horizontalMove())
 
 
-            intercept = !lock
+
+           /* intercept = !lock
             if (!lock) {
                 if (lock2 == true) {
                     it.action = MotionEvent.ACTION_DOWN
@@ -74,12 +67,12 @@ open class CustomScrollView @JvmOverloads constructor(
             }
             if (it.action == MotionEvent.ACTION_UP || it.action == MotionEvent.ACTION_DOWN && !lock ) {
                 intercept = super.onInterceptTouchEvent(ev)
-            }
-            oldX = newX
-            oldY = newY
+            }*/
+            //oldX = newX
+            //oldY = newY
             oldEvent = it.action
         }
-*/
+
         return super.dispatchTouchEvent(ev)
     }
 
