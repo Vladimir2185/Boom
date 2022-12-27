@@ -2,7 +2,6 @@ package com.practicum.boom.adapters
 
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +10,6 @@ import com.practicum.boom.Product
 import com.practicum.boom.R
 import com.practicum.boom.ScreenInfo
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_home1.*
-import kotlinx.android.synthetic.main.fragment_home1.view.*
 import kotlinx.android.synthetic.main.item_product_info.view.*
 
 class ProductAdapter(
@@ -22,7 +19,7 @@ class ProductAdapter(
     RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     var onFragmentClickListener: OnFragmentClickListener? = null
-    val productList = listOf<Product>()
+    var productList = listOf<Product>()
     private var i = 0
     private var count = 0
 
@@ -32,6 +29,9 @@ class ProductAdapter(
         val cv1 = itemView.root_item_product
         val cl1 = itemView.conLayout_itemProduct
         val button = itemView.button_itemProduct
+        val textViewPrice=itemView.textViewPrice_itemProduct
+        val textViewSale=itemView.textViewSale_itemProduct
+        val imageButtonFavorite=itemView.imageButtonFavorite_itemProduct
 
 
     }
@@ -56,6 +56,10 @@ class ProductAdapter(
             }
             if (position == 0) {
                 button.visibility = View.GONE
+                textViewPrice.visibility = View.GONE
+                textViewSale.visibility = View.GONE
+                imageButtonFavorite.visibility = View.GONE
+
                 Picasso.get() //загрузка изображений с помощью Picasso
                     //.load(R.drawable.christmas_trees)
                     //.load(file)
@@ -65,6 +69,9 @@ class ProductAdapter(
                     .into(ivProduct)
             } else if (position > 0) {
                 button.text = "position " + position
+                textViewPrice.text=productList[position].priceWithSymbol
+                textViewSale.text=" -65% "
+
                 fragment1LayoutDrawing(holder)
             }
         }
@@ -72,7 +79,7 @@ class ProductAdapter(
 
     //помещает в метод кол-во элентов массива productList т.е. сколько будет в RecyclerView
     override fun getItemCount(): Int {
-        return (screenInfo.columnCount() + 10 + 1)//productList.size
+        return (productList.size + 1)//
     }
 
 
@@ -96,7 +103,7 @@ class ProductAdapter(
             Picasso.get() //загрузка изображений с помощью Picasso
                 //.load(R.drawable.christmas_trees)
                 //.load(file)
-                .load(R.drawable.christmas_trees)
+                .load(productList[position].imageURL)
                 .placeholder(android.R.drawable.ic_menu_gallery)
                 .error(android.R.drawable.ic_menu_report_image)
                 .into(ivProduct)

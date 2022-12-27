@@ -62,10 +62,6 @@ class MainHomeFragment(private val screenInfo: ScreenInfo) : Fragment() {
             //attaching image to tabItem3,because inbuilt set image cant change size of image
             tabLayout_home_fragment.getTabAt(2)?.customView = ivIconTrees_home_fragment
 
-            //Handler(Looper.getMainLooper()).postDelayed({
-               // scrollView_main_home_fragment.scrollBy(0,300)
-            //}, (1000))
-
             //when promoImage reached offset=(hightSearch + marginTop.topMargin)
             //switching recyclerViewTouchBlock and scrollViewTouchBlock and  lock
             //in switchEventToRecView transferring control of event from scrollView to recyclerView
@@ -76,20 +72,16 @@ class MainHomeFragment(private val screenInfo: ScreenInfo) : Fragment() {
                 ) {
                     with(scrollView_main_home_fragment) {
 
-                        if ( hightSearch - scrollY <= 0 && oldScrollY < scrollY) {
+                        if (hightSearch - scrollY <= 0 && oldScrollY < scrollY) {
                             this.scrollY = hightSearch
                             value = true
-                            Log.i("test", "go up")
                         }
                         if (oldScrollY > scrollY && this.scrollY == 0) {
                             value = true
-                            Log.i("test", "go down")
                         }
                     }
                 }
             })
-
-
             scrollView_main_home_fragment.onDispatchTouchEvent =
                 object : CustomScrollView.OnDispatchTouchEvent {
                     override fun onDispatchTouch(action_up: Boolean): Boolean {
@@ -103,7 +95,6 @@ class MainHomeFragment(private val screenInfo: ScreenInfo) : Fragment() {
 
     //smoothly brings to the position
     fun closer() {
-
         with(scrollView_main_home_fragment) {
             if (scrollY > hightSearch * 0.55 && scrollY < hightSearch) {
                 val temp = (hightSearch - scrollY) / smoothCount

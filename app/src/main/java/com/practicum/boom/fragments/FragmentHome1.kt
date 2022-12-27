@@ -1,9 +1,6 @@
 package com.practicum.boom.fragments
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -12,18 +9,26 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.practicum.boom.*
+import com.practicum.boom.MainViewModel
+import com.practicum.boom.MainViewModel.Companion.type
+import com.practicum.boom.R
+import com.practicum.boom.ScreenInfo
 import com.practicum.boom.adapters.ProductAdapter
 import com.practicum.boom.myCustomClasses.CustomGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_home1.*
-import kotlinx.android.synthetic.main.main_home_fragment.*
 
 
 class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
+
+    companion object {
+        @JvmStatic
+        fun newInstance(screenInfo: ScreenInfo) = FragmentHome1(screenInfo)
+
+    }
+
     private val mainViewModel: MainViewModel by activityViewModels()
     private var oldDY = 0
     private var lock = false
-    var onScrollMove: OnScrollMove? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -34,13 +39,19 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        val productAdapter = context?.let { ProductAdapter(it, screenInfo) }
+        recyclerView_fragmentHome1.adapter = productAdapter
+
+        mainViewModel.getListOfProducts(type).observe(viewLifecycleOwner, {
+            productAdapter?.productList = it
+        })
         with(mainViewModel.liveScrollLock) {
             observe(viewLifecycleOwner, {
                 lock = it
             })
 
-            val productAdapter = context?.let { ProductAdapter(it, screenInfo) }
-            recyclerView_fragmentHome1.adapter = productAdapter
 
             //setup CustomGridLayoutManager and freezing/unfreezing recyclerView scrolling by isScrollEnabled param
             val layoutManager =
@@ -63,12 +74,12 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
 
-                    if ((oldDY!=0&&oldDY * dy < 0)) {
+                    if ((oldDY != 0 && oldDY * dy < 0)) {
                         value = false
                         layoutManager.enable = false
-
                     }
-                    oldDY=dy
+
+                    oldDY = dy
                 }
             })
 
@@ -93,13 +104,5 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
         }
     }
 
-    interface OnScrollMove {
-        fun onScroll(dy: Int) {}
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(screenInfo: ScreenInfo) = FragmentHome1(screenInfo)
-    }
 
 }

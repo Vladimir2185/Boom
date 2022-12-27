@@ -7,8 +7,15 @@ import android.util.Log
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.practicum.boom.api.ApiFactory
+import com.practicum.boom.api.ApiService
 import com.practicum.boom.fragments.FragmentHome2
 import com.practicum.boom.fragments.MainHomeFragment
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+
+
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -18,10 +25,11 @@ class MainActivity : AppCompatActivity() {
 
     //intercept all events if you need
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-         //ev?.let { it.setLocation(it.x,(it.y*0.5f))}
+        //ev?.let { it.setLocation(it.x,(it.y*0.5f))}
         //Log.i("test", "ACTIVITY: "+ev)
         return super.dispatchTouchEvent(ev)
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                 return super.dispatchTouchEvent(ev)
             }
         }*/
-    }
 
+    }
 
 }
