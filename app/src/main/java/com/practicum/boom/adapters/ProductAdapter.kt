@@ -2,6 +2,7 @@ package com.practicum.boom.adapters
 
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import com.practicum.boom.Product
 import com.practicum.boom.R
 import com.practicum.boom.ScreenInfo
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.item_product_info.*
 import kotlinx.android.synthetic.main.item_product_info.view.*
 
 class ProductAdapter(
@@ -20,8 +22,16 @@ class ProductAdapter(
 
     var onFragmentClickListener: OnFragmentClickListener? = null
     var productList = listOf<Product>()
+        set(value) {
+            field = value
+
+            notifyItemChanged(positionUpdate,Unit)
+        }
     private var i = 0
     private var count = 0
+    private val numOfPromo = 1
+    private var positionUpdate = 0
+
 
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ivProduct = itemView.imageView_itemProduct
@@ -29,15 +39,17 @@ class ProductAdapter(
         val cv1 = itemView.root_item_product
         val cl1 = itemView.conLayout_itemProduct
         val button = itemView.button_itemProduct
-        val textViewPrice=itemView.textViewPrice_itemProduct
-        val textViewSale=itemView.textViewSale_itemProduct
-        val imageButtonFavorite=itemView.imageButtonFavorite_itemProduct
+        val textViewPrice = itemView.textViewPrice_itemProduct
+        val textViewSale = itemView.textViewSale_itemProduct
+        val imageButtonFavorite = itemView.imageButtonFavorite_itemProduct
+        val guideline = itemView.guideline_itemProduct
 
 
     }
 
     interface OnFragmentClickListener {
         fun onFragmentClick()
+        fun onFavoriteSwitch(favorProduct: Boolean, prodID: String)
     }
 
 
@@ -48,17 +60,27 @@ class ProductAdapter(
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
+        val offsetPosition = position - numOfPromo
         with(holder) {
-            //Log.i("test", "position"+bindingAdapterPosition)
-            itemView.setOnClickListener() {
-                onFragmentClickListener?.onFragmentClick()
-                // notifyDataSetChanged()
-            }
+            itemView.imageButtonFavorite_itemProduct.setOnClickListener(object :
+                View.OnClickListener {
+                override fun onClick(v: View?) {
+                    onFragmentClickListener?.onFavoriteSwitch(
+                        !productList[offsetPosition].favorite,
+                        productList[offsetPosition].productID
+                    )
+
+                    positionUpdate = offsetPosition+numOfPromo
+                }
+
+            })
+
             if (position == 0) {
                 button.visibility = View.GONE
                 textViewPrice.visibility = View.GONE
                 textViewSale.visibility = View.GONE
                 imageButtonFavorite.visibility = View.GONE
+                guideline.setGuidelinePercent(1f)
 
                 Picasso.get() //загрузка изображений с помощью Picasso
                     //.load(R.drawable.christmas_trees)
@@ -68,22 +90,32 @@ class ProductAdapter(
                     .error(android.R.drawable.ic_menu_report_image)
                     .into(ivProduct)
             } else if (position > 0) {
-                button.text = "position " + position
-                textViewPrice.text=productList[position].priceWithSymbol
-                textViewSale.text=" -65% "
+                button.text = "position " + (offsetPosition)
+                textViewPrice.text = productList[offsetPosition].priceWithSymbol
+                textViewSale.text = " -65% "
 
-                fragment1LayoutDrawing(holder)
+                favoriteSwitch(holder, offsetPosition)
+                fragment1LayoutDrawing(holder, offsetPosition)
+
             }
         }
     }
 
     //помещает в метод кол-во элентов массива productList т.е. сколько будет в RecyclerView
     override fun getItemCount(): Int {
-        return (productList.size + 1)//
+        return (productList.size + numOfPromo)
     }
 
+    private fun favoriteSwitch(holder: ProductViewHolder, offsetPosition: Int) {
+        with(holder) {
+            if (productList[offsetPosition].favorite)
+                imageButtonFavorite.setImageResource(R.drawable.ic_baseline_favorite_24)
+            else
+                imageButtonFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+        }
+    }
 
-    private fun fragment1LayoutDrawing(holder: ProductViewHolder) {
+    private fun fragment1LayoutDrawing(holder: ProductViewHolder, offsetPosition: Int) {
         count++
         with(holder) {
 
@@ -100,10 +132,8 @@ class ProductAdapter(
             }
             cv1.layoutParams.height = screenInfo.heightOfProductIcon()
 
-            Picasso.get() //загрузка изображений с помощью Picasso
-                //.load(R.drawable.christmas_trees)
-                //.load(file)
-                .load(productList[position].imageURL)
+            Picasso.get()
+                .load(productList[offsetPosition].imageURL)
                 .placeholder(android.R.drawable.ic_menu_gallery)
                 .error(android.R.drawable.ic_menu_report_image)
                 .into(ivProduct)

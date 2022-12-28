@@ -23,8 +23,8 @@
                 android:layout_height="wrap_content"
 
                 android:nestedScrollingEnabled="true"
-                android:scaleX="1.03"
-                android:scaleY="1.03"
+                android:scaleX="1"
+                android:scaleY="1"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

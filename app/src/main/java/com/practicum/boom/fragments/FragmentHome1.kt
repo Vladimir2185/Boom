@@ -1,12 +1,14 @@
 package com.practicum.boom.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.boom.MainViewModel
@@ -16,6 +18,7 @@ import com.practicum.boom.ScreenInfo
 import com.practicum.boom.adapters.ProductAdapter
 import com.practicum.boom.myCustomClasses.CustomGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_home1.*
+import kotlinx.android.synthetic.main.item_product_info.*
 
 
 class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
@@ -98,7 +101,9 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
 
             productAdapter?.onFragmentClickListener =
                 object : ProductAdapter.OnFragmentClickListener {
-                    override fun onFragmentClick() {
+                    override fun onFragmentClick() {}
+                    override fun onFavoriteSwitch(favorProduct: Boolean, prodID: String) {
+                        mainViewModel.productUpdate(favorProduct, prodID)
                     }
                 }
         }

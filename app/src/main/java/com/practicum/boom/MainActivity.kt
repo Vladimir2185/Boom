@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.practicum.boom.api.ApiFactory
@@ -17,6 +18,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.item_product_info.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -73,7 +75,8 @@ class MainActivity : AppCompatActivity() {
                 return super.dispatchTouchEvent(ev)
             }
         }*/
-
+        //getDrawable(R.color.purple_200)
     }
+
 
 }

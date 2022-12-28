@@ -6,9 +6,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.practicum.boom.api.ApiFactory
-import com.practicum.boom.api.ApiService
 import com.practicum.boom.database.AppDatabase
-import com.practicum.boom.fragments.FragmentHome1
+import io.reactivex.Flowable.empty
+import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -18,6 +19,7 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
     companion object {
         const val type = "shoes"
     }
+
     val liveScrollLock: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
 
     private val compositeDisposable = CompositeDisposable()
@@ -31,16 +33,34 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun getListOfProducts(typeOfProduct: String): LiveData<List<Product>> {
         return db.productInfoDao().getProductList(typeOfProduct)
+    }
+
+    fun getItemProduct(prodID: String): LiveData<Product>{
+      return  db.productInfoDao().getProductItem(prodID)
+    }
+
+    fun productUpdate(favorProduct: Boolean, prodID: String) {
+        val disposable2 = Observable.just(Unit)
+            .subscribeOn(Schedulers.io())
+            .subscribe({
+                return@subscribe db.productInfoDao().updateProduct(favorProduct, prodID)
+            }, {
+
+            })
+        compositeDisposable.add(disposable2)
 
     }
 
     private fun loadData() {
+
+
         val disposable = ApiFactory.apiService.getProductInfo()
             .subscribeOn(Schedulers.io())
             //.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 it.productList?.let {
-                productArray = it }
+                    productArray = it
+                }
                 Log.i("test4", "size " + productArray.size)
                 for (p in productArray) {
                     p.type = type
