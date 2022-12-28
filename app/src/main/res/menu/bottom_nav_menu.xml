@@ -14,7 +14,7 @@
         android:title="@string/basket"
         /><item
         android:id="@+id/item_4"
-        android:icon="@drawable/ic_baseline_favorite_24"
+        android:icon="@drawable/ic_baseline_favorite_border_24"
         android:title="@string/favorite"
         /><item
         android:id="@+id/item_5"

@@ -13,7 +13,7 @@ import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.boom.*
 import com.practicum.boom.adapters.VP2Adapter
-import kotlinx.android.synthetic.main.fragment_home1.*
+import com.practicum.boom.myCustomClasses.CustomScrollView
 import kotlinx.android.synthetic.main.main_home_fragment.*
 
 
@@ -23,7 +23,7 @@ class MainHomeFragment(private val screenInfo: ScreenInfo) : Fragment() {
     private var hightSearch = 0
     private var lock = false
     private val smoothCount = 20  // responsible for smoothness of closer
-    private val closingTime = 10  // responsible for time of closing of closer
+    private val closingTime = 8  // responsible for time of closing of closer
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +39,7 @@ class MainHomeFragment(private val screenInfo: ScreenInfo) : Fragment() {
         with(mainViewModel.liveScrollLock) {
             observe(viewLifecycleOwner, {
                 lock = it
+
             })
             cardView_home_fragment.doOnLayout {
                 hightSearch = it.height +
@@ -61,7 +62,6 @@ class MainHomeFragment(private val screenInfo: ScreenInfo) : Fragment() {
             //attaching image to tabItem3,because inbuilt set image cant change size of image
             tabLayout_home_fragment.getTabAt(2)?.customView = ivIconTrees_home_fragment
 
-
             //when promoImage reached offset=(hightSearch + marginTop.topMargin)
             //switching recyclerViewTouchBlock and scrollViewTouchBlock and  lock
             //in switchEventToRecView transferring control of event from scrollView to recyclerView
@@ -71,42 +71,22 @@ class MainHomeFragment(private val screenInfo: ScreenInfo) : Fragment() {
                     v: View, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int
                 ) {
                     with(scrollView_main_home_fragment) {
-                        Log.i("test", "scrollViewscrollY: " + scrollY)
-                        if (!lock && hightSearch - scrollY <= 0 && oldScrollY < scrollY) {
+
+                        if (hightSearch - scrollY <= 0 && oldScrollY < scrollY) {
                             this.scrollY = hightSearch
                             value = true
-                            Log.i("test", "stop")
                         }
-                        if (!lock && oldScrollY > scrollY && this.scrollY == 0) {
-                            //value = true
-                            Log.i("test", "speed")
+                        if (oldScrollY > scrollY && this.scrollY == 0) {
+                            value = true
                         }
                     }
                 }
             })
-            (fragList[0] as FragmentHome1).onScrollMove = object : FragmentHome1.OnScrollMove {
-                override fun onScroll(dy: Int) {
-                    //super.onScroll()
-                   // conLay_main_home_fragment.scrollBy(0, -10)
-                    /* with(scrollView_main_home_fragment) {
-                         val temp = if ((dy) / 5 > 1) {
-                             (dy) / 5
-                         } else if (dy > 0) 1
-                         else -1
-                         for (i in 1..5) {
-                             Handler(Looper.getMainLooper()).postDelayed({
-                                 scrollBy(0, temp)
-                             }, (20 * i).toLong())
-                         }
-                     }*/
-
-                }
-            }
-
             scrollView_main_home_fragment.onDispatchTouchEvent =
                 object : CustomScrollView.OnDispatchTouchEvent {
                     override fun onDispatchTouch(action_up: Boolean): Boolean {
-                        if (action_up) closer()
+                        if (action_up)
+                            closer()
                         return lock
                     }
                 }
@@ -115,7 +95,6 @@ class MainHomeFragment(private val screenInfo: ScreenInfo) : Fragment() {
 
     //smoothly brings to the position
     fun closer() {
-
         with(scrollView_main_home_fragment) {
             if (scrollY > hightSearch * 0.55 && scrollY < hightSearch) {
                 val temp = (hightSearch - scrollY) / smoothCount

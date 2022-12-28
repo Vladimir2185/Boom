@@ -25,9 +25,12 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-
-
     </style>
+
+    <style name="Theme.Boom3Red" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#F44336</item>
+    </style>
+
     <style name="MyCustomTabText" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14dp</item>
 
