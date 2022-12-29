@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.ShapeAppearanceModel
 import com.practicum.boom.Product
 import com.practicum.boom.R
 import com.practicum.boom.ScreenInfo
@@ -25,7 +27,7 @@ class ProductAdapter(
         set(value) {
             field = value
 
-            notifyItemChanged(positionUpdate,Unit)
+            notifyItemChanged(positionUpdate, Unit)
         }
     private var i = 0
     private var count = 0
@@ -35,8 +37,6 @@ class ProductAdapter(
 
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ivProduct = itemView.imageView_itemProduct
-        val cvInner1 = itemView.cardInner_itemProduct
-        val cv1 = itemView.root_item_product
         val cl1 = itemView.conLayout_itemProduct
         val button = itemView.button_itemProduct
         val textViewPrice = itemView.textViewPrice_itemProduct
@@ -70,7 +70,7 @@ class ProductAdapter(
                         productList[offsetPosition].productID
                     )
 
-                    positionUpdate = offsetPosition+numOfPromo
+                    positionUpdate = offsetPosition + numOfPromo
                 }
 
             })
@@ -119,24 +119,29 @@ class ProductAdapter(
         count++
         with(holder) {
 
-            i++
-            (cv1.layoutParams as ViewGroup.MarginLayoutParams).marginEnd = 16
-            if (i == 1) {
-                (cvInner1.layoutParams as ViewGroup.MarginLayoutParams).marginStart = -35
-                (cl1.layoutParams as ViewGroup.MarginLayoutParams).marginStart = 35
-
-            } else if (i == screenInfo.columnCount()) {
-                (cvInner1.layoutParams as ViewGroup.MarginLayoutParams).marginEnd = -35
-                (cl1.layoutParams as ViewGroup.MarginLayoutParams).marginEnd = 35
-                i = 0
-            }
-            cv1.layoutParams.height = screenInfo.heightOfProductIcon()
+//            i++
+//            (cv1.layoutParams as ViewGroup.MarginLayoutParams).marginEnd = 16
+//            if (i == 1) {
+//                (cvInner1.layoutParams as ViewGroup.MarginLayoutParams).marginStart = -35
+//                (cl1.layoutParams as ViewGroup.MarginLayoutParams).marginStart = 35
+//
+//            } else if (i == screenInfo.columnCount()) {
+//                (cvInner1.layoutParams as ViewGroup.MarginLayoutParams).marginEnd = -35
+//                (cl1.layoutParams as ViewGroup.MarginLayoutParams).marginEnd = 35
+//                i = 0
+//            }
+//            cv1.layoutParams.height = screenInfo.heightOfProductIcon()
 
             Picasso.get()
                 .load(productList[offsetPosition].imageURL)
                 .placeholder(android.R.drawable.ic_menu_gallery)
                 .error(android.R.drawable.ic_menu_report_image)
                 .into(ivProduct)
+
+            ivProduct.shapeAppearanceModel= ShapeAppearanceModel()
+                .toBuilder()
+                .setTopRightCorner(CornerFamily.ROUNDED,50.0f)
+                .build()
         }
     }
 }
