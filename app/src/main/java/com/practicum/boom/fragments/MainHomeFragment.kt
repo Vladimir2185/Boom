@@ -3,7 +3,7 @@ package com.practicum.boom.fragments
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +14,11 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.boom.*
 import com.practicum.boom.adapters.VP2Adapter
 import com.practicum.boom.myCustomClasses.CustomScrollView
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_home_fragment.*
 
 
-class MainHomeFragment(private val screenInfo: ScreenInfo) : Fragment() {
+class MainHomeFragment() : Fragment() {
     private var textFragTitle = mutableListOf<String>()
     private val mainViewModel: MainViewModel by activityViewModels()
     private var hightSearch = 0
@@ -36,18 +37,28 @@ class MainHomeFragment(private val screenInfo: ScreenInfo) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         with(mainViewModel.liveScrollLock) {
             observe(viewLifecycleOwner, {
                 lock = it
 
             })
+
+            tabLayout_home_fragment.doOnLayout {
+                val tabLay = it.height
+                requireActivity().mainWindow.doOnLayout {
+                    vp2_home_fragment.layoutParams.height = it.height - tabLay
+                }
+            }
             cardView_home_fragment.doOnLayout {
                 hightSearch = it.height +
                         (cardView_home_fragment.layoutParams as ViewGroup.MarginLayoutParams).topMargin +
                         (tabLayout_home_fragment.layoutParams as ViewGroup.MarginLayoutParams).topMargin
             }
+
+
             val fragList = listOf(
-                FragmentHome1.newInstance(screenInfo),
+                FragmentHome1.newInstance(),
                 FragmentHome2.newInstance(),
                 FragmentHome3.newInstance()
             )
@@ -120,6 +131,6 @@ class MainHomeFragment(private val screenInfo: ScreenInfo) : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(screenInfo: ScreenInfo) = MainHomeFragment(screenInfo)
+        fun newInstance() = MainHomeFragment()
     }
 }

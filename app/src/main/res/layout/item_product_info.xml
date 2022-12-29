@@ -7,16 +7,15 @@
     android:id="@+id/conLayout_itemProduct"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/main_gray">
+    android:layout_marginTop="8dp"
+    android:background="@drawable/rounded_corner_right">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView_itemProduct"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
         android:cropToPadding="false"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_itemProduct"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

@@ -12,7 +12,7 @@ interface ApiService {
         @Query(QUERY_PARAM_Q) q: String =type,
         @Query(QUERY_PARAM_API_KEY) api_key: String = "6d4e3257b39c07d92be462d0f3f9bf04b59a56e97607314271d9f017760075ea",
         @Query(QUERY_PARAM_ENGINE) engine: String = "google",
-        @Query(QUERY_PARAM_NUM) num: Int = 20,
+        @Query(QUERY_PARAM_NUM) num: Int = 50,
         @Query(QUERY_PARAM_TBM) tbm: String = "shop",
         @Query(QUERY_PARAM_DEVICE) device: String = "desktop"
 

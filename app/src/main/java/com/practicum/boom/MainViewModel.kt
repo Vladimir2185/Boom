@@ -64,6 +64,7 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
                 Log.i("test4", "size " + productArray.size)
                 for (p in productArray) {
                     p.type = type
+                    p.sale=(30..70).random()
                     Log.i("test4", "on success " + p.title)
                 }
                 db.productInfoDao().insertProductList(productArray)

@@ -1,6 +1,7 @@
 package com.practicum.boom.fragments
 
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -21,14 +22,15 @@ import kotlinx.android.synthetic.main.fragment_home1.*
 import kotlinx.android.synthetic.main.item_product_info.*
 
 
-class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
+class FragmentHome1() : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(screenInfo: ScreenInfo) = FragmentHome1(screenInfo)
-
+        fun newInstance() = FragmentHome1()
     }
 
+    //relative to width of icon
+    private val HIGHT_OF_PRODUCT_ICON = 1.35
     private val mainViewModel: MainViewModel by activityViewModels()
     private var oldDY = 0
     private var lock = false
@@ -43,71 +45,84 @@ class FragmentHome1(private val screenInfo: ScreenInfo) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        with(recyclerView_fragmentHome1) {
+            //find-out screen resolution of current device and place it into screenInfo class
+            val displayMetrics = DisplayMetrics()
+            requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+            val screenInfo =
+                ScreenInfo(
+                    displayMetrics.widthPixels,
+                    displayMetrics.density,
+                    HIGHT_OF_PRODUCT_ICON
+                )
 
-        val productAdapter = context?.let { ProductAdapter(it, screenInfo) }
-        recyclerView_fragmentHome1.adapter = productAdapter
-
-        mainViewModel.getListOfProducts(type).observe(viewLifecycleOwner, {
-            productAdapter?.productList = it
-        })
-        with(mainViewModel.liveScrollLock) {
-            observe(viewLifecycleOwner, {
-                lock = it
-            })
-
-
-            //setup CustomGridLayoutManager and freezing/unfreezing recyclerView scrolling by isScrollEnabled param
-            val layoutManager =
-                CustomGridLayoutManager(requireContext(), screenInfo.columnCount(), true)
-
-            layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                override fun getSpanSize(position: Int): Int {
-                    // 5 is the sum of items in one repeated section
-                    return when (position) {
-                        0 -> screenInfo.columnCount()
-                        else -> 1
-                    }
-                }
+            val productAdapter = context?.let { ProductAdapter(it, screenInfo) }
+            with(ProductAdapter) {
+                adapter = productAdapter
+                recycledViewPool.setMaxRecycledViews(VIEW_TYPE_PROMO, 1)
+                recycledViewPool.setMaxRecycledViews(VIEW_TYPE_UNEVEN, MAX_POOL_SIZE)
+                recycledViewPool.setMaxRecycledViews(VIEW_TYPE_EVEN, MAX_POOL_SIZE)
             }
-            recyclerView_fragmentHome1.layoutManager = layoutManager
 
-
-            recyclerView_fragmentHome1.addOnScrollListener(object :
-                RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-
-                    if ((oldDY != 0 && oldDY * dy < 0)) {
-                        value = false
-                        layoutManager.enable = false
-                    }
-
-                    oldDY = dy
-                }
+            mainViewModel.getListOfProducts(type).observe(viewLifecycleOwner, {
+                productAdapter?.productList = it
             })
-
-            recyclerView_fragmentHome1.addOnItemTouchListener(object :
-                RecyclerView.OnItemTouchListener {
-                override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-
-                    value?.let { layoutManager.enable = it }
-                    return false
-                }
-
-                override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
-                override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
-            })
+            with(mainViewModel.liveScrollLock) {
+                observe(viewLifecycleOwner, {
+                    lock = it
+                })
 
 
-            productAdapter?.onFragmentClickListener =
-                object : ProductAdapter.OnFragmentClickListener {
-                    override fun onFragmentClick() {}
-                    override fun onFavoriteSwitch(favorProduct: Boolean, prodID: String) {
-                        mainViewModel.productUpdate(favorProduct, prodID)
+                //setup CustomGridLayoutManager and freezing/unfreezing recyclerView scrolling by isScrollEnabled param
+                val layoutManager =
+                    CustomGridLayoutManager(requireContext(), screenInfo.columnCount(), true)
+
+                layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        // 5 is the sum of items in one repeated section
+                        return when (position) {
+                            0 -> screenInfo.columnCount()
+                            else -> 1
+                        }
                     }
                 }
+                recyclerView_fragmentHome1.layoutManager = layoutManager
+
+
+                addOnScrollListener(object :
+                    RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+
+                        if ((oldDY != 0 && oldDY * dy < 0)) {
+                            value = false
+                            layoutManager.enable = false
+                        }
+
+                        oldDY = dy
+                    }
+                })
+
+                addOnItemTouchListener(object :
+                    RecyclerView.OnItemTouchListener {
+                    override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+
+                        value?.let { layoutManager.enable = it }
+                        return false
+                    }
+                    override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+                    override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+                })
+
+
+                productAdapter?.onFragmentClickListener =
+                    object : ProductAdapter.OnFragmentClickListener {
+                        override fun onFragmentClick() {}
+                        override fun onFavoriteSwitch(favorProduct: Boolean, prodID: String) {
+                            mainViewModel.productUpdate(favorProduct, prodID)
+                        }
+                    }
+            }
         }
     }
-
-
 }

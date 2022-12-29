@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import com.practicum.boom.api.ApiFactory
 import com.practicum.boom.api.ApiService
@@ -19,16 +20,14 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_product_info.*
+import kotlinx.android.synthetic.main.main_home_fragment.*
 
 
 class MainActivity : AppCompatActivity() {
-    //relative to width of icon
-    private val HIGHT_OF_PRODUCT_ICON = 1.3
+
 
     //intercept all events if you need
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        //ev?.let { it.setLocation(it.x,(it.y*0.5f))}
-        //Log.i("test", "ACTIVITY: "+ev)
         return super.dispatchTouchEvent(ev)
     }
 
@@ -37,15 +36,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //find-out screen resolution of current device and place it into screenInfo class
-        val displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-        val screenInfo =
-            ScreenInfo(displayMetrics.widthPixels, displayMetrics.density, HIGHT_OF_PRODUCT_ICON)
 
         //creation of main navigation fragments
         val listOfMainFragments = listOf(
-            MainHomeFragment.newInstance(screenInfo),
+            MainHomeFragment.newInstance(),
             FragmentHome2.newInstance()
         )
 
