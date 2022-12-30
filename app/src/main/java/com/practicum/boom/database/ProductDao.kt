@@ -9,8 +9,11 @@ import com.practicum.boom.Product
 
 @Dao
 interface ProductDao {
-    @Query("SELECT * FROM product_list WHERE type == :typeOfProduct ORDER BY sale DESC")
-    fun getProductList(typeOfProduct: String): LiveData<List<Product>>
+    @Query("SELECT * FROM product_list ORDER BY rating DESC")
+    fun getAllProductList(): LiveData<List<Product>>
+
+    @Query("SELECT * FROM product_list WHERE type == :typeOfProduct ORDER BY rating DESC")
+    fun getProductListByType(typeOfProduct: String): LiveData<List<Product>>
 
     @Query("SELECT * FROM product_list WHERE productID==:prodID ")
     fun getProductItem(prodID: String): LiveData<Product>

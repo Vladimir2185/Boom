@@ -28,6 +28,7 @@ data class Product(
 
     var type:String="general",
     var favorite: Boolean = false,
+    var rating: Float = 0.0f,
     var sale: Int = NO_SALE
 
 ) {

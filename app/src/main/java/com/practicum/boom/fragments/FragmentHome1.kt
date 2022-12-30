@@ -7,6 +7,9 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +23,7 @@ import com.practicum.boom.adapters.ProductAdapter
 import com.practicum.boom.myCustomClasses.CustomGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_home1.*
 import kotlinx.android.synthetic.main.item_product_info.*
+import kotlinx.android.synthetic.main.item_promo.*
 
 
 class FragmentHome1() : Fragment() {
@@ -63,14 +67,17 @@ class FragmentHome1() : Fragment() {
                 recycledViewPool.setMaxRecycledViews(VIEW_TYPE_UNEVEN, MAX_POOL_SIZE)
                 recycledViewPool.setMaxRecycledViews(VIEW_TYPE_EVEN, MAX_POOL_SIZE)
             }
-
-            mainViewModel.getListOfProducts(type).observe(viewLifecycleOwner, {
+//            mainViewModel.getAllListOfProducts().observe(viewLifecycleOwner, {
+//                productAdapter?.productList = it
+//            })
+            mainViewModel.getListOfProductsByType(type).observe(viewLifecycleOwner, {
                 productAdapter?.productList = it
             })
             with(mainViewModel.liveScrollLock) {
                 observe(viewLifecycleOwner, {
                     lock = it
                 })
+
 
 
                 //setup CustomGridLayoutManager and freezing/unfreezing recyclerView scrolling by isScrollEnabled param

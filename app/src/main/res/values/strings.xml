@@ -11,5 +11,6 @@
     <string name="basket">basket</string>
     <string name="favorite">favorite</string>
     <string name="profile">profile</string>
+    <string name="until_promo_end">До конца акции</string>
 
 </resources>

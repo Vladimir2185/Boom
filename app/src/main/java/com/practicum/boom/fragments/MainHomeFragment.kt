@@ -47,7 +47,7 @@ class MainHomeFragment() : Fragment() {
             tabLayout_home_fragment.doOnLayout {
                 val tabLay = it.height
                 requireActivity().mainWindow.doOnLayout {
-                    vp2_home_fragment.layoutParams.height = it.height - tabLay
+                    vp2_home_fragment.layoutParams.height = it.height - tabLay+1
                 }
             }
             cardView_home_fragment.doOnLayout {

@@ -2,10 +2,13 @@ package com.practicum.boom.adapters
 
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.ShapeAppearanceModel
@@ -13,9 +16,8 @@ import com.practicum.boom.Product
 import com.practicum.boom.R
 import com.practicum.boom.ScreenInfo
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_home1.view.*
-import kotlinx.android.synthetic.main.item_product_info.*
 import kotlinx.android.synthetic.main.item_product_info.view.*
+import kotlinx.android.synthetic.main.item_promo.view.*
 
 class ProductAdapter(
     private val context: Context,
@@ -51,6 +53,11 @@ class ProductAdapter(
         val textViewSale = itemView.textViewSale_itemProduct
         val imageButtonFavorite = itemView.imageButtonFavorite_itemProduct
         val constraintLayout = itemView.conLayout_itemProduct
+        val rating = itemView.textRating_itemProduct
+        val snow1 = itemView.imageSnow1
+        val snow2 = itemView.imageSnow2
+        val snow3 = itemView.imageSnow3
+        val snow4 = itemView.imageSnow4
 
 
     }
@@ -79,6 +86,11 @@ class ProductAdapter(
         val offsetPosition = position - numOfPromo
         with(holder) {
 
+            if (position == 0) {
+
+                snowflakeAnimation(holder)
+            }
+
             if (position > 0) {
                 itemView.imageButtonFavorite_itemProduct.setOnClickListener(object :
                     View.OnClickListener {
@@ -94,13 +106,15 @@ class ProductAdapter(
 
                 button.text = "position " + (offsetPosition)
                 textViewPrice.text = productList[offsetPosition].priceWithSymbol
-                if (productList[offsetPosition].sale < 40)
-                    textViewSale.visibility = View.INVISIBLE
-                //textViewSale.text = " -${productList[offsetPosition].sale}% "
-                else
-                    textViewSale.visibility = View.VISIBLE
-                textViewSale.text = " -${productList[offsetPosition].sale}% "
 
+                if (productList[offsetPosition].sale < 50)
+                    textViewSale.visibility = View.INVISIBLE
+                else {
+                    textViewSale.visibility = View.VISIBLE
+                    textViewSale.text = " -${productList[offsetPosition].sale}% "
+                }
+
+                rating.text = dotToComma(productList[offsetPosition].rating)
                 favoriteSwitch(holder, offsetPosition)
                 fragment1LayoutDrawing(holder, offsetPosition)
 
@@ -110,7 +124,7 @@ class ProductAdapter(
 
     //помещает в метод кол-во элентов массива productList т.е. сколько будет в RecyclerView
     override fun getItemCount(): Int {
-        return (productList.size + numOfPromo )
+        return (productList.size + numOfPromo)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -121,6 +135,46 @@ class ProductAdapter(
             VIEW_TYPE_EVEN
         else
             VIEW_TYPE_UNEVEN
+    }
+
+    private fun snowflakeAnimation(holder: ProductViewHolder) {
+        with(holder) {
+            snow1.layoutParams.width = (screenInfo.widthInPixels * 0.2).toInt()
+            snow2.layoutParams.width = (screenInfo.widthInPixels * 0.5).toInt()
+            snow3.layoutParams.width = (screenInfo.widthInPixels * 0.9).toInt()
+            snow4.layoutParams.width = (screenInfo.widthInPixels * 1.2).toInt()
+
+            val snowflakeAnimation =
+                AnimationUtils.loadAnimation(context, R.anim.snowflake_animation)
+            val snowflakeAnimation2 =
+                AnimationUtils.loadAnimation(context, R.anim.snowflake_animation2)
+            val snowflakeAnimation3 =
+                AnimationUtils.loadAnimation(context, R.anim.snowflake_animation)
+            val snowflakeAnimation4 =
+                AnimationUtils.loadAnimation(context, R.anim.snowflake_animation2)
+
+
+            snowflakeAnimation2.startOffset=1300
+            snowflakeAnimation2.duration = 4500
+            snowflakeAnimation3.startOffset=200
+            snowflakeAnimation3.duration = 5000
+            snowflakeAnimation4.startOffset=1100
+            snowflakeAnimation4.duration = 4300
+
+            // Подключаем анимацию к нужному View
+            snow1.startAnimation(snowflakeAnimation)
+            Handler(Looper.getMainLooper()).postDelayed({
+
+            }, 100)
+
+            snow2.startAnimation(snowflakeAnimation2)
+            snow3.startAnimation(snowflakeAnimation3)
+            snow4.startAnimation(snowflakeAnimation4)
+        }
+    }
+
+    private fun dotToComma(rating: Float): String {
+        return rating.toString().replace('.', ',')
     }
 
     private fun favoriteSwitch(holder: ProductViewHolder, offsetPosition: Int) {

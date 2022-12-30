@@ -17,7 +17,7 @@ import io.reactivex.schedulers.Schedulers
 
 open class MainViewModel(application: Application) : AndroidViewModel(application) {
     companion object {
-        const val type = "shoes"
+        const val type ="tires" //"tires"
     }
 
     val liveScrollLock: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
@@ -30,13 +30,16 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
     init {
         loadData()
     }
-
-    fun getListOfProducts(typeOfProduct: String): LiveData<List<Product>> {
-        return db.productInfoDao().getProductList(typeOfProduct)
+    fun getAllListOfProducts(): LiveData<List<Product>> {
+        return db.productInfoDao().getAllProductList()
     }
 
-    fun getItemProduct(prodID: String): LiveData<Product>{
-      return  db.productInfoDao().getProductItem(prodID)
+    fun getListOfProductsByType(typeOfProduct: String): LiveData<List<Product>> {
+        return db.productInfoDao().getProductListByType(typeOfProduct)
+    }
+
+    fun getItemProduct(prodID: String): LiveData<Product> {
+        return db.productInfoDao().getProductItem(prodID)
     }
 
     fun productUpdate(favorProduct: Boolean, prodID: String) {
@@ -64,8 +67,9 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
                 Log.i("test4", "size " + productArray.size)
                 for (p in productArray) {
                     p.type = type
-                    p.sale=(30..70).random()
-                    Log.i("test4", "on success " + p.title)
+                    p.rating = ((1..50).random()).toFloat() / 10
+                    p.sale = (30..70).random()
+
                 }
                 db.productInfoDao().insertProductList(productArray)
             },
