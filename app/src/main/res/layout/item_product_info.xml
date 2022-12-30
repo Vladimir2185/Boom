@@ -7,7 +7,8 @@
     android:id="@+id/conLayout_itemProduct"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
+    android:layout_marginTop="0dp"
+    android:layout_marginBottom="8dp"
     android:background="@drawable/rounded_corner_right">
 
     <com.google.android.material.imageview.ShapeableImageView
