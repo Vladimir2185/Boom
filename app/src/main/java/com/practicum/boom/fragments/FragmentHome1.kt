@@ -80,6 +80,8 @@ class FragmentHome1() : Fragment() {
 
 
 
+
+
                 //setup CustomGridLayoutManager and freezing/unfreezing recyclerView scrolling by isScrollEnabled param
                 val layoutManager =
                     CustomGridLayoutManager(requireContext(), screenInfo.columnCount(), true)
@@ -115,6 +117,7 @@ class FragmentHome1() : Fragment() {
                     RecyclerView.OnItemTouchListener {
                     override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
                         Log.i("test2", "onInterceptTouchEvent" + e)
+
                         value?.let { layoutManager.enable = it }
                         return false
                     }

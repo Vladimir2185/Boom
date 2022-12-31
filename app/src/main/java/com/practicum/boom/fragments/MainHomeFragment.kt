@@ -95,15 +95,11 @@ class MainHomeFragment() : Fragment() {
                     }
                 }
             })
-            scrollView_main_home_fragment.setOnTouchListener(object :View.OnTouchListener{
-                override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                    Log.i("test2", "onTouch " + event)
-                    return false
-                }
-            })
+
             scrollView_main_home_fragment.onDispatchTouchEvent =
                 object : CustomScrollView.OnDispatchTouchEvent {
                     override fun onDispatchTouch(action_up: Boolean): Boolean {
+                        Log.i("test2", "SVscrollY "+scrollView_main_home_fragment.scrollY)
                         if (action_up)
                             closer()
                         return lock
