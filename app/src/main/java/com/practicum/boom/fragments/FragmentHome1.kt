@@ -24,6 +24,7 @@ import com.practicum.boom.myCustomClasses.CustomGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_home1.*
 import kotlinx.android.synthetic.main.item_product_info.*
 import kotlinx.android.synthetic.main.item_promo.*
+import kotlinx.android.synthetic.main.main_home_fragment.view.*
 
 
 class FragmentHome1() : Fragment() {
@@ -36,8 +37,7 @@ class FragmentHome1() : Fragment() {
     //relative to width of icon
     private val HIGHT_OF_PRODUCT_ICON = 1.35
     private val mainViewModel: MainViewModel by activityViewModels()
-    private var oldDY = 0
-    private var lock = false
+    private var ScrollStatus = -1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -73,9 +73,9 @@ class FragmentHome1() : Fragment() {
             mainViewModel.getListOfProductsByType(type).observe(viewLifecycleOwner, {
                 productAdapter?.productList = it
             })
-            with(mainViewModel.liveScrollLock) {
+            with(mainViewModel.liveScrollStatus) {
                 observe(viewLifecycleOwner, {
-                    lock = it
+                    ScrollStatus = it
                 })
 
 
@@ -98,27 +98,12 @@ class FragmentHome1() : Fragment() {
                 recyclerView_fragmentHome1.layoutManager = layoutManager
 
 
-                addOnScrollListener(object :
-                    RecyclerView.OnScrollListener() {
-                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                        super.onScrolled(recyclerView, dx, dy)
-
-                        if ((oldDY != 0 && oldDY * dy < 0)) {
-                            Log.i("test2", "onScrolled turn " + dy)
-                            value = false
-                            layoutManager.enable = false
-                        }
-
-                        oldDY = dy
-                    }
-                })
-
                 addOnItemTouchListener(object :
                     RecyclerView.OnItemTouchListener {
                     override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                        Log.i("test2", "onInterceptTouchEvent" + e)
+                       // Log.i("test2", "onInterceptTouchEvent" + e)
 
-                        value?.let { layoutManager.enable = it }
+                        value?.let { layoutManager.ScrollStatus = it }
                         return false
                     }
                     override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}

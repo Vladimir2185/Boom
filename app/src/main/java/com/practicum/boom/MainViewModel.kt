@@ -20,7 +20,7 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
         const val type ="tires" //"tires"
     }
 
-    val liveScrollLock: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    val liveScrollStatus: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
 
     private val compositeDisposable = CompositeDisposable()
     private val db = AppDatabase.getInstance(application)
