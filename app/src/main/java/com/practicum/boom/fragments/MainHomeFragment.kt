@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.boom.*
+import com.practicum.boom.adapters.ProductAdapter
 import com.practicum.boom.adapters.VP2Adapter
 import com.practicum.boom.myCustomClasses.CustomScrollView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,7 +25,7 @@ class MainHomeFragment() : Fragment() {
     private var textFragTitle = mutableListOf<String>()
     private val mainViewModel: MainViewModel by activityViewModels()
     private var hightSearch = 0
-    private var lock = false
+    private var ScrollStatus = -1
     private val smoothCount = 20  // responsible for smoothness of closer
     private val closingTime = 8  // responsible for time of closing of closer
 
@@ -40,16 +41,16 @@ class MainHomeFragment() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        with(mainViewModel.liveScrollLock) {
+        with(mainViewModel.liveScrollStatus) {
             observe(viewLifecycleOwner, {
-                lock = it
+                ScrollStatus = it
 
             })
 
             tabLayout_home_fragment.doOnLayout {
                 val tabLay = it.height
                 requireActivity().mainWindow.doOnLayout {
-                    vp2_home_fragment.layoutParams.height = it.height - tabLay+1
+                    vp2_home_fragment.layoutParams.height = it.height - tabLay + 1
                 }
             }
             cardView_home_fragment.doOnLayout {
@@ -75,38 +76,25 @@ class MainHomeFragment() : Fragment() {
             //attaching image to tabItem3,because inbuilt set image cant change size of image
             tabLayout_home_fragment.getTabAt(2)?.customView = ivIconTrees_home_fragment
 
-            //when promoImage reached offset=(hightSearch + marginTop.topMargin)
-            //switching recyclerViewTouchBlock and scrollViewTouchBlock and  lock
-            //in switchEventToRecView transferring control of event from scrollView to recyclerView
-            scrollView_main_home_fragment.setOnScrollChangeListener(object :
-                View.OnScrollChangeListener {
-                override fun onScrollChange(
-                    v: View, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int
-                ) {
-                    with(scrollView_main_home_fragment) {
 
-                        if (hightSearch - scrollY <= 0 && oldScrollY < scrollY) {
-                            this.scrollY = hightSearch
-                            value = true
-                        }
-                        if (oldScrollY > scrollY && this.scrollY == 0) {
-                            value = true
-                        }
-                    }
-                }
-            })
-            scrollView_main_home_fragment.setOnTouchListener(object :View.OnTouchListener{
-                override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                    Log.i("test2", "onTouch " + event)
-                    return false
-                }
-            })
+
             scrollView_main_home_fragment.onDispatchTouchEvent =
                 object : CustomScrollView.OnDispatchTouchEvent {
-                    override fun onDispatchTouch(action_up: Boolean): Boolean {
+                    override fun onDispatchTouch(action_up: Boolean): Int {
+                       // Log.i("test2", "scrollY " + scrollView_main_home_fragment.scrollY)
+                        with(scrollView_main_home_fragment) {
+                            if (scrollY <= 0)
+                                value = -1
+                            else if (scrollY >= hightSearch) {
+                                value = 1
+                                scrollY = hightSearch
+                            } else
+                                value = 0
+                        }
+
                         if (action_up)
-                            closer()
-                        return lock
+                             closer()
+                        return ScrollStatus
                     }
                 }
         }

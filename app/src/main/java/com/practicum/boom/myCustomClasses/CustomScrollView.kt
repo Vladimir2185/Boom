@@ -11,22 +11,22 @@ open class CustomScrollView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ScrollView(context, attrs, defStyleAttr) {
 
-    private var lock = false
+    private var ScrollStatus = -1
     private var oldEvent = -1
     var onDispatchTouchEvent: OnDispatchTouchEvent? = null
 
 
     interface OnDispatchTouchEvent {
-        fun onDispatchTouch(action_up: Boolean): Boolean
+        fun onDispatchTouch(action_up: Boolean): Int
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
 
         ev?.let {
             onDispatchTouchEvent?.let {
-                if (oldEvent != MotionEvent.ACTION_DOWN && ev.action == MotionEvent.ACTION_UP && !lock) {
-                    lock = it.onDispatchTouch(true)
-                } else lock = it.onDispatchTouch(false)
+                if (oldEvent != MotionEvent.ACTION_DOWN && ev.action == MotionEvent.ACTION_UP && ScrollStatus==0) {
+                    ScrollStatus = it.onDispatchTouch(true)
+                } else ScrollStatus = it.onDispatchTouch(false)
             }
             oldEvent = it.action
         }
