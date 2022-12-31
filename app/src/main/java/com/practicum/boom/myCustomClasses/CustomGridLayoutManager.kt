@@ -27,7 +27,7 @@ open class CustomGridLayoutManager(
         dy: Int,
         recycler: RecyclerView.Recycler?,
         state: RecyclerView.State?
-    ): Int {
+    ): Int {Log.i("test2", "enable " + enable)
         return super.scrollVerticallyBy(dy * scrollEnable(), recycler, state)
     }
 }

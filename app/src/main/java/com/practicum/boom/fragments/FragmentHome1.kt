@@ -102,6 +102,7 @@ class FragmentHome1() : Fragment() {
                         super.onScrolled(recyclerView, dx, dy)
 
                         if ((oldDY != 0 && oldDY * dy < 0)) {
+                            Log.i("test2", "onScrolled turn " + dy)
                             value = false
                             layoutManager.enable = false
                         }
@@ -113,7 +114,7 @@ class FragmentHome1() : Fragment() {
                 addOnItemTouchListener(object :
                     RecyclerView.OnItemTouchListener {
                     override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-
+                        Log.i("test2", "onInterceptTouchEvent" + e)
                         value?.let { layoutManager.enable = it }
                         return false
                     }

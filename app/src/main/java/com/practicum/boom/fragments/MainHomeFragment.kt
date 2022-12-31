@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
@@ -91,6 +93,12 @@ class MainHomeFragment() : Fragment() {
                             value = true
                         }
                     }
+                }
+            })
+            scrollView_main_home_fragment.setOnTouchListener(object :View.OnTouchListener{
+                override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                    Log.i("test2", "onTouch " + event)
+                    return false
                 }
             })
             scrollView_main_home_fragment.onDispatchTouchEvent =

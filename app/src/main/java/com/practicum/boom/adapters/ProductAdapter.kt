@@ -85,10 +85,10 @@ class ProductAdapter(
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val offsetPosition = position - numOfPromo
         with(holder) {
-
+            Log.i("test4", "position" + position)
             if (position == 0) {
 
-                snowflakeAnimation(holder)
+               // snowflakeAnimation(holder)
             }
 
             if (position > 0) {
@@ -154,11 +154,11 @@ class ProductAdapter(
                 AnimationUtils.loadAnimation(context, R.anim.snowflake_animation2)
 
 
-            snowflakeAnimation2.startOffset=1300
+            snowflakeAnimation2.startOffset = 1300
             snowflakeAnimation2.duration = 4500
-            snowflakeAnimation3.startOffset=200
+            snowflakeAnimation3.startOffset = 200
             snowflakeAnimation3.duration = 5000
-            snowflakeAnimation4.startOffset=1100
+            snowflakeAnimation4.startOffset = 1100
             snowflakeAnimation4.duration = 4300
 
             // Подключаем анимацию к нужному View
