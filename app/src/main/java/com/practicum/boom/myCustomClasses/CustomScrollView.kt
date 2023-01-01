@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.widget.ScrollView
+import com.practicum.boom.fragments.MainHomeFragment.Companion.SCROLL_STATUS_DOWN
 
 open class CustomScrollView @JvmOverloads constructor(
     context: Context?,
@@ -11,7 +12,7 @@ open class CustomScrollView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ScrollView(context, attrs, defStyleAttr) {
 
-    private var ScrollStatus = -1
+    private var scrollStatus = SCROLL_STATUS_DOWN
     private var oldEvent = -1
     var onDispatchTouchEvent: OnDispatchTouchEvent? = null
 
@@ -24,9 +25,9 @@ open class CustomScrollView @JvmOverloads constructor(
 
         ev?.let {
             onDispatchTouchEvent?.let {
-                if (oldEvent != MotionEvent.ACTION_DOWN && ev.action == MotionEvent.ACTION_UP && ScrollStatus==0) {
-                    ScrollStatus = it.onDispatchTouch(true)
-                } else ScrollStatus = it.onDispatchTouch(false)
+                if (oldEvent != MotionEvent.ACTION_DOWN && ev.action == MotionEvent.ACTION_UP && scrollStatus==0) {
+                    scrollStatus = it.onDispatchTouch(true)
+                } else scrollStatus = it.onDispatchTouch(false)
             }
             oldEvent = it.action
         }

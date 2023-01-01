@@ -8,118 +8,185 @@
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView_itemPromo"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardBackgroundColor="#FFEB3B"
-        app:cardElevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageViewGradient_itemPromo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/gradient_promo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageSnow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:alpha="0.70"
+            android:rotation="30"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            android:tint="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/snowflake" />
+
+        <ImageView
+            android:id="@+id/imageSnow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:alpha="0.70"
+            android:rotation="15"
+            android:scaleX="0.55"
+            android:scaleY="0.55"
+            android:tint="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/snowflake" />
+
+        <ImageView
+            android:id="@+id/imageSnow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.70"
+            android:scaleX="0.65"
+            android:scaleY="0.65"
+            android:tint="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/snowflake" />
+
+        <ImageView
+            android:id="@+id/imageSnow4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:alpha="0.70"
+            android:rotation="20"
+            android:scaleX="0.6"
+            android:scaleY="0.6"
+            android:tint="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/snowflake" />
+
+        <TextView
+            android:id="@+id/textViewPromo_itemPromo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/until_promo_end"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:rotation="180"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
+            android:tint="#616161"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/car_ui_icon_arrow_back" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/imageViewGradient_itemPromo"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:background="@drawable/gradient_promo"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageSnow3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:alpha="0.70"
-                android:rotation="30"
-                android:scaleX="0.8"
-                android:scaleY="0.8"
-                android:tint="@color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/snowflake" />
-
-            <ImageView
-                android:id="@+id/imageSnow2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:alpha="0.70"
-                android:rotation="15"
-                android:scaleX="0.65"
-                android:scaleY="0.65"
-                android:tint="@color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/snowflake" />
-
-            <ImageView
-                android:id="@+id/imageSnow1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha="0.70"
-                android:scaleX="0.75"
-                android:scaleY="0.75"
-                android:tint="@color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/snowflake" />
-
-            <ImageView
-                android:id="@+id/imageSnow4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="80dp"
-                android:alpha="0.70"
-                android:rotation="20"
-                android:scaleX="0.7"
-                android:scaleY="0.7"
-                android:tint="@color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/snowflake" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewGradient_itemPromo"
+            app:layout_constraintEnd_toStartOf="@+id/imageView4"
+            app:layout_constraintStart_toEndOf="@+id/textViewPromo_itemPromo"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/textViewPromo_itemPromo"
+                android:id="@+id/textViewSecI_itemPromo"
+                style="@style/PromoTimerStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="@string/until_promo_end"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:rotation="180"
-                android:scaleX="1.25"
-                android:scaleY="1.25"
-                android:tint="#616161"
+                android:background="@drawable/promo_rounded_corner_right"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/car_ui_icon_arrow_back" />
+                tools:text="6" />
 
+            <TextView
+                android:id="@+id/textViewSecII_itemPromo"
+                style="@style/PromoTimerStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/promo_rounded_corner_middle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textViewSecI_itemPromo"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="3" />
+
+            <TextView
+                android:id="@+id/textViewMinI_itemPromo"
+                style="@style/PromoTimerStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/promo_rounded_corner_middle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textViewSecII_itemPromo"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                tools:text="9" />
+
+            <TextView
+                android:id="@+id/textViewMinII_itemPromo"
+                style="@style/PromoTimerStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/promo_rounded_corner_middle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textViewMinI_itemPromo"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                tools:text="5" />
+
+            <TextView
+                android:id="@+id/textViewHourI_itemPromo"
+                style="@style/PromoTimerStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/promo_rounded_corner_middle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textViewMinII_itemPromo"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                tools:text="2" />
+
+            <TextView
+                android:id="@+id/textViewHourII_itemPromo"
+                style="@style/PromoTimerStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/promo_rounded_corner_left"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textViewHourI_itemPromo"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                tools:text="1" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:adjustViewBounds="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView_itemPromo"
-        app:srcCompat="@drawable/promo01" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

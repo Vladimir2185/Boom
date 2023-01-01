@@ -2,8 +2,7 @@ package com.practicum.boom.adapters
 
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +17,7 @@ import com.practicum.boom.ScreenInfo
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_product_info.view.*
 import kotlinx.android.synthetic.main.item_promo.view.*
+import java.util.concurrent.TimeUnit
 
 class ProductAdapter(
     private val context: Context,
@@ -36,9 +36,14 @@ class ProductAdapter(
     private var positionUpdate = 0
     private val cornerSize = 15f
     private val marginBetweenIcon = 8
-    private var count = 0
+    private var holderPromo: ProductViewHolder? = null
+    private var promoID: Int? = null
+    private var current0PosID: Int? = null
+    private var lockPosID = false
+
 
     companion object {
+
         const val MAX_POOL_SIZE = 5
 
         const val VIEW_TYPE_PROMO = 0
@@ -69,7 +74,7 @@ class ProductAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        Log.i("test3", "onCreateViewHolder " + ++count)
+        //Log.i("test3", "onCreateViewHolder " + ++count)
         val layout = when (viewType) {
             VIEW_TYPE_PROMO -> R.layout.item_promo
             VIEW_TYPE_UNEVEN -> R.layout.item_product_info
@@ -78,20 +83,32 @@ class ProductAdapter(
         }
         val view =
             LayoutInflater.from(context).inflate(layout, parent, false)
+
+
         return ProductViewHolder(view)
 
     }
 
+
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val offsetPosition = position - numOfPromo
         with(holder) {
-            Log.i("test4", "position" + position)
-            if (position == 0) {
+            // Log.i("test4", "position " + position)
 
-               // snowflakeAnimation(holder)
+            if (position == 0) {
+                holderPromo = holder
+                promoID = itemView.id
+                lockPosID = false
+                holderPromo?.let { snowflakeAnimation(it) }
+                timeToPromoEnd()
             }
 
             if (position > 0) {
+
+                if (!lockPosID && promoID != current0PosID && current0PosID != null) {
+                    holderPromo?.let { snowflakeAnimation(it) }
+                    lockPosID = true
+                }
                 itemView.imageButtonFavorite_itemProduct.setOnClickListener(object :
                     View.OnClickListener {
                     override fun onClick(v: View?) {
@@ -127,6 +144,10 @@ class ProductAdapter(
         return (productList.size + numOfPromo)
     }
 
+    fun current0PosID(id: Int) {
+        current0PosID = id
+    }
+
     override fun getItemViewType(position: Int): Int {
 
         return if (position == 0)
@@ -137,41 +158,6 @@ class ProductAdapter(
             VIEW_TYPE_UNEVEN
     }
 
-    private fun snowflakeAnimation(holder: ProductViewHolder) {
-        with(holder) {
-            snow1.layoutParams.width = (screenInfo.widthInPixels * 0.2).toInt()
-            snow2.layoutParams.width = (screenInfo.widthInPixels * 0.5).toInt()
-            snow3.layoutParams.width = (screenInfo.widthInPixels * 0.9).toInt()
-            snow4.layoutParams.width = (screenInfo.widthInPixels * 1.2).toInt()
-
-            val snowflakeAnimation =
-                AnimationUtils.loadAnimation(context, R.anim.snowflake_animation)
-            val snowflakeAnimation2 =
-                AnimationUtils.loadAnimation(context, R.anim.snowflake_animation2)
-            val snowflakeAnimation3 =
-                AnimationUtils.loadAnimation(context, R.anim.snowflake_animation)
-            val snowflakeAnimation4 =
-                AnimationUtils.loadAnimation(context, R.anim.snowflake_animation2)
-
-
-            snowflakeAnimation2.startOffset = 1300
-            snowflakeAnimation2.duration = 4500
-            snowflakeAnimation3.startOffset = 200
-            snowflakeAnimation3.duration = 5000
-            snowflakeAnimation4.startOffset = 1100
-            snowflakeAnimation4.duration = 4300
-
-            // Подключаем анимацию к нужному View
-            snow1.startAnimation(snowflakeAnimation)
-            Handler(Looper.getMainLooper()).postDelayed({
-
-            }, 100)
-
-            snow2.startAnimation(snowflakeAnimation2)
-            snow3.startAnimation(snowflakeAnimation3)
-            snow4.startAnimation(snowflakeAnimation4)
-        }
-    }
 
     private fun dotToComma(rating: Float): String {
         return rating.toString().replace('.', ',')
@@ -224,6 +210,66 @@ class ProductAdapter(
                     .error(android.R.drawable.ic_menu_report_image)
                     .into(ivProduct)
             }
+        }
+    }
+
+
+    var timer: CountDownTimer? = null
+
+    private fun timeToPromoEnd() {
+        val milliseconds: Long = TimeUnit.HOURS.toMillis(24)
+
+        if (timer == null) {
+            timer = object : CountDownTimer(milliseconds, 1000) {
+                override fun onTick(mSeconds: Long) {
+                    val seconds = mSeconds / 1000
+                    holderPromo?.itemView?.let {
+                        it.textViewSecI_itemPromo.text = (seconds % 10).toString()
+                        it.textViewSecII_itemPromo.text = (seconds % 60 / 10).toString()
+                        it.textViewMinI_itemPromo.text = (seconds / 60 % 10).toString()
+                        it.textViewMinII_itemPromo.text = (seconds / 60 % 60 / 10).toString()
+                        it.textViewHourI_itemPromo.text = (seconds / 3600 % 10).toString()
+                        it.textViewHourII_itemPromo.text = (seconds / 3600 % 24 / 10).toString()
+                    }
+                }
+
+                override fun onFinish() {}
+            }
+
+            timer?.start()
+        }
+
+    }
+
+
+    fun snowflakeAnimation(holder: ProductViewHolder) {
+        with(holder) {
+            snow1.layoutParams.width = (screenInfo.widthInPixels * 0.2).toInt()
+            snow2.layoutParams.width = (screenInfo.widthInPixels * 0.5).toInt()
+            snow3.layoutParams.width = (screenInfo.widthInPixels * 0.9).toInt()
+            snow4.layoutParams.width = (screenInfo.widthInPixels * 1.2).toInt()
+
+            val snowflakeAnimation =
+                AnimationUtils.loadAnimation(context, R.anim.snowflake_animation)
+            val snowflakeAnimation2 =
+                AnimationUtils.loadAnimation(context, R.anim.snowflake_animation2)
+            val snowflakeAnimation3 =
+                AnimationUtils.loadAnimation(context, R.anim.snowflake_animation)
+            val snowflakeAnimation4 =
+                AnimationUtils.loadAnimation(context, R.anim.snowflake_animation2)
+
+            snowflakeAnimation2.startOffset = 1300
+            snowflakeAnimation2.duration = 4500
+            snowflakeAnimation3.startOffset = 200
+            snowflakeAnimation3.duration = 5000
+            snowflakeAnimation4.startOffset = 1100
+            snowflakeAnimation4.duration = 4300
+
+            // Подключаем анимацию к нужному View
+            snow1.startAnimation(snowflakeAnimation)
+            snow2.startAnimation(snowflakeAnimation2)
+            snow3.startAnimation(snowflakeAnimation3)
+            snow4.startAnimation(snowflakeAnimation4)
         }
     }
 }

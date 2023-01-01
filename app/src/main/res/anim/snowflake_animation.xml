@@ -22,8 +22,10 @@
         android:repeatCount="infinite"
         android:toYDelta="100%p" />
 
-    <!--    <alpha-->
-    <!--        android:fromAlpha="0.3"-->
-    <!--        android:toAlpha="1.0" />-->
+    <alpha
+        android:fromAlpha="0.95"
+        android:repeatCount="infinite"
+        android:toAlpha="0.7" />
+
 
 </set>

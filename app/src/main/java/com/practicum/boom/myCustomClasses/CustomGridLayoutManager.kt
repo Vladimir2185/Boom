@@ -1,18 +1,19 @@
 package com.practicum.boom.myCustomClasses
 
 import android.content.Context
-import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.practicum.boom.fragments.MainHomeFragment.Companion.SCROLL_STATUS_DOWN
+import com.practicum.boom.fragments.MainHomeFragment.Companion.SCROLL_STATUS_UP
 
 
 open class CustomGridLayoutManager(
     context: Context?, int: Int,
     private val isScrollEnabled: Boolean = true
 ) : GridLayoutManager(context, int) {
-   var ScrollStatus=-1
+   var scrollStatus=SCROLL_STATUS_DOWN
    private fun scrollEnable(dy: Int): Int {
-        return if (ScrollStatus==1&&dy>0||ScrollStatus==-1&&dy<0) 1
+        return if (scrollStatus==SCROLL_STATUS_UP&&dy>0||scrollStatus==SCROLL_STATUS_DOWN&&dy<0) 1
         else 0
     }
 

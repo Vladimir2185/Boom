@@ -13,7 +13,7 @@
         android:id="@+id/conLay_main_home_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFC107">
+        android:background="@color/white">
 
 
         <androidx.cardview.widget.CardView

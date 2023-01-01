@@ -1,6 +1,8 @@
 package com.practicum.boom
 
 data class ScreenInfo(
+
+    val heightInPixels: Int,
     val widthInPixels: Int,
     val screenDensity: Float,
     private val heightProductIcon: Double

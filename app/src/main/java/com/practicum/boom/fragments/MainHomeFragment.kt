@@ -3,10 +3,7 @@ package com.practicum.boom.fragments
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
@@ -14,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.boom.*
-import com.practicum.boom.adapters.ProductAdapter
 import com.practicum.boom.adapters.VP2Adapter
 import com.practicum.boom.myCustomClasses.CustomScrollView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -25,9 +21,17 @@ class MainHomeFragment() : Fragment() {
     private var textFragTitle = mutableListOf<String>()
     private val mainViewModel: MainViewModel by activityViewModels()
     private var hightSearch = 0
-    private var ScrollStatus = -1
+    private var scrollStatus = SCROLL_STATUS_DOWN
     private val smoothCount = 20  // responsible for smoothness of closer
     private val closingTime = 8  // responsible for time of closing of closer
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = MainHomeFragment()
+        const val SCROLL_STATUS_UP = 1
+        const val SCROLL_STATUS_MIDDLE = 0
+        const val SCROLL_STATUS_DOWN = -1
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +47,7 @@ class MainHomeFragment() : Fragment() {
 
         with(mainViewModel.liveScrollStatus) {
             observe(viewLifecycleOwner, {
-                ScrollStatus = it
+                scrollStatus = it
 
             })
 
@@ -81,20 +85,20 @@ class MainHomeFragment() : Fragment() {
             scrollView_main_home_fragment.onDispatchTouchEvent =
                 object : CustomScrollView.OnDispatchTouchEvent {
                     override fun onDispatchTouch(action_up: Boolean): Int {
-                       // Log.i("test2", "scrollY " + scrollView_main_home_fragment.scrollY)
+                        // Log.i("test2", "scrollY " + scrollView_main_home_fragment.scrollY)
                         with(scrollView_main_home_fragment) {
                             if (scrollY <= 0)
-                                value = -1
+                                value = SCROLL_STATUS_DOWN
                             else if (scrollY >= hightSearch) {
-                                value = 1
+                                value = SCROLL_STATUS_UP
                                 scrollY = hightSearch
                             } else
-                                value = 0
+                                value = SCROLL_STATUS_MIDDLE
                         }
 
                         if (action_up)
-                             closer()
-                        return ScrollStatus
+                            closer()
+                        return scrollStatus
                     }
                 }
         }
@@ -125,8 +129,5 @@ class MainHomeFragment() : Fragment() {
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = MainHomeFragment()
-    }
+
 }

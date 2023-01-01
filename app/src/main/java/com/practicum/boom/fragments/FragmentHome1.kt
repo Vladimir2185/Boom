@@ -7,12 +7,8 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.boom.MainViewModel
@@ -20,11 +16,9 @@ import com.practicum.boom.MainViewModel.Companion.type
 import com.practicum.boom.R
 import com.practicum.boom.ScreenInfo
 import com.practicum.boom.adapters.ProductAdapter
+import com.practicum.boom.fragments.MainHomeFragment.Companion.SCROLL_STATUS_DOWN
 import com.practicum.boom.myCustomClasses.CustomGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_home1.*
-import kotlinx.android.synthetic.main.item_product_info.*
-import kotlinx.android.synthetic.main.item_promo.*
-import kotlinx.android.synthetic.main.main_home_fragment.view.*
 
 
 class FragmentHome1() : Fragment() {
@@ -37,7 +31,7 @@ class FragmentHome1() : Fragment() {
     //relative to width of icon
     private val HIGHT_OF_PRODUCT_ICON = 1.35
     private val mainViewModel: MainViewModel by activityViewModels()
-    private var ScrollStatus = -1
+    private var scrollStatus = SCROLL_STATUS_DOWN
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -55,6 +49,7 @@ class FragmentHome1() : Fragment() {
             requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
             val screenInfo =
                 ScreenInfo(
+                    displayMetrics.heightPixels,
                     displayMetrics.widthPixels,
                     displayMetrics.density,
                     HIGHT_OF_PRODUCT_ICON
@@ -75,11 +70,8 @@ class FragmentHome1() : Fragment() {
             })
             with(mainViewModel.liveScrollStatus) {
                 observe(viewLifecycleOwner, {
-                    ScrollStatus = it
+                    scrollStatus = it
                 })
-
-
-
 
 
                 //setup CustomGridLayoutManager and freezing/unfreezing recyclerView scrolling by isScrollEnabled param
@@ -98,14 +90,22 @@ class FragmentHome1() : Fragment() {
                 recyclerView_fragmentHome1.layoutManager = layoutManager
 
 
+                addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+
+                        productAdapter?.current0PosID(getChildAt(0).id)
+                    }
+                })
                 addOnItemTouchListener(object :
                     RecyclerView.OnItemTouchListener {
                     override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                       // Log.i("test2", "onInterceptTouchEvent" + e)
 
-                        value?.let { layoutManager.ScrollStatus = it }
+
+                        value?.let { layoutManager.scrollStatus = it }
                         return false
                     }
+
                     override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
                     override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
                 })
