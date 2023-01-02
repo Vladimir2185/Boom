@@ -2,28 +2,14 @@ package com.practicum.boom
 //'kotlin-android-extensions'
 // Ctrl+Alt+O    clear empty import
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.util.Log
 import android.view.MotionEvent
-import android.view.View
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
-import com.practicum.boom.api.ApiFactory
-import com.practicum.boom.api.ApiService
-import com.practicum.boom.fragments.FragmentHome2
-import com.practicum.boom.fragments.MainHomeFragment
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
+import com.practicum.boom.home.sale.FragmentHome2
+import com.practicum.boom.home.MainHomeFragment
 
 
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.item_product_info.*
-import kotlinx.android.synthetic.main.item_promo.*
-import kotlinx.android.synthetic.main.main_home_fragment.*
 
 
 class MainActivity : AppCompatActivity() {

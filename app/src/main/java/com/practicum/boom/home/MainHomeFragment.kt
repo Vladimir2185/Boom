@@ -1,4 +1,4 @@
-package com.practicum.boom.fragments
+package com.practicum.boom.home
 
 import android.os.Bundle
 import android.os.Handler
@@ -11,7 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.boom.*
-import com.practicum.boom.adapters.VP2Adapter
+import com.practicum.boom.home.best.FragmentHome1
+import com.practicum.boom.home.holidays.FragmentHome3
+import com.practicum.boom.home.sale.FragmentHome2
 import com.practicum.boom.myCustomClasses.CustomScrollView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_home_fragment.*

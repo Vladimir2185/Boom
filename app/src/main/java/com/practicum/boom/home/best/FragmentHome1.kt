@@ -1,8 +1,7 @@
-package com.practicum.boom.fragments
+package com.practicum.boom.home.best
 
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -15,8 +14,7 @@ import com.practicum.boom.MainViewModel
 import com.practicum.boom.MainViewModel.Companion.type
 import com.practicum.boom.R
 import com.practicum.boom.ScreenInfo
-import com.practicum.boom.adapters.ProductAdapter
-import com.practicum.boom.fragments.MainHomeFragment.Companion.SCROLL_STATUS_DOWN
+import com.practicum.boom.home.MainHomeFragment.Companion.SCROLL_STATUS_DOWN
 import com.practicum.boom.myCustomClasses.CustomGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_home1.*
 

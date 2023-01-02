@@ -1,7 +1,6 @@
 package com.practicum.boom.api
 
 import com.practicum.boom.MainViewModel.Companion.type
-import com.practicum.boom.ProductInfoListOfData
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query

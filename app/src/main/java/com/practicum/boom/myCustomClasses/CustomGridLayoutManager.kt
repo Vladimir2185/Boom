@@ -3,8 +3,8 @@ package com.practicum.boom.myCustomClasses
 import android.content.Context
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.practicum.boom.fragments.MainHomeFragment.Companion.SCROLL_STATUS_DOWN
-import com.practicum.boom.fragments.MainHomeFragment.Companion.SCROLL_STATUS_UP
+import com.practicum.boom.home.MainHomeFragment.Companion.SCROLL_STATUS_DOWN
+import com.practicum.boom.home.MainHomeFragment.Companion.SCROLL_STATUS_UP
 
 
 open class CustomGridLayoutManager(

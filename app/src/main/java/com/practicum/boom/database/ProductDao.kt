@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.practicum.boom.Product
+import com.practicum.boom.api.Product
 
 @Dao
 interface ProductDao {
