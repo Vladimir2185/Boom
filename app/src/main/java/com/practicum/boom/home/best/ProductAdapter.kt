@@ -18,36 +18,39 @@ import kotlinx.android.synthetic.main.item_product_info.view.*
 import kotlinx.android.synthetic.main.item_promo.view.*
 import java.util.concurrent.TimeUnit
 
-class ProductAdapter(
+open class ProductAdapter(
     private val context: Context,
     private val screenInfo: ScreenInfo,
 ) :
     RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
-    var onFragmentClickListener: OnFragmentClickListener? = null
     var productList = listOf<Product>()
         set(value) {
             field = value
 
             notifyItemChanged(positionUpdate, Unit)//Unit or Any() param gives NO Animation
         }
-    private val numOfPromo = 1
+    var onFragmentListener: OnFragmentListener? = null
+
     private var positionUpdate = 0
     private val cornerSize = 15f
     private val marginBetweenIcon = 8
-    private var holderPromo: ProductViewHolder? = null
-    private var promoID: Int? = null
-    private var current0PosID: Int? = null
-    private var lockPosID = false
+
+
+    private val promo = Promo()
 
 
     companion object {
-
+        const val NUMBER_OF_PROMO = 1
         const val MAX_POOL_SIZE = 5
 
         const val VIEW_TYPE_PROMO = 0
         const val VIEW_TYPE_UNEVEN = 1
         const val VIEW_TYPE_EVEN = 2
+    }
+
+    interface OnFragmentListener {
+        fun onFavoriteSwitch(favorProduct: Boolean, prodID: String)
     }
 
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -58,19 +61,9 @@ class ProductAdapter(
         val imageButtonFavorite = itemView.imageButtonFavorite_itemProduct
         val constraintLayout = itemView.conLayout_itemProduct
         val rating = itemView.textRating_itemProduct
-        val snow1 = itemView.imageSnow1
-        val snow2 = itemView.imageSnow2
-        val snow3 = itemView.imageSnow3
-        val snow4 = itemView.imageSnow4
 
 
     }
-
-    interface OnFragmentClickListener {
-        fun onFragmentClick()
-        fun onFavoriteSwitch(favorProduct: Boolean, prodID: String)
-    }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         //Log.i("test3", "onCreateViewHolder " + ++count)
@@ -83,53 +76,22 @@ class ProductAdapter(
         val view =
             LayoutInflater.from(context).inflate(layout, parent, false)
 
-
         return ProductViewHolder(view)
-
     }
 
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        val offsetPosition = position - numOfPromo
+        val offsetPosition = position - NUMBER_OF_PROMO
         with(holder) {
             // Log.i("test4", "position " + position)
 
-            if (position == 0) {
-                holderPromo = holder
-                promoID = itemView.id
-                lockPosID = false
-                holderPromo?.let { snowflakeAnimation(it) }
-                timeToPromoEnd()
-            }
-
-            if (position > 0) {
-
-                if (!lockPosID && promoID != current0PosID && current0PosID != null) {
-                    holderPromo?.let { snowflakeAnimation(it) }
-                    lockPosID = true
-                }
-                itemView.imageButtonFavorite_itemProduct.setOnClickListener(object :
-                    View.OnClickListener {
-                    override fun onClick(v: View?) {
-                        onFragmentClickListener?.onFavoriteSwitch(
-                            !productList[offsetPosition].favorite,
-                            productList[offsetPosition].productID
-                        )
-
-                        positionUpdate = offsetPosition + numOfPromo
-                    }
-                })
+            if (offsetPosition >= 0) {
 
                 button.text = "position " + (offsetPosition)
                 textViewPrice.text = productList[offsetPosition].priceWithSymbol
 
-                if (productList[offsetPosition].sale < 50)
-                    textViewSale.visibility = View.INVISIBLE
-                else {
-                    textViewSale.visibility = View.VISIBLE
-                    textViewSale.text = " -${productList[offsetPosition].sale}% "
-                }
-
+                onFavoriteClick(holder, offsetPosition)
+                sale(holder, offsetPosition)
                 rating.text = dotToComma(productList[offsetPosition].rating)
                 favoriteSwitch(holder, offsetPosition)
                 fragment1LayoutDrawing(holder, offsetPosition)
@@ -140,12 +102,9 @@ class ProductAdapter(
 
     //помещает в метод кол-во элентов массива productList т.е. сколько будет в RecyclerView
     override fun getItemCount(): Int {
-        return (productList.size + numOfPromo)
+        return (productList.size + NUMBER_OF_PROMO)
     }
 
-    fun current0PosID(id: Int) {
-        current0PosID = id
-    }
 
     override fun getItemViewType(position: Int): Int {
 
@@ -158,9 +117,37 @@ class ProductAdapter(
     }
 
 
+    private fun onFavoriteClick(holder: ProductViewHolder, offsetPosition: Int) {
+        with(holder) {
+            itemView.imageButtonFavorite_itemProduct.setOnClickListener(object :
+                View.OnClickListener {
+                override fun onClick(v: View?) {
+
+                    onFragmentListener?.onFavoriteSwitch(
+                        !productList[offsetPosition].favorite,
+                        productList[offsetPosition].productID
+                    )
+                    positionUpdate = offsetPosition + NUMBER_OF_PROMO
+                }
+            }
+            )
+        }
+    }
+
+    private fun sale(holder: ProductViewHolder, offsetPosition: Int) {
+        with(holder) {
+            if (productList[offsetPosition].sale < 50)
+                textViewSale.visibility = View.INVISIBLE
+            else {
+                textViewSale.visibility = View.VISIBLE
+                textViewSale.text = " -${productList[offsetPosition].sale}% "
+            }
+        }
+    }
     private fun dotToComma(rating: Float): String {
         return rating.toString().replace('.', ',')
     }
+
 
     private fun favoriteSwitch(holder: ProductViewHolder, offsetPosition: Int) {
         with(holder) {
@@ -212,63 +199,81 @@ class ProductAdapter(
         }
     }
 
+    override fun onViewAttachedToWindow(holder: ProductViewHolder) {
 
-    var timer: CountDownTimer? = null
-
-    private fun timeToPromoEnd() {
-        val milliseconds: Long = TimeUnit.HOURS.toMillis(24)
-
-        if (timer == null) {
-            timer = object : CountDownTimer(milliseconds, 1000) {
-                override fun onTick(mSeconds: Long) {
-                    val seconds = mSeconds / 1000
-                    holderPromo?.itemView?.let {
-                        it.textViewSecI_itemPromo.text = (seconds % 10).toString()
-                        it.textViewSecII_itemPromo.text = (seconds % 60 / 10).toString()
-                        it.textViewMinI_itemPromo.text = (seconds / 60 % 10).toString()
-                        it.textViewMinII_itemPromo.text = (seconds / 60 % 60 / 10).toString()
-                        it.textViewHourI_itemPromo.text = (seconds / 3600 % 10).toString()
-                        it.textViewHourII_itemPromo.text = (seconds / 3600 % 24 / 10).toString()
-                    }
-                }
-
-                override fun onFinish() {}
-            }
-
-            timer?.start()
+        if (holder.absoluteAdapterPosition == 0) {
+            promo.promoStart(holder)
         }
 
+        super.onViewAttachedToWindow(holder)
     }
 
 
-    fun snowflakeAnimation(holder: ProductViewHolder) {
-        with(holder) {
-            snow1.layoutParams.width = (screenInfo.widthInPixels * 0.2).toInt()
-            snow2.layoutParams.width = (screenInfo.widthInPixels * 0.5).toInt()
-            snow3.layoutParams.width = (screenInfo.widthInPixels * 0.9).toInt()
-            snow4.layoutParams.width = (screenInfo.widthInPixels * 1.2).toInt()
+    private inner class Promo {
 
-            val snowflakeAnimation =
-                AnimationUtils.loadAnimation(context, R.anim.snowflake_animation)
-            val snowflakeAnimation2 =
-                AnimationUtils.loadAnimation(context, R.anim.snowflake_animation2)
-            val snowflakeAnimation3 =
-                AnimationUtils.loadAnimation(context, R.anim.snowflake_animation)
-            val snowflakeAnimation4 =
-                AnimationUtils.loadAnimation(context, R.anim.snowflake_animation2)
+        private var timer: CountDownTimer? = null
+        private val durationOfPromo: Long = 24
 
-            snowflakeAnimation2.startOffset = 1300
-            snowflakeAnimation2.duration = 4500
-            snowflakeAnimation3.startOffset = 200
-            snowflakeAnimation3.duration = 5000
-            snowflakeAnimation4.startOffset = 1100
-            snowflakeAnimation4.duration = 4300
 
-            // Подключаем анимацию к нужному View
-            snow1.startAnimation(snowflakeAnimation)
-            snow2.startAnimation(snowflakeAnimation2)
-            snow3.startAnimation(snowflakeAnimation3)
-            snow4.startAnimation(snowflakeAnimation4)
+        fun promoStart(holder: ProductViewHolder) {
+            snowFlakeAnimation(holder)
+            timeUntilPromoEnd(holder)
+        }
+
+        private fun timeUntilPromoEnd(holder: ProductViewHolder) {
+            val milliseconds: Long = TimeUnit.HOURS.toMillis(durationOfPromo)
+
+            if (timer == null) {
+                timer = object : CountDownTimer(milliseconds, 1000) {
+                    override fun onTick(mSeconds: Long) {
+                        val seconds = mSeconds / 1000
+                        with(holder.itemView) {
+                            textViewSecI_itemPromo.text = (seconds % 10).toString()
+                            textViewSecII_itemPromo.text = (seconds % 60 / 10).toString()
+                            textViewMinI_itemPromo.text = (seconds / 60 % 10).toString()
+                            textViewMinII_itemPromo.text = (seconds / 60 % 60 / 10).toString()
+                            textViewHourI_itemPromo.text = (seconds / 3600 % 10).toString()
+                            textViewHourII_itemPromo.text = (seconds / 3600 % 24 / 10).toString()
+                        }
+                    }
+
+                    override fun onFinish() {}
+                }
+
+                timer?.start()
+            }
+
+        }
+
+        fun snowFlakeAnimation(holder: ProductViewHolder) {
+            with(holder.itemView) {
+                imageSnow1.layoutParams.width = (screenInfo.widthInPixels * 0.2).toInt()
+                imageSnow2.layoutParams.width = (screenInfo.widthInPixels * 0.5).toInt()
+                imageSnow3.layoutParams.width = (screenInfo.widthInPixels * 0.9).toInt()
+                imageSnow4.layoutParams.width = (screenInfo.widthInPixels * 1.2).toInt()
+
+                val snowflakeAnimation =
+                    AnimationUtils.loadAnimation(context, R.anim.snowflake_animation)
+                val snowflakeAnimation2 =
+                    AnimationUtils.loadAnimation(context, R.anim.snowflake_animation2)
+                val snowflakeAnimation3 =
+                    AnimationUtils.loadAnimation(context, R.anim.snowflake_animation)
+                val snowflakeAnimation4 =
+                    AnimationUtils.loadAnimation(context, R.anim.snowflake_animation2)
+
+                snowflakeAnimation2.startOffset = 1300
+                snowflakeAnimation2.duration = 4500
+                snowflakeAnimation3.startOffset = 200
+                snowflakeAnimation3.duration = 5000
+                snowflakeAnimation4.startOffset = 1100
+                snowflakeAnimation4.duration = 4300
+
+                // Подключаем анимацию к нужному View
+                imageSnow1.startAnimation(snowflakeAnimation)
+                imageSnow2.startAnimation(snowflakeAnimation2)
+                imageSnow3.startAnimation(snowflakeAnimation3)
+                imageSnow4.startAnimation(snowflakeAnimation4)
+            }
         }
     }
 }
