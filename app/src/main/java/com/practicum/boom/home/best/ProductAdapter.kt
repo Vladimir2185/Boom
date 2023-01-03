@@ -3,6 +3,7 @@ package com.practicum.boom.home.best
 
 import android.content.Context
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.google.android.material.shape.ShapeAppearanceModel
 import com.practicum.boom.api.Product
 import com.practicum.boom.R
 import com.practicum.boom.ScreenInfo
+import com.practicum.boom.home.PromoBottomSheetFragment
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_product_info.view.*
 import kotlinx.android.synthetic.main.item_promo.view.*
@@ -67,6 +69,7 @@ open class ProductAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         //Log.i("test3", "onCreateViewHolder " + ++count)
+
         val layout = when (viewType) {
             VIEW_TYPE_PROMO -> R.layout.item_promo
             VIEW_TYPE_UNEVEN -> R.layout.item_product_info
@@ -219,6 +222,17 @@ open class ProductAdapter(
         fun promoStart(holder: ProductViewHolder) {
             snowFlakeAnimation(holder)
             timeUntilPromoEnd(holder)
+            onPromoClick(holder)
+        }
+
+        private fun onPromoClick(holder: ProductViewHolder) {
+            holder.itemView.cl_itemPromo.setOnClickListener(object : View.OnClickListener {
+                override fun onClick(v: View?) {
+//                    val promoBotSheet = PromoBottomSheetFragment()
+//                    promoBotSheet.show(get supportFragmentManager,"Tag")
+                    Log.i("test4","bf555 " )
+                }
+            })
         }
 
         private fun timeUntilPromoEnd(holder: ProductViewHolder) {

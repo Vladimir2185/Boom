@@ -2,11 +2,13 @@ package com.practicum.boom
 //'kotlin-android-extensions'
 // Ctrl+Alt+O    clear empty import
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.practicum.boom.home.sale.FragmentHome2
 import com.practicum.boom.home.MainHomeFragment
+import com.practicum.boom.home.PromoBottomSheetFragment
 
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -52,6 +54,7 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+
 /*object : MyFrameLayout(requireContext()){
             override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
                 ev?.let { it.action=MotionEvent.ACTION_DOWN}
