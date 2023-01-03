@@ -108,7 +108,7 @@ open class ProductAdapter(
 
     override fun getItemViewType(position: Int): Int {
 
-        return if (position == 0)
+        return if (NUMBER_OF_PROMO > 0 && position in 0 until NUMBER_OF_PROMO)
             VIEW_TYPE_PROMO
         else if (position % 2 != 0)
             VIEW_TYPE_EVEN
@@ -144,6 +144,7 @@ open class ProductAdapter(
             }
         }
     }
+
     private fun dotToComma(rating: Float): String {
         return rating.toString().replace('.', ',')
     }
@@ -201,7 +202,7 @@ open class ProductAdapter(
 
     override fun onViewAttachedToWindow(holder: ProductViewHolder) {
 
-        if (holder.absoluteAdapterPosition == 0) {
+        if (holder.absoluteAdapterPosition == 0 && NUMBER_OF_PROMO > 0) {
             promo.promoStart(holder)
         }
 

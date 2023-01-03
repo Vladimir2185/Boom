@@ -57,7 +57,7 @@ class FragmentHome1() : Fragment() {
             val productAdapter = context?.let { ProductAdapter(it, screenInfo) }
             with(ProductAdapter) {
                 adapter = productAdapter
-                recycledViewPool.setMaxRecycledViews(VIEW_TYPE_PROMO, 1)
+                recycledViewPool.setMaxRecycledViews(VIEW_TYPE_PROMO, NUMBER_OF_PROMO)
                 recycledViewPool.setMaxRecycledViews(VIEW_TYPE_UNEVEN, MAX_POOL_SIZE)
                 recycledViewPool.setMaxRecycledViews(VIEW_TYPE_EVEN, MAX_POOL_SIZE)
             }
