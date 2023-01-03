@@ -1,20 +1,21 @@
 package com.practicum.boom
 
-data class ScreenInfo(
+class ScreenInfo() {
 
-    val heightInPixels: Int,
-    val widthInPixels: Int,
-    val screenDensity: Float,
-    private val heightProductIcon: Double
-) {
+    val heightInPixels = MainActivity.displayMetrics.heightPixels
+    val widthInPixels = MainActivity.displayMetrics.widthPixels
+    val screenDensity = MainActivity.displayMetrics.density
+
     fun widthScreen(): Int {
         return (widthInPixels / screenDensity).toInt()
     }
-//return height of product icon at recycler view
-    fun heightOfProductIcon(): Int {
-        return (widthInPixels * heightProductIcon/columnCount()).toInt()
+
+    //return height of product icon at recycler view
+    fun heightOfProductIcon(heightProductIcon: Double): Int {
+        return (widthInPixels * heightProductIcon / columnCount()).toInt()
     }
-//return number of recycler view columns depending by screen resolution
+
+    //return number of recycler view columns depending by screen resolution
     fun columnCount(): Int {
         return if (widthScreen() / 250 > 2) widthScreen() / 250 else 2 //если больше 2, то 250/2, иначе 2
     }

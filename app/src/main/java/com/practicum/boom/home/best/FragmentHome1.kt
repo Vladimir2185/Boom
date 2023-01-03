@@ -1,7 +1,6 @@
 package com.practicum.boom.home.best
 
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -15,7 +14,6 @@ import com.practicum.boom.MainViewModel.Companion.type
 import com.practicum.boom.R
 import com.practicum.boom.ScreenInfo
 import com.practicum.boom.home.MainHomeFragment.Companion.SCROLL_STATUS_DOWN
-import com.practicum.boom.home.PromoBottomSheetFragment
 import com.practicum.boom.home.best.ProductAdapter.Companion.NUMBER_OF_PROMO
 import com.practicum.boom.myCustomClasses.CustomGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_home1.*
@@ -29,9 +27,10 @@ class FragmentHome1() : Fragment() {
     }
 
     //relative to width of icon
-    private val HIGHT_OF_PRODUCT_ICON = 1.35
+
     private val mainViewModel: MainViewModel by activityViewModels()
     private var scrollStatus = SCROLL_STATUS_DOWN
+    private val screenInfo = ScreenInfo()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -45,17 +44,9 @@ class FragmentHome1() : Fragment() {
 
         with(recyclerView_fragmentHome1) {
             //find-out screen resolution of current device and place it into screenInfo class
-            val displayMetrics = DisplayMetrics()
-            requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-            val screenInfo =
-                ScreenInfo(
-                    displayMetrics.heightPixels,
-                    displayMetrics.widthPixels,
-                    displayMetrics.density,
-                    HIGHT_OF_PRODUCT_ICON
-                )
 
-            val productAdapter = context?.let { ProductAdapter(it, screenInfo) }
+
+            val productAdapter =  ProductAdapter(requireActivity())
             with(ProductAdapter) {
                 adapter = productAdapter
                 recycledViewPool.setMaxRecycledViews(VIEW_TYPE_PROMO, NUMBER_OF_PROMO)

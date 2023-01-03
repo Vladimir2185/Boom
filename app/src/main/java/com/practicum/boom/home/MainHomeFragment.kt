@@ -1,22 +1,28 @@
 package com.practicum.boom.home
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.boom.*
 import com.practicum.boom.home.best.FragmentHome1
+import com.practicum.boom.home.best.ProductAdapter
 import com.practicum.boom.home.holidays.FragmentHome3
 import com.practicum.boom.home.sale.FragmentHome2
 import com.practicum.boom.myCustomClasses.CustomScrollView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.item_promo.view.*
 import kotlinx.android.synthetic.main.main_home_fragment.*
+import java.util.concurrent.TimeUnit
 
 
 class MainHomeFragment() : Fragment() {
@@ -26,6 +32,7 @@ class MainHomeFragment() : Fragment() {
     private var scrollStatus = SCROLL_STATUS_DOWN
     private val smoothCount = 20  // responsible for smoothness of closer
     private val closingTime = 8  // responsible for time of closing of closer
+
 
     companion object {
         @JvmStatic
@@ -84,6 +91,7 @@ class MainHomeFragment() : Fragment() {
 
 
 
+
             scrollView_main_home_fragment.onDispatchTouchEvent =
                 object : CustomScrollView.OnDispatchTouchEvent {
                     override fun onDispatchTouch(action_up: Boolean): Int {
@@ -130,6 +138,7 @@ class MainHomeFragment() : Fragment() {
             }
         }
     }
+
 
 
 }

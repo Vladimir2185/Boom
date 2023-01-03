@@ -1,4 +1,4 @@
-package com.practicum.boom.home
+package com.practicum.boom.home.promo
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -21,4 +21,8 @@ class PromoBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
 
+
+    override fun getTheme(): Int {
+        return R.style.CustomBottomSheetDialog
+    }
 }

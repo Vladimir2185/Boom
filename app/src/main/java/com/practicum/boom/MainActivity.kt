@@ -2,13 +2,12 @@ package com.practicum.boom
 //'kotlin-android-extensions'
 // Ctrl+Alt+O    clear empty import
 import android.os.Bundle
-import android.util.Log
+import android.util.DisplayMetrics
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.practicum.boom.home.sale.FragmentHome2
 import com.practicum.boom.home.MainHomeFragment
-import com.practicum.boom.home.PromoBottomSheetFragment
 
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -22,11 +21,15 @@ class MainActivity : AppCompatActivity() {
         return super.dispatchTouchEvent(ev)
     }
 
+    companion object {
+       val displayMetrics = DisplayMetrics()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
 
         //creation of main navigation fragments
         val listOfMainFragments = listOf(
@@ -55,14 +58,15 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+    }
+
+
 /*object : MyFrameLayout(requireContext()){
             override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
                 ev?.let { it.action=MotionEvent.ACTION_DOWN}
                 return super.dispatchTouchEvent(ev)
             }
         }*/
-        //getDrawable(R.color.purple_200)
-    }
-
+    //getDrawable(R.color.purple_200)
 
 }
