@@ -1,6 +1,7 @@
 package com.practicum.boom.home.best
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -31,6 +32,7 @@ class FragmentHome1() : Fragment() {
     private val mainViewModel: MainViewModel by activityViewModels()
     private var scrollStatus = SCROLL_STATUS_DOWN
     private val screenInfo = ScreenInfo()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?

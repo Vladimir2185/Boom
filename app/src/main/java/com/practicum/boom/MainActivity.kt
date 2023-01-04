@@ -1,28 +1,27 @@
 package com.practicum.boom
 //'kotlin-android-extensions'
 // Ctrl+Alt+O    clear empty import
-import android.content.Context
+
+
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.MotionEvent
-import androidx.activity.viewModels
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
-import com.practicum.boom.home.sale.FragmentHome2
 import com.practicum.boom.home.MainHomeFragment
-
-
+import com.practicum.boom.home.sale.FragmentHome2
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
 
-companion object {
-    private val displayMetrics = DisplayMetrics()
-}
-    val liveScrollStatus: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
+    companion object {
+        private val displayMetrics = DisplayMetrics()
+    }
+
     //intercept all events if you need
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         return super.dispatchTouchEvent(ev)
@@ -63,9 +62,11 @@ companion object {
 
     }
 
-     class  ScreenInfo {
 
 
+
+
+    class ScreenInfo {
         val heightInPixels = displayMetrics.heightPixels
         val widthInPixels = displayMetrics.widthPixels
         val screenDensity = displayMetrics.density

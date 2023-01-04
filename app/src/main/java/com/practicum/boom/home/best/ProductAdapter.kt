@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,9 @@ import com.practicum.boom.api.Product
 import com.practicum.boom.R
 import com.practicum.boom.MainActivity.ScreenInfo
 import com.practicum.boom.MainViewModel
+import com.practicum.boom.home.DetailProductInfoFragment
 import com.practicum.boom.home.promo.Promo
+import com.practicum.boom.home.promo.PromoBottomSheetFragment
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_product_info.view.*
 
@@ -91,7 +94,12 @@ open class ProductAdapter(
             // Log.i("test4", "position " + position)
 
             if (offsetPosition >= 0) {
-
+                constraintLayout.setOnClickListener(object : View.OnClickListener {
+                    override fun onClick(v: View?) {
+                        val detailInfo = DetailProductInfoFragment()
+                        detailInfo.show((context as FragmentActivity).supportFragmentManager, "Tag")
+                    }
+                })
                 button.text = "position " + (offsetPosition)
                 textViewPrice.text = productList[offsetPosition].priceWithSymbol
 
@@ -210,8 +218,8 @@ open class ProductAdapter(
         if (holder.absoluteAdapterPosition == 0 && NUMBER_OF_PROMO > 0) {
             promo.promoStart(holder, context)
 
-                val promo2=Promo()
-                promo2.promoStart(holder, context)
+            val promo2 = Promo()
+            promo2.promoStart(holder, context)
 
         }
 

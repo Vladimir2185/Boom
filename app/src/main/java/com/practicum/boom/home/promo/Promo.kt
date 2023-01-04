@@ -1,5 +1,6 @@
 package com.practicum.boom.home.promo
 
+import android.app.Activity
 import android.content.Context
 import android.os.CountDownTimer
 import android.util.Log
@@ -53,7 +54,7 @@ class Promo {
                         textViewMinII_itemPromo.text = (seconds / 60 % 60 / 10).toString()
                         textViewHourI_itemPromo.text = (seconds / 3600 % 10).toString()
                         textViewHourII_itemPromo.text = (seconds / 3600 % 24 / 10).toString()
-                        Log.i("test4", "timer " + mSeconds)
+                        //Log.i("test4", "timer " + mSeconds)
                     }
                 }
 
