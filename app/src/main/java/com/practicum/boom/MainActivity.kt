@@ -1,11 +1,15 @@
 package com.practicum.boom
 //'kotlin-android-extensions'
 // Ctrl+Alt+O    clear empty import
+import android.content.Context
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.MotionEvent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
 import com.practicum.boom.home.sale.FragmentHome2
 import com.practicum.boom.home.MainHomeFragment
 
@@ -15,14 +19,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-
+companion object {
+    private val displayMetrics = DisplayMetrics()
+}
+    val liveScrollStatus: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
     //intercept all events if you need
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         return super.dispatchTouchEvent(ev)
-    }
-
-    companion object {
-       val displayMetrics = DisplayMetrics()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +63,27 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+     class  ScreenInfo {
 
+
+        val heightInPixels = displayMetrics.heightPixels
+        val widthInPixels = displayMetrics.widthPixels
+        val screenDensity = displayMetrics.density
+
+        fun widthScreen(): Int {
+            return (widthInPixels / screenDensity).toInt()
+        }
+
+        //return height of product icon at recycler view
+        fun heightOfProductIcon(heightProductIcon: Double): Int {
+            return (widthInPixels * heightProductIcon / columnCount()).toInt()
+        }
+
+        //return number of recycler view columns depending by screen resolution
+        fun columnCount(): Int {
+            return if (widthScreen() / 250 > 2) widthScreen() / 250 else 2 //если больше 2, то 250/2, иначе 2
+        }
+    }
 /*object : MyFrameLayout(requireContext()){
             override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
                 ev?.let { it.action=MotionEvent.ACTION_DOWN}

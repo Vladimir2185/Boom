@@ -8,17 +8,19 @@ import android.view.animation.AnimationUtils
 import androidx.fragment.app.FragmentActivity
 import com.practicum.boom.MainActivity
 import com.practicum.boom.R
-import com.practicum.boom.ScreenInfo
+import com.practicum.boom.MainActivity.ScreenInfo
 import com.practicum.boom.home.best.ProductAdapter
 import kotlinx.android.synthetic.main.item_promo.view.*
 import java.util.concurrent.TimeUnit
 
 class Promo {
 
-    private var timer: CountDownTimer? = null
+
     private val durationOfPromo: Long = 24
     private val screenInfo = ScreenInfo()
-
+    private object Lock {
+        var lock = false
+    }
 
     fun promoStart(holder: ProductAdapter.ProductViewHolder, context: Context) {
         snowFlakeAnimation(holder)
@@ -39,8 +41,9 @@ class Promo {
     private fun timeUntilPromoEnd(holder: ProductAdapter.ProductViewHolder) {
         val milliseconds: Long = TimeUnit.HOURS.toMillis(durationOfPromo)
 
-        if (timer == null) {
-            timer = object : CountDownTimer(milliseconds, 1000) {
+        if (Lock.lock == false) {
+            Lock.lock = true
+            val timer = object : CountDownTimer(milliseconds, 1000) {
                 override fun onTick(mSeconds: Long) {
                     val seconds = mSeconds / 1000
                     with(holder.itemView) {
@@ -50,13 +53,14 @@ class Promo {
                         textViewMinII_itemPromo.text = (seconds / 60 % 60 / 10).toString()
                         textViewHourI_itemPromo.text = (seconds / 3600 % 10).toString()
                         textViewHourII_itemPromo.text = (seconds / 3600 % 24 / 10).toString()
+                        Log.i("test4", "timer " + mSeconds)
                     }
                 }
 
                 override fun onFinish() {}
             }
 
-            timer?.start()
+            timer.start()
         }
 
     }

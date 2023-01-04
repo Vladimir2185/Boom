@@ -1,7 +1,10 @@
 package com.practicum.boom
 
 import android.app.Application
+import android.content.Context
+import android.util.DisplayMetrics
 import android.util.Log
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,10 +18,11 @@ import io.reactivex.schedulers.Schedulers
 
 open class MainViewModel(application: Application) : AndroidViewModel(application) {
     companion object {
-        const val type ="tires" //"tires"
+        const val type = "tires" //"tires"
     }
 
     val liveScrollStatus: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
+
 
     private val compositeDisposable = CompositeDisposable()
     private val db = AppDatabase.getInstance(application)
@@ -28,6 +32,7 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
     init {
         loadData()
     }
+
     fun getAllListOfProducts(): LiveData<List<Product>> {
         return db.productInfoDao().getAllProductList()
     }
@@ -82,4 +87,6 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
         super.onCleared()
         compositeDisposable.dispose()
     }
+
+
 }
