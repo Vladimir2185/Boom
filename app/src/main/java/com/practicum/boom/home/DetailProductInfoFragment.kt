@@ -1,8 +1,8 @@
 package com.practicum.boom.home
 
 import android.app.Dialog
+import android.graphics.Paint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +10,13 @@ import android.view.WindowManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.practicum.boom.MainActivity.ScreenInfo
 import com.practicum.boom.R
+import com.practicum.boom.api.Product
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_detail_product_info.*
 
 
-class DetailProductInfoFragment : BottomSheetDialogFragment() {
-
+class DetailProductInfoFragment(val product: Product) : BottomSheetDialogFragment() {
 
 
     override fun onCreateView(
@@ -53,6 +53,21 @@ class DetailProductInfoFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        textViewTitle_detailInfo.text = product.title
+        textViewPrice_detailInfo.text = String.format("from %s", product.priceFormatted())
+        textRating_detailInfo.text = product.ratingDotToComma()
+
+        val n = (product.price / ((100 - product.sale).toFloat() / 100))
+        textViewFullPrice_detailInfo.apply {
+            paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            text = String.format("from %s", product.priceFormatted(n))
+        }
+
+        Picasso.get()
+            .load(product.imageURL)
+            .placeholder(android.R.drawable.ic_menu_gallery)
+            .error(android.R.drawable.ic_menu_report_image)
+            .into(imageView_detailInfo)
 
         dialog?.window?.let { it.attributes.windowAnimations = R.style.SideSheetDialogAnimation }
 

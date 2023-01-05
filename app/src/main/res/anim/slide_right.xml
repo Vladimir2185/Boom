@@ -7,7 +7,7 @@
         android:startOffset="250"
         android:toAlpha="0.5" />
     <translate
-        android:duration="500"
+        android:duration="300"
         android:fromXDelta="00%"
         android:fromYDelta="00"
         android:toXDelta="100%p"

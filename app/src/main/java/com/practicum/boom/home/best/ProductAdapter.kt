@@ -3,13 +3,9 @@ package com.practicum.boom.home.best
 
 import android.app.Application
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +17,6 @@ import com.practicum.boom.MainActivity.ScreenInfo
 import com.practicum.boom.MainViewModel
 import com.practicum.boom.home.DetailProductInfoFragment
 import com.practicum.boom.home.promo.Promo
-import com.practicum.boom.home.promo.PromoBottomSheetFragment
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_product_info.view.*
 
@@ -94,18 +89,13 @@ open class ProductAdapter(
             // Log.i("test4", "position " + position)
 
             if (offsetPosition >= 0) {
-                constraintLayout.setOnClickListener(object : View.OnClickListener {
-                    override fun onClick(v: View?) {
-                        val detailInfo = DetailProductInfoFragment()
-                        detailInfo.show((context as FragmentActivity).supportFragmentManager, "Tag")
-                    }
-                })
-                button.text = "position " + (offsetPosition)
-                textViewPrice.text = productList[offsetPosition].priceWithSymbol
 
+                button.text = "position " + (offsetPosition)
+                textViewPrice.text = productList[offsetPosition].priceFormatted()
+                onDetailClick(holder, offsetPosition)
                 onFavoriteClick(holder, offsetPosition)
                 sale(holder, offsetPosition)
-                rating.text = dotToComma(productList[offsetPosition].rating)
+                rating.text = productList[offsetPosition].ratingDotToComma()
                 favoriteSwitch(holder, offsetPosition)
                 fragment1LayoutDrawing(holder, offsetPosition)
 
@@ -129,10 +119,19 @@ open class ProductAdapter(
             VIEW_TYPE_UNEVEN
     }
 
+    private fun onDetailClick(holder: ProductViewHolder, offsetPosition: Int) {
+        holder.constraintLayout.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+
+                val detailInfo = DetailProductInfoFragment(productList[offsetPosition])
+                detailInfo.show((context as FragmentActivity).supportFragmentManager, "Tag")
+            }
+        })
+    }
 
     private fun onFavoriteClick(holder: ProductViewHolder, offsetPosition: Int) {
         with(holder) {
-            itemView.imageButtonFavorite_itemProduct.setOnClickListener(object :
+            imageButtonFavorite.setOnClickListener(object :
                 View.OnClickListener {
                 override fun onClick(v: View?) {
 
@@ -157,11 +156,6 @@ open class ProductAdapter(
             }
         }
     }
-
-    private fun dotToComma(rating: Float): String {
-        return rating.toString().replace('.', ',')
-    }
-
 
     private fun favoriteSwitch(holder: ProductViewHolder, offsetPosition: Int) {
         with(holder) {

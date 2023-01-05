@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+
 @Entity(tableName = "product_list")
 data class Product(
     @SerializedName("thumbnail")
@@ -26,12 +27,22 @@ data class Product(
     @Expose
     val productID: String,
 
-    var type:String="general",
+    var type: String = "general",
     var favorite: Boolean = false,
     var rating: Float = 0.0f,
     var sale: Int = NO_SALE
 
 ) {
+    fun ratingDotToComma(): String {
+        return rating.toString().replace('.', ',')
+    }
+
+    fun priceFormatted(): String {
+        return String.format("$ %.2f ",price).replace('.', ',')
+    }
+    fun priceFormatted(price:Float): String {
+        return String.format("$ %.2f ",price).replace('.', ',')
+    }
     companion object {
         const val NO_SALE = 0
     }

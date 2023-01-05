@@ -14,6 +14,7 @@ import com.practicum.boom.MainActivity.ScreenInfo
 import com.practicum.boom.MainViewModel
 import com.practicum.boom.MainViewModel.Companion.type
 import com.practicum.boom.R
+import com.practicum.boom.api.Product
 import com.practicum.boom.home.MainHomeFragment.Companion.SCROLL_STATUS_DOWN
 import com.practicum.boom.home.best.ProductAdapter.Companion.NUMBER_OF_PROMO
 import com.practicum.boom.myCustomClasses.CustomGridLayoutManager
