@@ -8,9 +8,11 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.MotionEvent
 import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.practicum.boom.home.MainHomeFragment
 import com.practicum.boom.home.sale.FragmentHome2
 import kotlinx.android.synthetic.main.activity_main.*

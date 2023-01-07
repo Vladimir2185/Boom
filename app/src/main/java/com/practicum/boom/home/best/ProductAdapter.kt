@@ -1,40 +1,27 @@
 package com.practicum.boom.home.best
 
 
-import android.app.Application
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.ShapeAppearanceModel
-import com.practicum.boom.api.Product
-import com.practicum.boom.R
 import com.practicum.boom.MainActivity.ScreenInfo
-import com.practicum.boom.MainViewModel
-import com.practicum.boom.home.DetailProductInfoFragment
+import com.practicum.boom.R
+import com.practicum.boom.api.Product
 import com.practicum.boom.home.promo.Promo
+import com.practicum.boom.myCustomClasses.CustomAdapterRV
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_product_info.view.*
 
-open class ProductAdapter(
+class ProductAdapter(
     private val context: Context,
 ) :
-    RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
-
-    var productList = listOf<Product>()
-        set(value) {
-            field = value
-
-            notifyItemChanged(positionUpdate, Unit)//Unit or Any() param gives NO Animation
-        }
-    var onFragmentListener: OnFragmentListener? = null
+    CustomAdapterRV(context) {
 
     private val HIGHT_OF_PRODUCT_ICON = 1.35
-    private var positionUpdate = 0
+
     private val cornerSize = 15f
     private val marginBetweenIcon = 8
     private val screenInfo = ScreenInfo()
@@ -50,12 +37,9 @@ open class ProductAdapter(
         const val VIEW_TYPE_EVEN = 2
     }
 
-    interface OnFragmentListener {
-        fun onFavoriteSwitch(favorProduct: Boolean, prodID: String)
 
-    }
+    class ProductViewHolder(itemView: View) : CustomViewHolder(itemView) {
 
-    inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ivProduct = itemView.imageView_itemProduct
         val button = itemView.button_itemProduct
         val textViewPrice = itemView.textViewPrice_itemProduct
@@ -63,7 +47,6 @@ open class ProductAdapter(
         val imageButtonFavorite = itemView.imageButtonFavorite_itemProduct
         val constraintLayout = itemView.conLayout_itemProduct
         val rating = itemView.textRating_itemProduct
-
 
     }
 
@@ -83,21 +66,26 @@ open class ProductAdapter(
     }
 
 
-    override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         val offsetPosition = position - NUMBER_OF_PROMO
+
+        holder as ProductViewHolder
         with(holder) {
             // Log.i("test4", "position " + position)
 
             if (offsetPosition >= 0) {
+                val product = productList[offsetPosition]
 
                 button.text = "position " + (offsetPosition)
-                textViewPrice.text = productList[offsetPosition].priceFormatted()
-                onDetailClick(holder, offsetPosition)
-                onFavoriteClick(holder, offsetPosition)
-                sale(holder, offsetPosition)
-                rating.text = productList[offsetPosition].ratingDotToComma()
-                favoriteSwitch(holder, offsetPosition)
-                fragment1LayoutDrawing(holder, offsetPosition)
+                textViewPrice.text = product.priceFormatted()
+
+                onFavoriteClick(holder, product, imageButtonFavorite)
+                onDetailClick(product, constraintLayout)
+
+                sale(product, textViewSale)
+                rating.text = product.ratingDotToComma()
+                favoriteSwitch(product, imageButtonFavorite)
+                fragment1LayoutDrawing(holder, product)
 
             }
         }
@@ -119,54 +107,8 @@ open class ProductAdapter(
             VIEW_TYPE_UNEVEN
     }
 
-    private fun onDetailClick(holder: ProductViewHolder, offsetPosition: Int) {
-        holder.constraintLayout.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
 
-                val detailInfo = DetailProductInfoFragment(productList[offsetPosition])
-                detailInfo.show((context as FragmentActivity).supportFragmentManager, "Tag")
-            }
-        })
-    }
-
-    private fun onFavoriteClick(holder: ProductViewHolder, offsetPosition: Int) {
-        with(holder) {
-            imageButtonFavorite.setOnClickListener(object :
-                View.OnClickListener {
-                override fun onClick(v: View?) {
-
-                    onFragmentListener?.onFavoriteSwitch(
-                        !productList[offsetPosition].favorite,
-                        productList[offsetPosition].productID
-                    )
-                    positionUpdate = offsetPosition + NUMBER_OF_PROMO
-                }
-            }
-            )
-        }
-    }
-
-    private fun sale(holder: ProductViewHolder, offsetPosition: Int) {
-        with(holder) {
-            if (productList[offsetPosition].sale < 50)
-                textViewSale.visibility = View.INVISIBLE
-            else {
-                textViewSale.visibility = View.VISIBLE
-                textViewSale.text = " -${productList[offsetPosition].sale}% "
-            }
-        }
-    }
-
-    private fun favoriteSwitch(holder: ProductViewHolder, offsetPosition: Int) {
-        with(holder) {
-            if (productList[offsetPosition].favorite)
-                imageButtonFavorite.setImageResource(R.drawable.ic_baseline_favorite_24)
-            else
-                imageButtonFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-        }
-    }
-
-    private fun fragment1LayoutDrawing(holder: ProductViewHolder, offsetPosition: Int) {
+    private fun fragment1LayoutDrawing(holder: ProductViewHolder, product: Product) {
 
         with(holder) {
             with(constraintLayout) {
@@ -199,7 +141,7 @@ open class ProductAdapter(
                 }
 
                 Picasso.get()
-                    .load(productList[offsetPosition].imageURL)
+                    .load(product.imageURL)
                     .placeholder(android.R.drawable.ic_menu_gallery)
                     .error(android.R.drawable.ic_menu_report_image)
                     .into(ivProduct)
@@ -207,8 +149,9 @@ open class ProductAdapter(
         }
     }
 
-    override fun onViewAttachedToWindow(holder: ProductViewHolder) {
 
+    override fun onViewAttachedToWindow(holder: CustomViewHolder) {
+        holder as ProductViewHolder
         if (holder.absoluteAdapterPosition == 0 && NUMBER_OF_PROMO > 0) {
             promo.promoStart(holder, context)
 
