@@ -2,6 +2,7 @@ package com.practicum.boom.home.best
 
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,22 +12,20 @@ import com.practicum.boom.MainActivity.ScreenInfo
 import com.practicum.boom.R
 import com.practicum.boom.api.Product
 import com.practicum.boom.home.promo.Promo
-import com.practicum.boom.myCustomClasses.CustomAdapterRV
+import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_product_info.view.*
 
 class ProductAdapter(
     private val context: Context,
 ) :
-    CustomAdapterRV(context) {
+    GeneralAdapterRV(context) {
 
     private val HIGHT_OF_PRODUCT_ICON = 1.35
 
     private val cornerSize = 15f
     private val marginBetweenIcon = 8
     private val screenInfo = ScreenInfo()
-    private val promo = Promo()
-
 
     companion object {
         const val NUMBER_OF_PROMO = 1
@@ -147,19 +146,5 @@ class ProductAdapter(
             }
         }
     }
-
-
-    override fun onViewAttachedToWindow(holder: CustomViewHolder) {
-        holder as ProductViewHolder
-        if (holder.absoluteAdapterPosition == 0 && NUMBER_OF_PROMO > 0) {
-            promo.promoStart(holder, context)
-
-            val promo2 = Promo()
-            promo2.promoStart(holder, context)
-
-        }
-        super.onViewAttachedToWindow(holder)
-    }
-
 
 }

@@ -1,24 +1,23 @@
 package com.practicum.boom.home.best
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.boom.MainActivity.ScreenInfo
 import com.practicum.boom.MainViewModel
 import com.practicum.boom.MainViewModel.Companion.type
 import com.practicum.boom.R
-import com.practicum.boom.api.Product
 import com.practicum.boom.home.MainHomeFragment.Companion.SCROLL_STATUS_DOWN
 import com.practicum.boom.home.best.ProductAdapter.Companion.NUMBER_OF_PROMO
-import com.practicum.boom.myCustomClasses.CustomAdapterRV
+import com.practicum.boom.home.promo.Promo
+import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import com.practicum.boom.myCustomClasses.CustomGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_home1.*
 
@@ -32,9 +31,16 @@ class FragmentHome1() : Fragment() {
 
     //relative to width of icon
 
-   private val mainViewModel: MainViewModel by activityViewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
     private var scrollStatus = SCROLL_STATUS_DOWN
     private val screenInfo = ScreenInfo()
+    private val promo = Promo()
+    private var viewHolder: GeneralAdapterRV.CustomViewHolder? = null
+
+    override fun onResume() {
+        viewHolder?.let { promo.promoStart(it, requireContext()) }
+        super.onResume()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -50,7 +56,8 @@ class FragmentHome1() : Fragment() {
             //find-out screen resolution of current device and place it into screenInfo class
 
 
-            val productAdapter =  ProductAdapter(requireActivity())
+            val productAdapter = ProductAdapter(requireActivity())
+
             with(ProductAdapter) {
                 adapter = productAdapter
                 recycledViewPool.setMaxRecycledViews(VIEW_TYPE_PROMO, NUMBER_OF_PROMO)
@@ -102,9 +109,13 @@ class FragmentHome1() : Fragment() {
 
 
                 productAdapter.onFragmentListener =
-                    object : CustomAdapterRV.OnFragmentListener {
+                    object : GeneralAdapterRV.OnFragmentListener {
                         override fun onFavoriteSwitch(favorProduct: Boolean, prodID: String) {
                             mainViewModel.productUpdate(favorProduct, prodID)
+                        }
+                        override fun onPromoStart(holder: GeneralAdapterRV.CustomViewHolder) {
+                            promo.promoStart(holder, requireContext())
+                            viewHolder = holder
                         }
                     }
             }

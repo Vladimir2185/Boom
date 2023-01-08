@@ -39,6 +39,8 @@ class DetailProductInfoFragment(private val position: Int, private val product: 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        bottomSheetDialog.behavior.isDraggable=false
 
         onFavoriteClickListener?.onFavoriteSwitch(product, imageButtonFavorite_detailInfo)
         onFavoriteClickListener?.onFavorClick(position, imageButtonFavorite_detailInfo)
@@ -59,6 +61,7 @@ class DetailProductInfoFragment(private val position: Int, private val product: 
             text = String.format("from %s", product.priceFormatted(n))
         }
 
+
         Picasso.get()
             .load(product.imageURL)
             .placeholder(android.R.drawable.ic_menu_gallery)
@@ -73,12 +76,14 @@ class DetailProductInfoFragment(private val position: Int, private val product: 
         dialog.setOnShowListener {
 
             val bottomSheetDialog = it as BottomSheetDialog
+            bottomSheetDialog.behavior.isDraggable=false
             val parentLayout =
                 bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
             parentLayout?.let { it ->
                 val behaviour = BottomSheetBehavior.from(it)
                 setupFullHeight(it)
                 behaviour.state = BottomSheetBehavior.STATE_EXPANDED
+
             }
         }
         return dialog

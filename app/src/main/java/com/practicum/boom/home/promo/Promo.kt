@@ -1,16 +1,13 @@
 package com.practicum.boom.home.promo
 
-import android.app.Activity
 import android.content.Context
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.FragmentActivity
-import com.practicum.boom.MainActivity
-import com.practicum.boom.R
 import com.practicum.boom.MainActivity.ScreenInfo
-import com.practicum.boom.home.best.ProductAdapter
+import com.practicum.boom.R
+import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import kotlinx.android.synthetic.main.item_promo.view.*
 import java.util.concurrent.TimeUnit
 
@@ -19,17 +16,18 @@ class Promo {
 
     private val durationOfPromo: Long = 24
     private val screenInfo = ScreenInfo()
+
     private object Lock {
         var lock = false
     }
 
-    fun promoStart(holder: ProductAdapter.ProductViewHolder, context: Context) {
+    fun promoStart(holder: GeneralAdapterRV.CustomViewHolder, context: Context) {
         snowFlakeAnimation(holder)
         timeUntilPromoEnd(holder)
         onPromoClick(holder, context)
     }
 
-    private fun onPromoClick(holder: ProductAdapter.ProductViewHolder, context: Context) {
+    private fun onPromoClick(holder: GeneralAdapterRV.CustomViewHolder, context: Context) {
         holder.itemView.cl_itemPromo.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 val promoBotSheet = PromoBottomSheetFragment()
@@ -39,7 +37,7 @@ class Promo {
         })
     }
 
-    private fun timeUntilPromoEnd(holder: ProductAdapter.ProductViewHolder) {
+    private fun timeUntilPromoEnd(holder: GeneralAdapterRV.CustomViewHolder) {
         val milliseconds: Long = TimeUnit.HOURS.toMillis(durationOfPromo)
 
         if (Lock.lock == false) {
@@ -66,7 +64,7 @@ class Promo {
 
     }
 
-    fun snowFlakeAnimation(holder: ProductAdapter.ProductViewHolder) {
+   private fun snowFlakeAnimation(holder: GeneralAdapterRV.CustomViewHolder) {
         with(holder.itemView) {
             imageSnow1.layoutParams.width = (screenInfo.widthInPixels * 0.2).toInt()
             imageSnow2.layoutParams.width = (screenInfo.widthInPixels * 0.5).toInt()
@@ -94,6 +92,7 @@ class Promo {
             imageSnow2.startAnimation(snowflakeAnimation2)
             imageSnow3.startAnimation(snowflakeAnimation3)
             imageSnow4.startAnimation(snowflakeAnimation4)
+
         }
     }
 }

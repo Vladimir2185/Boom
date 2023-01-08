@@ -30,7 +30,7 @@
         <item name="android:padding">5dp</item>
         <item name="android:paddingStart">6dp</item>
         <item name="android:paddingEnd">6dp</item>
-        <item name="backgroundTint">#3F51B5</item>
+        <item name="backgroundTint">#E63F51B5</item>
     </style>
 
     <style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">

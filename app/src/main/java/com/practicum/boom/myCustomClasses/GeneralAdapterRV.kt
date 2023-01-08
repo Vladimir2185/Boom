@@ -12,10 +12,10 @@ import com.practicum.boom.api.Product
 import com.practicum.boom.home.DetailProductInfoFragment
 import com.practicum.boom.home.best.ProductAdapter.Companion.NUMBER_OF_PROMO
 
-abstract class CustomAdapterRV(
+abstract class GeneralAdapterRV(
     private val context: Context,
 ) :
-    RecyclerView.Adapter<CustomAdapterRV.CustomViewHolder>() {
+    RecyclerView.Adapter<GeneralAdapterRV.CustomViewHolder>() {
 
     var productList = listOf<Product>()
         set(value) {
@@ -31,6 +31,7 @@ abstract class CustomAdapterRV(
 
     interface OnFragmentListener {
         fun onFavoriteSwitch(favorProduct: Boolean, prodID: String)
+        fun onPromoStart(holder: CustomViewHolder)
     }
 
 
@@ -85,6 +86,12 @@ abstract class CustomAdapterRV(
         }
     }
 
+    override fun onViewAttachedToWindow(holder: CustomViewHolder) {
+        if (holder.absoluteAdapterPosition == 0 && NUMBER_OF_PROMO > 0) {
+            onFragmentListener?.onPromoStart(holder)
+        }
+        super.onViewAttachedToWindow(holder)
+    }
 
     open class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
 
