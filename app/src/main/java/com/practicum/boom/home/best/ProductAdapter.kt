@@ -79,12 +79,11 @@ class ProductAdapter(
                 button.text = "position " + (offsetPosition)
                 textViewPrice.text = product.priceFormatted()
 
-                onFavoriteClick(holder, product, imageButtonFavorite)
-                onDetailClick(product, constraintLayout)
+                onFavoriteClick(offsetPosition, imageButtonFavorite)
+                onDetailClick(offsetPosition, constraintLayout)
 
                 sale(product, textViewSale)
                 rating.text = product.ratingDotToComma()
-                favoriteSwitch(product, imageButtonFavorite)
                 fragment1LayoutDrawing(holder, product)
 
             }
@@ -159,7 +158,6 @@ class ProductAdapter(
             promo2.promoStart(holder, context)
 
         }
-
         super.onViewAttachedToWindow(holder)
     }
 

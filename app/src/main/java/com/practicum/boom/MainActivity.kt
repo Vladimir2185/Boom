@@ -6,7 +6,9 @@ package com.practicum.boom
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.KeyEvent
 import android.view.MotionEvent
+import android.view.View
 import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -64,10 +66,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-
-
-
     class ScreenInfo {
         val heightInPixels = displayMetrics.heightPixels
         val widthInPixels = displayMetrics.widthPixels
@@ -87,6 +85,8 @@ class MainActivity : AppCompatActivity() {
             return if (widthScreen() / 250 > 2) widthScreen() / 250 else 2 //если больше 2, то 250/2, иначе 2
         }
     }
+
+
 /*object : MyFrameLayout(requireContext()){
             override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
                 ev?.let { it.action=MotionEvent.ACTION_DOWN}

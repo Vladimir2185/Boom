@@ -101,7 +101,7 @@ class FragmentHome1() : Fragment() {
                 })
 
 
-                productAdapter?.onFragmentListener =
+                productAdapter.onFragmentListener =
                     object : CustomAdapterRV.OnFragmentListener {
                         override fun onFavoriteSwitch(favorProduct: Boolean, prodID: String) {
                             mainViewModel.productUpdate(favorProduct, prodID)

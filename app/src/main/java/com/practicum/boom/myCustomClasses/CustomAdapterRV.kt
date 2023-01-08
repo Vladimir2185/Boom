@@ -1,7 +1,6 @@
 package com.practicum.boom.myCustomClasses
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
@@ -11,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.practicum.boom.R
 import com.practicum.boom.api.Product
 import com.practicum.boom.home.DetailProductInfoFragment
-import com.practicum.boom.home.best.ProductAdapter
+import com.practicum.boom.home.best.ProductAdapter.Companion.NUMBER_OF_PROMO
 
 abstract class CustomAdapterRV(
     private val context: Context,
@@ -22,8 +21,10 @@ abstract class CustomAdapterRV(
         set(value) {
             field = value
             notifyItemChanged(positionUpdate, Unit)//Unit or Any() param gives NO Animation
+            imageButtonUpdate?.let { favoriteSwitch(productList[positionUpdate - 1], it) }
         }
     private var positionUpdate = 0
+    private var imageButtonUpdate: ImageButton? = null
 
 
     var onFragmentListener: OnFragmentListener? = null
@@ -32,30 +33,46 @@ abstract class CustomAdapterRV(
         fun onFavoriteSwitch(favorProduct: Boolean, prodID: String)
     }
 
-    protected fun onFavoriteClick(holder: CustomViewHolder, product: Product, view: View) {
-        view.setOnClickListener(object :
-            View.OnClickListener {
+
+    fun onFavoriteClick(position: Int, imageButton: ImageButton) {
+        imageButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
+                val product = productList[position]
                 onFragmentListener?.onFavoriteSwitch(!product.favorite, product.productID)
-                positionUpdate = holder.absoluteAdapterPosition
+                positionUpdate = position + NUMBER_OF_PROMO
+                imageButtonUpdate = imageButton
             }
         })
+        favoriteSwitch(productList[position], imageButton)
     }
 
-    protected fun onDetailClick(product: Product, view: View) {
+    protected fun onDetailClick(position: Int, view: View) {
         view.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                val detailInfo = DetailProductInfoFragment(product)
+                val product = productList[position]
+                val detailInfo = DetailProductInfoFragment(position, product)
                 detailInfo.show((context as FragmentActivity).supportFragmentManager, "Tag")
+
+                detailInfo.onFavoriteClickListener =
+                    object : DetailProductInfoFragment.OnFavoriteClickListener {
+                        override fun onFavorClick(position: Int, imageButton: ImageButton) {
+                            onFavoriteClick(position, imageButton)
+                        }
+
+                        override fun onFavoriteSwitch(product: Product, imageButton: ImageButton) {
+                            favoriteSwitch(product, imageButton)
+                        }
+                    }
             }
         })
     }
 
     protected fun favoriteSwitch(product: Product, imageButton: ImageButton) {
-        if (product.favorite)
-            imageButton.setImageResource(R.drawable.ic_baseline_favorite_24)
-        else
+        if (product.favorite == false)
             imageButton.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+        else
+            imageButton.setImageResource(R.drawable.ic_baseline_favorite_24)
+        imageButtonUpdate = null
     }
 
     protected fun sale(product: Product, textView: TextView) {
