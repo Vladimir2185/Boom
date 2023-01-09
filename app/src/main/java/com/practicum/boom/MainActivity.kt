@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    private val mainViewModel: MainViewModel by viewModels()
     companion object {
         private val displayMetrics = DisplayMetrics()
     }
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        mainViewModel.readFromFirebase()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
 
         //creation of main navigation fragments

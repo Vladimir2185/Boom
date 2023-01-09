@@ -5,17 +5,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.ShapeAppearanceModel
-import com.practicum.boom.MainActivity.ScreenInfo
 import com.practicum.boom.R
 import com.practicum.boom.api.Product
 import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_product.view.*
 
-class ProductAdapter(
+class ProductAdapterFH1(
     private val context: Context,
 ) :
     GeneralAdapterRV(context) {
@@ -35,7 +33,6 @@ class ProductAdapter(
 
 
     class ProductViewHolder(itemView: View) : CustomViewHolder(itemView) {
-
         val ivProduct = itemView.imageView_itemProduct
         val button = itemView.button_itemProduct
         val textViewPrice = itemView.textViewPrice_itemProduct
@@ -43,7 +40,16 @@ class ProductAdapter(
         val imageButtonFavorite = itemView.imageButtonFavorite_itemProduct
         val constraintLayout = itemView.conLayout_itemProduct
         val rating = itemView.textRating_itemProduct
+    }
 
+    override fun getItemViewType(position: Int): Int {
+
+        return if (NUMBER_OF_PROMO > 0 && position in 0 until NUMBER_OF_PROMO)
+            VIEW_TYPE_PROMO
+        else if (position % 2 != 0)
+            VIEW_TYPE_EVEN
+        else
+            VIEW_TYPE_UNEVEN
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -69,7 +75,7 @@ class ProductAdapter(
             // Log.i("test4", "position " + position)
 
             if (offsetPosition >= 0) {
-                val product = productList[offsetPosition]
+                val product = adapterList[offsetPosition]
 
                 button.text = "position " + (offsetPosition)
                 textViewPrice.text = product.priceFormatted()
@@ -87,20 +93,8 @@ class ProductAdapter(
 
     //помещает в метод кол-во элентов массива productList т.е. сколько будет в RecyclerView
     override fun getItemCount(): Int {
-        return (productList.size + NUMBER_OF_PROMO)
+        return (adapterList.size + NUMBER_OF_PROMO)
     }
-
-
-    override fun getItemViewType(position: Int): Int {
-
-        return if (NUMBER_OF_PROMO > 0 && position in 0 until NUMBER_OF_PROMO)
-            VIEW_TYPE_PROMO
-        else if (position % 2 != 0)
-            VIEW_TYPE_EVEN
-        else
-            VIEW_TYPE_UNEVEN
-    }
-
 
     private fun fragment1LayoutDrawing(holder: ProductViewHolder, product: Product) {
 

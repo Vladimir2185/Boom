@@ -1,6 +1,5 @@
 package com.practicum.boom.home.best
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -15,7 +14,7 @@ import com.practicum.boom.MainViewModel
 import com.practicum.boom.MainViewModel.Companion.type
 import com.practicum.boom.R
 import com.practicum.boom.home.MainHomeFragment.Companion.SCROLL_STATUS_DOWN
-import com.practicum.boom.home.best.ProductAdapter.Companion.NUMBER_OF_PROMO
+import com.practicum.boom.home.best.ProductAdapterFH1.Companion.NUMBER_OF_PROMO
 import com.practicum.boom.home.promo.Promo
 import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import com.practicum.boom.myCustomClasses.CustomGridLayoutManager
@@ -53,13 +52,11 @@ class FragmentHome1() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         with(recyclerView_fragmentHome1) {
-            //find-out screen resolution of current device and place it into screenInfo class
 
+            val productAdapterFH1 = ProductAdapterFH1(requireActivity())
 
-            val productAdapter = ProductAdapter(requireActivity())
-
-            with(ProductAdapter) {
-                adapter = productAdapter
+            with(ProductAdapterFH1) {
+                adapter = productAdapterFH1
                 recycledViewPool.setMaxRecycledViews(VIEW_TYPE_PROMO, NUMBER_OF_PROMO)
                 recycledViewPool.setMaxRecycledViews(VIEW_TYPE_UNEVEN, MAX_POOL_SIZE)
                 recycledViewPool.setMaxRecycledViews(VIEW_TYPE_EVEN, MAX_POOL_SIZE)
@@ -67,8 +64,9 @@ class FragmentHome1() : Fragment() {
 //            mainViewModel.getAllListOfProducts().observe(viewLifecycleOwner, {
 //                productAdapter?.productList = it
 //            })
+
             mainViewModel.getListOfProductsByType(type).observe(viewLifecycleOwner, {
-                productAdapter?.productList = it
+                productAdapterFH1.adapterList = it
             })
             with(mainViewModel.liveScrollStatus) {
                 observe(viewLifecycleOwner, {
@@ -98,17 +96,15 @@ class FragmentHome1() : Fragment() {
                     RecyclerView.OnItemTouchListener {
                     override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
 
-
                         value?.let { layoutManager.scrollStatus = it }
                         return false
                     }
-
                     override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
                     override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
                 })
 
 
-                productAdapter.onFragmentListener =
+                productAdapterFH1.onFragmentListener =
                     object : GeneralAdapterRV.OnFragmentListener {
                         override fun onFavoriteSwitch(favorProduct: Boolean, prodID: String) {
                             mainViewModel.productUpdate(favorProduct, prodID)

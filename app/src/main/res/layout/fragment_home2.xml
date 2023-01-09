@@ -2,20 +2,28 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_fragmentHome2"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".home.best.FragmentHome1">
+    android:layout_height="wrap_content">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout_fragmentHome2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="2" />
+        android:layout_height="wrap_content"
+        android:background="@color/main_gray">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@android:drawable/ic_menu_gallery" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_fragmentHome2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
+            android:nestedScrollingEnabled="true"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:spanCount="1"
+            tools:listitem="@layout/item_sale" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

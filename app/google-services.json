@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1030435432615",
+    "project_id": "boom-3e705",
+    "storage_bucket": "boom-3e705.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1030435432615:android:eb71fe551070583cd8d382",
+        "android_client_info": {
+          "package_name": "com.practicum.boom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1030435432615-shenjads442nbgqk0r4vapod5i71n9kd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpvDr1xLy9hdnqp2w-5-lkr_rcVYeW_h4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1030435432615-shenjads442nbgqk0r4vapod5i71n9kd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,13 +1,15 @@
 package com.practicum.boom
 
 import android.app.Application
-import android.content.Context
-import android.util.DisplayMetrics
+import android.content.ContentValues
 import android.util.Log
-import androidx.fragment.app.FragmentActivity
+import androidx.constraintlayout.helper.widget.MotionEffect.TAG
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.practicum.boom.api.ApiFactory
 import com.practicum.boom.api.Product
 import com.practicum.boom.database.AppDatabase
@@ -19,6 +21,7 @@ import io.reactivex.schedulers.Schedulers
 open class MainViewModel(application: Application) : AndroidViewModel(application) {
     companion object {
         const val type = "tires" //"tires"
+        var urlFB = ""
     }
 
     val liveScrollStatus: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
@@ -26,11 +29,41 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
 
     private val compositeDisposable = CompositeDisposable()
     private val db = AppDatabase.getInstance(application)
+    private val dbFB = Firebase.firestore
+    private val storageFB = Firebase.storage
+    private val storageRef = storageFB.reference
+    var gsReference = storageFB.getReferenceFromUrl("gs://boom-3e705.appspot.com/sale/sale2.jpeg")
 
     var productArray = listOf<Product>()
 
     init {
         loadData()
+    }
+
+    fun readFromFirebase() {
+        dbFB.collection("sale")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+
+                    Log.i("test4", "${document.id} => ${document.data["url"]}")
+                    gsReference = storageFB.getReferenceFromUrl(document.data["url"].toString())
+                    // Log.i("test4" ,"${document.id} => ${gsReference.downloadUrl.}")
+                    gsReference.downloadUrl
+                        .addOnSuccessListener { result ->
+                            urlFB = result.toString()
+                            Log.i("test4", "" + result)
+                            Log.i("test4", "" + urlFB)
+                            //Log.i("test4" ,""+gsReference.downloadUrl)
+
+                        }
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents.", exception)
+
+            }
+
     }
 
     fun getAllListOfProducts(): LiveData<List<Product>> {

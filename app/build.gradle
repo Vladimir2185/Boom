@@ -3,7 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-android-extensions'//auto binding
     id 'kotlin-kapt'
-    id  'kotlin-android'
+    id 'kotlin-android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -48,7 +49,12 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
 
-
+    implementation platform('com.google.firebase:firebase-bom:31.1.1')
+    // Import the BoM for the Firebase platform
+    // Declare the dependency for the Cloud Firestore library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-storage-ktx'
 
 
     def lifecycle_version = "2.5.1"

@@ -11,18 +11,18 @@ import com.practicum.boom.MainActivity.ScreenInfo
 import com.practicum.boom.R
 import com.practicum.boom.api.Product
 import com.practicum.boom.home.DetailProductInfoFragment
-import com.practicum.boom.home.best.ProductAdapter.Companion.NUMBER_OF_PROMO
+import com.practicum.boom.home.best.ProductAdapterFH1.Companion.NUMBER_OF_PROMO
 
 abstract class GeneralAdapterRV(
     private val context: Context,
 ) :
     RecyclerView.Adapter<GeneralAdapterRV.CustomViewHolder>() {
 
-    var productList = listOf<Product>()
+    var adapterList = listOf<Product>()
         set(value) {
             field = value
             notifyItemChanged(positionUpdate, Unit)//Unit or Any() param gives NO Animation
-            imageButtonUpdate?.let { favoriteSwitch(productList[positionUpdate - 1], it) }
+            imageButtonUpdate?.let { favoriteSwitch(adapterList[positionUpdate - 1], it) }
         }
     private var positionUpdate = 0
     private var imageButtonUpdate: ImageButton? = null
@@ -40,19 +40,19 @@ abstract class GeneralAdapterRV(
     fun onFavoriteClick(position: Int, imageButton: ImageButton) {
         imageButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                val product = productList[position]
+                val product = adapterList[position]
                 onFragmentListener?.onFavoriteSwitch(!product.favorite, product.productID)
                 positionUpdate = position + NUMBER_OF_PROMO
                 imageButtonUpdate = imageButton
             }
         })
-        favoriteSwitch(productList[position], imageButton)
+        favoriteSwitch(adapterList[position], imageButton)
     }
 
     protected fun onDetailClick(position: Int, view: View) {
         view.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                val product = productList[position]
+                val product = adapterList[position]
                 val detailInfo = DetailProductInfoFragment(position, product)
                 detailInfo.show((context as FragmentActivity).supportFragmentManager, "Tag")
 
