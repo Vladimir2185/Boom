@@ -7,6 +7,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.practicum.boom.MainActivity.ScreenInfo
 import com.practicum.boom.R
 import com.practicum.boom.api.Product
 import com.practicum.boom.home.DetailProductInfoFragment
@@ -25,7 +26,8 @@ abstract class GeneralAdapterRV(
         }
     private var positionUpdate = 0
     private var imageButtonUpdate: ImageButton? = null
-
+    protected val marginBetweenIcon = 8
+    protected val screenInfo = ScreenInfo()
 
     var onFragmentListener: OnFragmentListener? = null
 
@@ -87,18 +89,16 @@ abstract class GeneralAdapterRV(
     }
 
     override fun onViewAttachedToWindow(holder: CustomViewHolder) {
-        if (holder.absoluteAdapterPosition == 0 && NUMBER_OF_PROMO > 0) {
-            onFragmentListener?.onPromoStart(holder)
-        }
+        if (holder.absoluteAdapterPosition == 0)
+            (holder.itemView.layoutParams as ViewGroup.MarginLayoutParams).topMargin =
+                (marginBetweenIcon * screenInfo.screenDensity).toInt()
         super.onViewAttachedToWindow(holder)
     }
 
     open class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
 
     abstract override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder
-
     abstract override fun onBindViewHolder(holder: CustomViewHolder, position: Int)
-
     abstract override fun getItemCount(): Int
 
 

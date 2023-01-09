@@ -2,19 +2,18 @@ package com.practicum.boom.home.best
 
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.practicum.boom.MainActivity.ScreenInfo
 import com.practicum.boom.R
 import com.practicum.boom.api.Product
-import com.practicum.boom.home.promo.Promo
 import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_product_info.view.*
+import kotlinx.android.synthetic.main.item_product.view.*
 
 class ProductAdapter(
     private val context: Context,
@@ -22,10 +21,8 @@ class ProductAdapter(
     GeneralAdapterRV(context) {
 
     private val HIGHT_OF_PRODUCT_ICON = 1.35
-
     private val cornerSize = 15f
-    private val marginBetweenIcon = 8
-    private val screenInfo = ScreenInfo()
+
 
     companion object {
         const val NUMBER_OF_PROMO = 1
@@ -54,8 +51,8 @@ class ProductAdapter(
 
         val layout = when (viewType) {
             VIEW_TYPE_PROMO -> R.layout.item_promo
-            VIEW_TYPE_UNEVEN -> R.layout.item_product_info
-            VIEW_TYPE_EVEN -> R.layout.item_product_info
+            VIEW_TYPE_UNEVEN -> R.layout.item_product
+            VIEW_TYPE_EVEN -> R.layout.item_product
             else -> throw java.lang.RuntimeException("Unknown view type: $viewType")
         }
         val view =
@@ -67,7 +64,6 @@ class ProductAdapter(
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         val offsetPosition = position - NUMBER_OF_PROMO
-
         holder as ProductViewHolder
         with(holder) {
             // Log.i("test4", "position " + position)
@@ -147,4 +143,10 @@ class ProductAdapter(
         }
     }
 
+    override fun onViewAttachedToWindow(holder: CustomViewHolder) {
+        if (holder.absoluteAdapterPosition == 0 && NUMBER_OF_PROMO > 0) {
+            onFragmentListener?.onPromoStart(holder)
+        }
+        super.onViewAttachedToWindow(holder)
+    }
 }
