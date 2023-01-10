@@ -46,5 +46,6 @@ data class Product(
     companion object {
         const val NO_SALE = 0
     }
+
 }
 

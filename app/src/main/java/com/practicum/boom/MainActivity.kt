@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mainViewModel.readFromFirebase()
+        mainViewModel.liveShopInfo.value=mainViewModel.readFromFirebase()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
 
         //creation of main navigation fragments

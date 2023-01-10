@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.practicum.boom.MainActivity.ScreenInfo
 import com.practicum.boom.R
 import com.practicum.boom.api.Product
+import com.practicum.boom.api.ShopInfo
 import com.practicum.boom.home.DetailProductInfoFragment
 import com.practicum.boom.home.best.ProductAdapterFH1.Companion.NUMBER_OF_PROMO
 
@@ -17,12 +18,12 @@ abstract class GeneralAdapterRV(
     private val context: Context,
 ) :
     RecyclerView.Adapter<GeneralAdapterRV.CustomViewHolder>() {
-
-    var adapterList = listOf<Product>()
+    var shopInfoList = listOf<ShopInfo>()
+    var productList = listOf<Product>()
         set(value) {
             field = value
             notifyItemChanged(positionUpdate, Unit)//Unit or Any() param gives NO Animation
-            imageButtonUpdate?.let { favoriteSwitch(adapterList[positionUpdate - 1], it) }
+            imageButtonUpdate?.let { favoriteSwitch(productList[positionUpdate - 1], it) }
         }
     private var positionUpdate = 0
     private var imageButtonUpdate: ImageButton? = null
@@ -40,19 +41,19 @@ abstract class GeneralAdapterRV(
     fun onFavoriteClick(position: Int, imageButton: ImageButton) {
         imageButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                val product = adapterList[position]
+                val product = productList[position]
                 onFragmentListener?.onFavoriteSwitch(!product.favorite, product.productID)
                 positionUpdate = position + NUMBER_OF_PROMO
                 imageButtonUpdate = imageButton
             }
         })
-        favoriteSwitch(adapterList[position], imageButton)
+        favoriteSwitch(productList[position], imageButton)
     }
 
     protected fun onDetailClick(position: Int, view: View) {
         view.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                val product = adapterList[position]
+                val product = productList[position]
                 val detailInfo = DetailProductInfoFragment(position, product)
                 detailInfo.show((context as FragmentActivity).supportFragmentManager, "Tag")
 
@@ -100,6 +101,7 @@ abstract class GeneralAdapterRV(
     abstract override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder
     abstract override fun onBindViewHolder(holder: CustomViewHolder, position: Int)
     abstract override fun getItemCount(): Int
+
 
 
 }

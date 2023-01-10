@@ -75,7 +75,7 @@ class ProductAdapterFH1(
             // Log.i("test4", "position " + position)
 
             if (offsetPosition >= 0) {
-                val product = adapterList[offsetPosition]
+                val product = productList[offsetPosition]
 
                 button.text = "position " + (offsetPosition)
                 textViewPrice.text = product.priceFormatted()
@@ -93,7 +93,7 @@ class ProductAdapterFH1(
 
     //помещает в метод кол-во элентов массива productList т.е. сколько будет в RecyclerView
     override fun getItemCount(): Int {
-        return (adapterList.size + NUMBER_OF_PROMO)
+        return (productList.size + NUMBER_OF_PROMO)
     }
 
     private fun fragment1LayoutDrawing(holder: ProductViewHolder, product: Product) {

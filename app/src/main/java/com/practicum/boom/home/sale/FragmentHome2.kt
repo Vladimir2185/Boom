@@ -41,9 +41,8 @@ class FragmentHome2 : Fragment() {
             val productAdapterFH2 = ProductAdapterFH2(requireActivity())
 
             adapter = productAdapterFH2
-            mainViewModel.readFromFirebase()
-            mainViewModel.getListOfProductsByType(type).observe(viewLifecycleOwner, {
-                productAdapterFH2.adapterList = it
+            mainViewModel.liveShopInfo.observe(viewLifecycleOwner, {
+                productAdapterFH2.shopInfoList= it
             })
             with(mainViewModel.liveScrollStatus) {
                 observe(viewLifecycleOwner, {

@@ -66,7 +66,7 @@ class FragmentHome1() : Fragment() {
 //            })
 
             mainViewModel.getListOfProductsByType(type).observe(viewLifecycleOwner, {
-                productAdapterFH1.adapterList = it
+                productAdapterFH1.productList = it
             })
             with(mainViewModel.liveScrollStatus) {
                 observe(viewLifecycleOwner, {

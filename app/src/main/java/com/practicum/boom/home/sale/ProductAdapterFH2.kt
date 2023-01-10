@@ -1,16 +1,23 @@
 package com.practicum.boom.home.sale
 
 import android.content.Context
-import android.util.Log
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.practicum.boom.MainViewModel.Companion.urlFB
+import android.widget.ImageView
+import androidx.core.graphics.drawable.toBitmap
 import com.practicum.boom.R
-import com.practicum.boom.home.best.ProductAdapterFH1
 import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import com.squareup.picasso.Picasso
+import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_promo_bottom_sheet.view.*
 import kotlinx.android.synthetic.main.item_sale.view.*
+
 
 class ProductAdapterFH2(
     private val context: Context,
@@ -27,6 +34,9 @@ class ProductAdapterFH2(
 
     class SaleViewHolder(itemView: View) : CustomViewHolder(itemView) {
         val ivSale = itemView.imageViewSale_itemSale
+        val title = itemView.textViewTitle
+        val shortDescr = itemView.textViewShortDescription
+        val headlineColor = itemView.textViewColorTop
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -52,21 +62,47 @@ class ProductAdapterFH2(
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         val offsetPosition = position - NUMBER_OF_PROMO
+        val shopInfo = shopInfoList[offsetPosition]
         holder as SaleViewHolder
         with(holder) {
             if (offsetPosition >= 0) {
-                //val sale = adapterList[offsetPosition]
+
+                title.text = shopInfo.title
+                shortDescr.text = shopInfo.shortDescription
+
                 Picasso.get()
-                    //.load(R.drawable.sale1)
-                    .load(urlFB)
+                    .load(shopInfo.url)
                     .placeholder(android.R.drawable.ic_menu_gallery)
                     .error(android.R.drawable.ic_menu_report_image)
                     .into(ivSale)
+                val disposable = Observable.just(Unit)
+                    .subscribeOn(Schedulers.io())
+                    .subscribe({
+                        val bitmap = Picasso.get()
+                            .load(shopInfo.url)
+                            .placeholder(android.R.drawable.ic_menu_gallery)
+                            .error(android.R.drawable.ic_menu_report_image)
+                            .get()
+                        headlineColor.setBackgroundColor(headlineSameColor(bitmap))
+
+                    }, {
+                    })
+
             }
         }
     }
 
-    override fun getItemCount(): Int {
-        return (5 + NUMBER_OF_PROMO)
+    private fun headlineSameColor(bitmap: Bitmap): Int {
+        val pixel = bitmap.getPixel(0, 0)
+        val red: Int = Color.red(pixel)
+        val green: Int = Color.green(pixel)
+        val blue: Int = Color.blue(pixel)
+
+        return Color.rgb(red, green, blue)
     }
+
+    override fun getItemCount(): Int {
+        return (shopInfoList.size + NUMBER_OF_PROMO)
+    }
+
 }

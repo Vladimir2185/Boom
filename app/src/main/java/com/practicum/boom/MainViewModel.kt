@@ -12,7 +12,9 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.practicum.boom.api.ApiFactory
 import com.practicum.boom.api.Product
+import com.practicum.boom.api.ShopInfo
 import com.practicum.boom.database.AppDatabase
+import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -21,10 +23,11 @@ import io.reactivex.schedulers.Schedulers
 open class MainViewModel(application: Application) : AndroidViewModel(application) {
     companion object {
         const val type = "tires" //"tires"
-        var urlFB = ""
+
     }
 
     val liveScrollStatus: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
+    val liveShopInfo: MutableLiveData<List<ShopInfo>> by lazy { MutableLiveData<List<ShopInfo>>() }
 
 
     private val compositeDisposable = CompositeDisposable()
@@ -32,7 +35,6 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
     private val dbFB = Firebase.firestore
     private val storageFB = Firebase.storage
     private val storageRef = storageFB.reference
-    var gsReference = storageFB.getReferenceFromUrl("gs://boom-3e705.appspot.com/sale/sale2.jpeg")
 
     var productArray = listOf<Product>()
 
@@ -40,30 +42,28 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
         loadData()
     }
 
-    fun readFromFirebase() {
+    fun readFromFirebase(): List<ShopInfo> {
+        val productList = mutableListOf<ShopInfo>()
         dbFB.collection("sale")
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
-
-                    Log.i("test4", "${document.id} => ${document.data["url"]}")
-                    gsReference = storageFB.getReferenceFromUrl(document.data["url"].toString())
-                    // Log.i("test4" ,"${document.id} => ${gsReference.downloadUrl.}")
+                    val title = document.data["title"].toString()
+                    val shortDescr = document.data["shortDescription"].toString()
+                    val longDescr = document.data["longDescription"].toString()
+                    val gsReference = storageFB.getReferenceFromUrl(document.data["url"].toString())
                     gsReference.downloadUrl
                         .addOnSuccessListener { result ->
-                            urlFB = result.toString()
-                            Log.i("test4", "" + result)
-                            Log.i("test4", "" + urlFB)
-                            //Log.i("test4" ,""+gsReference.downloadUrl)
-
+                            val url = result.toString()
+                            val shopInfo = ShopInfo(title, shortDescr, longDescr, url)
+                            productList.add(shopInfo)
                         }
                 }
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents.", exception)
-
             }
-
+        return productList
     }
 
     fun getAllListOfProducts(): LiveData<List<Product>> {
