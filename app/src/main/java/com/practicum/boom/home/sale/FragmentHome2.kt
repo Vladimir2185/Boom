@@ -26,7 +26,7 @@ class FragmentHome2 : Fragment() {
 
     private val mainViewModel: MainViewModel by activityViewModels()
     private var scrollStatus = MainHomeFragment.SCROLL_STATUS_DOWN
-    private val screenInfo = MainActivity.ScreenInfo()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

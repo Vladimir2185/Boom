@@ -48,6 +48,8 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
+                    val id=document.id
+                    Log.i("test4", "position id " + id)
                     val title = document.data["title"].toString()
                     val shortDescr = document.data["shortDescription"].toString()
                     val longDescr = document.data["longDescription"].toString()
@@ -55,7 +57,7 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
                     gsReference.downloadUrl
                         .addOnSuccessListener { result ->
                             val url = result.toString()
-                            val shopInfo = ShopInfo(title, shortDescr, longDescr, url)
+                            val shopInfo = ShopInfo(id,title, shortDescr, longDescr, url)
                             productList.add(shopInfo)
                         }
                 }
