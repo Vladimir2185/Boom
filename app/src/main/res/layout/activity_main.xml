@@ -31,4 +31,62 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 
+    <ImageView
+        android:id="@+id/imageViewLogo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#FED2D1"
+        android:padding="75dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/dog" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline4">
+
+        <TextView
+            android:id="@+id/loadDot1"
+            android:layout_width="11dp"
+            android:layout_height="11dp"
+            android:background="@drawable/circle_corner"
+            android:backgroundTint="#99FFFFFF"
+            tools:layout_editor_absoluteX="10dp"
+            tools:layout_editor_absoluteY="10dp" />
+
+        <TextView
+            android:id="@+id/loadDot2"
+            android:layout_width="11dp"
+            android:layout_height="11dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/circle_corner"
+            android:backgroundTint="#99FFFFFF"
+            app:layout_constraintStart_toEndOf="@id/loadDot1"
+            tools:layout_editor_absoluteY="10dp" />
+
+        <TextView
+            android:id="@+id/loadDot3"
+            android:layout_width="11dp"
+            android:layout_height="11dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/circle_corner"
+            android:backgroundTint="#99FFFFFF"
+            app:layout_constraintStart_toEndOf="@id/loadDot2"
+            tools:layout_editor_absoluteY="10dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

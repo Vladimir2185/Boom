@@ -72,16 +72,23 @@ class MainHomeFragment() : Fragment() {
                 FragmentHome2.newInstance(),
                 FragmentHome3.newInstance()
             )
+
             for (i in 0 until fragList.size) {
                 textFragTitle.add(tabLayout_home_fragment.getTabAt(i)?.text.toString())
             }
             val vp2Adapter = VP2Adapter(requireActivity(), fragList)
             vp2_home_fragment.adapter = vp2Adapter
+            vp2_home_fragment.currentItem = fragList.size-1
+
             TabLayoutMediator(tabLayout_home_fragment, vp2_home_fragment) { tab, pos ->
                 tab.text = textFragTitle[pos]
             }.attach()
             //attaching image to tabItem3,because inbuilt set image cant change size of image
             tabLayout_home_fragment.getTabAt(2)?.customView = ivIconTrees_home_fragment
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                vp2_home_fragment.currentItem=0
+            }, (100))
 
 
 

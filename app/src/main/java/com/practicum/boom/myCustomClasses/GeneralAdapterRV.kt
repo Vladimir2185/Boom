@@ -1,6 +1,8 @@
 package com.practicum.boom.myCustomClasses
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
@@ -19,6 +21,10 @@ abstract class GeneralAdapterRV(
 ) :
     RecyclerView.Adapter<GeneralAdapterRV.CustomViewHolder>() {
     var shopInfoList = listOf<ShopInfo>()
+        set(value) {
+            field = value
+            notifyItemChanged(positionUpdate, Unit)
+        }
     var productList = listOf<Product>()
         set(value) {
             field = value
@@ -96,12 +102,12 @@ abstract class GeneralAdapterRV(
         super.onViewAttachedToWindow(holder)
     }
 
+
     open class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
 
     abstract override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder
     abstract override fun onBindViewHolder(holder: CustomViewHolder, position: Int)
     abstract override fun getItemCount(): Int
-
 
 
 }

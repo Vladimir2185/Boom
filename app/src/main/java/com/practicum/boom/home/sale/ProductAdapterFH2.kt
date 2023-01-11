@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.graphics.drawable.toBitmap
 import com.practicum.boom.R
+import com.practicum.boom.api.ShopInfo
 import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
@@ -72,7 +73,6 @@ class ProductAdapterFH2(
 
                 Picasso.get()
                     .load(shopInfo.url)
-                    .placeholder(android.R.drawable.ic_menu_gallery)
                     .error(android.R.drawable.ic_menu_report_image)
                     .into(ivSale)
                 val disposable = Observable.just(Unit)
@@ -80,7 +80,6 @@ class ProductAdapterFH2(
                     .subscribe({
                         val bitmap = Picasso.get()
                             .load(shopInfo.url)
-                            .placeholder(android.R.drawable.ic_menu_gallery)
                             .error(android.R.drawable.ic_menu_report_image)
                             .get()
                         headlineColor.setBackgroundColor(headlineSameColor(bitmap))

@@ -22,12 +22,11 @@ import io.reactivex.schedulers.Schedulers
 
 open class MainViewModel(application: Application) : AndroidViewModel(application) {
     companion object {
-        const val type = "tires" //"tires"
+        const val type = "socks" //"tires"
 
     }
 
     val liveScrollStatus: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
-    val liveShopInfo: MutableLiveData<List<ShopInfo>> by lazy { MutableLiveData<List<ShopInfo>>() }
 
 
     private val compositeDisposable = CompositeDisposable()
@@ -39,33 +38,13 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
     var productArray = listOf<Product>()
 
     init {
+        readFromFirebase()
         loadData()
     }
 
-    fun readFromFirebase(): List<ShopInfo> {
-        val productList = mutableListOf<ShopInfo>()
-        dbFB.collection("sale")
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    val id=document.id
-                    Log.i("test4", "position id " + id)
-                    val title = document.data["title"].toString()
-                    val shortDescr = document.data["shortDescription"].toString()
-                    val longDescr = document.data["longDescription"].toString()
-                    val gsReference = storageFB.getReferenceFromUrl(document.data["url"].toString())
-                    gsReference.downloadUrl
-                        .addOnSuccessListener { result ->
-                            val url = result.toString()
-                            val shopInfo = ShopInfo(id,title, shortDescr, longDescr, url)
-                            productList.add(shopInfo)
-                        }
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting documents.", exception)
-            }
-        return productList
+
+    fun getAllShopInfoList(): LiveData<List<ShopInfo>> {
+        return db.shopInfoDao().getAllShopInfoList()
     }
 
     fun getAllListOfProducts(): LiveData<List<Product>> {
@@ -81,15 +60,47 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun productUpdate(favorProduct: Boolean, prodID: String) {
-        val disposable2 = Observable.just(Unit)
+        val disposable = Observable.just(Unit)
             .subscribeOn(Schedulers.io())
             .subscribe({
                 return@subscribe db.productInfoDao().updateProduct(favorProduct, prodID)
             }, {
 
             })
-        compositeDisposable.add(disposable2)
+        compositeDisposable.add(disposable)
 
+    }
+
+    private fun readFromFirebase() {
+        val shopList = mutableListOf<ShopInfo>()
+        val disposable = Observable.just(Unit)
+            .subscribeOn(Schedulers.io())
+            .subscribe({
+                dbFB.collection("sale")
+                    .get()
+                    .addOnSuccessListener { result ->
+                        for (document in result) {
+                            val id = document.id
+                            val title = document.data["title"].toString()
+                            val shortDescr = document.data["shortDescription"].toString()
+                            val longDescr = document.data["longDescription"].toString()
+
+                            val gsReference =
+                                storageFB.getReferenceFromUrl(document.data["url"].toString())
+                            gsReference.downloadUrl
+                                .addOnSuccessListener { result ->
+                                    val url = result.toString()
+                                    val shopInfo = ShopInfo(id, title, shortDescr, longDescr, url)
+                                    shopList.add(shopInfo)
+                                }
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w(TAG, "Error getting documents.", exception)
+                    }
+                db.shopInfoDao().insertShopInfoList(shopList)
+            }, {})
+        compositeDisposable.add(disposable)
     }
 
     private fun loadData() {

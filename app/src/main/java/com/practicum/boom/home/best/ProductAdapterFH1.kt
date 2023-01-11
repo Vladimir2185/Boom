@@ -2,15 +2,20 @@ package com.practicum.boom.home.best
 
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.practicum.boom.R
 import com.practicum.boom.api.Product
 import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_home1.view.*
 import kotlinx.android.synthetic.main.item_product.view.*
 
 class ProductAdapterFH1(
@@ -70,6 +75,7 @@ class ProductAdapterFH1(
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         val offsetPosition = position - NUMBER_OF_PROMO
+
         holder as ProductViewHolder
         with(holder) {
             // Log.i("test4", "position " + position)
@@ -130,14 +136,16 @@ class ProductAdapterFH1(
 
                 Picasso.get()
                     .load(product.imageURL)
-                    .placeholder(android.R.drawable.ic_menu_gallery)
+//                    .placeholder(android.R.drawable.ic_menu_gallery)
                     .error(android.R.drawable.ic_menu_report_image)
                     .into(ivProduct)
             }
         }
     }
 
+
     override fun onViewAttachedToWindow(holder: CustomViewHolder) {
+
         if (holder.absoluteAdapterPosition == 0 && NUMBER_OF_PROMO > 0) {
             onFragmentListener?.onPromoStart(holder)
         }

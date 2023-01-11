@@ -1,6 +1,9 @@
 package com.practicum.boom.home.best
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -18,6 +21,7 @@ import com.practicum.boom.home.best.ProductAdapterFH1.Companion.NUMBER_OF_PROMO
 import com.practicum.boom.home.promo.Promo
 import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import com.practicum.boom.myCustomClasses.CustomGridLayoutManager
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home1.*
 
 
@@ -45,6 +49,7 @@ class FragmentHome1() : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_home1, container, false)
     }
 
@@ -90,7 +95,6 @@ class FragmentHome1() : Fragment() {
                     }
                 }
                 recyclerView_fragmentHome1.layoutManager = layoutManager
-
 
                 addOnItemTouchListener(object :
                     RecyclerView.OnItemTouchListener {
