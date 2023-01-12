@@ -3,10 +3,12 @@ package com.practicum.boom
 // Ctrl+Alt+O    clear empty import
 
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.Animation
@@ -22,6 +24,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private val mainViewModel: MainViewModel by viewModels()
+    private var animStop = false
 
     companion object {
         private val displayMetrics = DisplayMetrics()
@@ -38,72 +41,12 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationView.visibility = View.INVISIBLE
         Handler(Looper.getMainLooper()).postDelayed({
-//            bottomNavigationView.visibility = View.VISIBLE
-//            imageViewLogo.visibility = View.INVISIBLE
+            bottomNavigationView.visibility = View.VISIBLE
+            imageViewLogo.visibility = View.INVISIBLE
+            animationLayout.visibility = View.INVISIBLE
+            animStop = true
         }, (2000))
-
-        val loadingAnimation =
-            AnimationUtils.loadAnimation(this, R.anim.loading_animation)
-        val loadingAnimation2 =
-            AnimationUtils.loadAnimation(this, R.anim.loading_animation)
-        val loadingAnimation3 =
-            AnimationUtils.loadAnimation(this, R.anim.loading_animation)
-
-        loadDot1.startAnimation(loadingAnimation)
-        var i = 1
-        loadingAnimation.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {
-                if (i == 1) {
-                    loadDot2.clearAnimation()
-                    loadDot3.clearAnimation()
-                } else if (i == 2) {
-                    loadDot1.clearAnimation()
-                    loadDot3.clearAnimation()
-                } else if (i == 3) {
-                    loadDot1.clearAnimation()
-                    loadDot2.clearAnimation()
-                }
-
-
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
-
-                if (i == 1) {
-                    i++
-                    loadDot2.startAnimation(loadingAnimation)
-
-                } else if (i == 2) {
-                    i++
-                    loadDot3.startAnimation(loadingAnimation)
-//
-
-                } else if (i == 3) {
-                    i = 1
-                    loadDot1.startAnimation(loadingAnimation)
-//
-
-                }
-
-            }
-
-            override fun onAnimationRepeat(animation: Animation?) {}
-        })
-//        loadingAnimation2.setAnimationListener(object : Animation.AnimationListener {
-//            override fun onAnimationStart(animation: Animation?) {}
-//            override fun onAnimationEnd(animation: Animation?) {
-//                loadDot3.startAnimation(loadingAnimation3)
-//            }
-//            override fun onAnimationRepeat(animation: Animation?) {}
-//        })
-//        loadingAnimation3.setAnimationListener(object : Animation.AnimationListener {
-//            override fun onAnimationStart(animation: Animation?) {}
-//            override fun onAnimationEnd(animation: Animation?) {
-//                loadDot1.startAnimation(loadingAnimation)
-//            }
-//            override fun onAnimationRepeat(animation: Animation?) {}
-//        })
-
+        loadingAnimation()
 
         windowManager.defaultDisplay.getMetrics(displayMetrics)
 
@@ -134,6 +77,60 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+    }
+
+    private fun loadingAnimation() {
+        val loadingAnimation1 = AnimationUtils.loadAnimation(this, R.anim.loading_animation)
+        val loadingAnimation2 = AnimationUtils.loadAnimation(this, R.anim.loading_animation)
+        val loadingAnimation3 = AnimationUtils.loadAnimation(this, R.anim.loading_animation)
+
+        loadDot1.startAnimation(loadingAnimation1)
+
+        loadingAnimation1.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+                loadDot1.backgroundTintList = ColorStateList.valueOf(getColor(R.color.white))
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                loadDot1.backgroundTintList =
+                    ColorStateList.valueOf(getColor(R.color.semi_transparent))
+                if (!animStop)
+                    loadDot2.startAnimation(loadingAnimation2)
+
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {}
+        })
+        loadingAnimation2.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+                loadDot2.backgroundTintList = ColorStateList.valueOf(getColor(R.color.white))
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                loadDot2.backgroundTintList =
+                    ColorStateList.valueOf(getColor(R.color.semi_transparent))
+                if (!animStop)
+                    loadDot3.startAnimation(loadingAnimation3)
+
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {}
+        })
+        loadingAnimation3.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+                loadDot3.backgroundTintList = ColorStateList.valueOf(getColor(R.color.white))
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                loadDot3.backgroundTintList =
+                    ColorStateList.valueOf(getColor(R.color.semi_transparent))
+                if (!animStop)
+                    loadDot1.startAnimation(loadingAnimation1)
+
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {}
+        })
     }
 
     class ScreenInfo {

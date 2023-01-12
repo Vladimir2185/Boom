@@ -2,34 +2,29 @@ package com.practicum.boom.home.sale
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.core.graphics.drawable.toBitmap
 import com.practicum.boom.R
-import com.practicum.boom.api.ShopInfo
 import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_promo_bottom_sheet.view.*
 import kotlinx.android.synthetic.main.item_sale.view.*
 
 
 class ProductAdapterFH2(
-    private val context: Context,
+    private val context: Context, NUMBER_OF_PROMO: Int,
 ) :
-    GeneralAdapterRV(context) {
+    GeneralAdapterRV(context, NUMBER_OF_PROMO) {
 
     companion object {
-        const val NUMBER_OF_PROMO = 0
+
         const val MAX_POOL_SIZE = 5
 
         const val VIEW_TYPE_PROMO = 0
+        const val VIEW_TYPE_MAIN = 1
     }
 
 
@@ -45,14 +40,16 @@ class ProductAdapterFH2(
         return if (NUMBER_OF_PROMO > 0 && position in 0 until NUMBER_OF_PROMO)
             VIEW_TYPE_PROMO
         else
-            VIEW_TYPE_PROMO
+            VIEW_TYPE_MAIN
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SaleViewHolder {
         //Log.i("test3", "onCreateViewHolder " + ++count)
 
         val layout = when (viewType) {
-            VIEW_TYPE_PROMO -> R.layout.item_sale
+            VIEW_TYPE_PROMO -> R.layout.item_promo
+            VIEW_TYPE_MAIN -> R.layout.item_sale
+
             else -> throw java.lang.RuntimeException("Unknown view type: $viewType")
         }
         val view =
@@ -63,10 +60,11 @@ class ProductAdapterFH2(
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         val offsetPosition = position - NUMBER_OF_PROMO
-        val shopInfo = shopInfoList[offsetPosition]
+
         holder as SaleViewHolder
         with(holder) {
             if (offsetPosition >= 0) {
+                val shopInfo = shopInfoList[offsetPosition]
 
                 title.text = shopInfo.title
                 shortDescr.text = shopInfo.shortDescription
@@ -104,4 +102,11 @@ class ProductAdapterFH2(
         return (shopInfoList.size + NUMBER_OF_PROMO)
     }
 
+    override fun onViewAttachedToWindow(holder: CustomViewHolder) {
+
+        if (holder.absoluteAdapterPosition == 0 && NUMBER_OF_PROMO > 0) {
+            onFragmentListener?.onPromoStart(holder)
+        }
+        super.onViewAttachedToWindow(holder)
+    }
 }

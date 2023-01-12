@@ -14,10 +14,11 @@ import com.practicum.boom.R
 import com.practicum.boom.api.Product
 import com.practicum.boom.api.ShopInfo
 import com.practicum.boom.home.DetailProductInfoFragment
-import com.practicum.boom.home.best.ProductAdapterFH1.Companion.NUMBER_OF_PROMO
+
 
 abstract class GeneralAdapterRV(
     private val context: Context,
+    protected val NUMBER_OF_PROMO: Int
 ) :
     RecyclerView.Adapter<GeneralAdapterRV.CustomViewHolder>() {
     var shopInfoList = listOf<ShopInfo>()

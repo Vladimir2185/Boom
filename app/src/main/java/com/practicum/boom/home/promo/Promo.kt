@@ -2,8 +2,10 @@ package com.practicum.boom.home.promo
 
 import android.content.Context
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import com.practicum.boom.MainActivity.ScreenInfo
 import com.practicum.boom.R
@@ -11,7 +13,7 @@ import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import kotlinx.android.synthetic.main.item_promo.view.*
 import java.util.concurrent.TimeUnit
 
-class Promo {
+object Promo {
 
 
     private val durationOfPromo: Long = 24
@@ -19,12 +21,14 @@ class Promo {
 
     private object Lock {
         var lock = false
+        var sec:Long=0
     }
 
     fun promoStart(holder: GeneralAdapterRV.CustomViewHolder, context: Context) {
         snowFlakeAnimation(holder)
         timeUntilPromoEnd(holder)
         onPromoClick(holder, context)
+
     }
 
     private fun onPromoClick(holder: GeneralAdapterRV.CustomViewHolder, context: Context) {
@@ -46,13 +50,14 @@ class Promo {
                 override fun onTick(mSeconds: Long) {
                     val seconds = mSeconds / 1000
                     with(holder.itemView) {
+
                         textViewSecI_itemPromo.text = (seconds % 10).toString()
                         textViewSecII_itemPromo.text = (seconds % 60 / 10).toString()
                         textViewMinI_itemPromo.text = (seconds / 60 % 10).toString()
                         textViewMinII_itemPromo.text = (seconds / 60 % 60 / 10).toString()
                         textViewHourI_itemPromo.text = (seconds / 3600 % 10).toString()
                         textViewHourII_itemPromo.text = (seconds / 3600 % 24 / 10).toString()
-                        //Log.i("test4", "timer " + mSeconds)
+                        Log.i("test4", "timer " + mSeconds)
                     }
                 }
 

@@ -10,4 +10,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="main_gray">#E6E6E6</color>
     <color name="transparent">#00E6E6E6</color>
+    <color name="semi_transparent">#99FFFFFF</color>
 </resources>

@@ -1,9 +1,6 @@
 package com.practicum.boom.home.best
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -17,11 +14,9 @@ import com.practicum.boom.MainViewModel
 import com.practicum.boom.MainViewModel.Companion.type
 import com.practicum.boom.R
 import com.practicum.boom.home.MainHomeFragment.Companion.SCROLL_STATUS_DOWN
-import com.practicum.boom.home.best.ProductAdapterFH1.Companion.NUMBER_OF_PROMO
 import com.practicum.boom.home.promo.Promo
-import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import com.practicum.boom.myCustomClasses.CustomGridLayoutManager
-import kotlinx.android.synthetic.main.activity_main.*
+import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import kotlinx.android.synthetic.main.fragment_home1.*
 
 
@@ -37,11 +32,13 @@ class FragmentHome1() : Fragment() {
     private val mainViewModel: MainViewModel by activityViewModels()
     private var scrollStatus = SCROLL_STATUS_DOWN
     private val screenInfo = ScreenInfo()
-    private val promo = Promo()
     private var viewHolder: GeneralAdapterRV.CustomViewHolder? = null
 
+    private val promo = Promo
+    private val NUMBER_OF_PROMO = 1
+
     override fun onResume() {
-        viewHolder?.let { promo.promoStart(it, requireContext()) }
+        viewHolder?.let { Promo.promoStart(it, requireContext()) }
         super.onResume()
     }
 
@@ -58,7 +55,7 @@ class FragmentHome1() : Fragment() {
 
         with(recyclerView_fragmentHome1) {
 
-            val productAdapterFH1 = ProductAdapterFH1(requireActivity())
+            val productAdapterFH1 = ProductAdapterFH1(requireActivity(), NUMBER_OF_PROMO)
 
             with(ProductAdapterFH1) {
                 adapter = productAdapterFH1
@@ -114,7 +111,7 @@ class FragmentHome1() : Fragment() {
                             mainViewModel.productUpdate(favorProduct, prodID)
                         }
                         override fun onPromoStart(holder: GeneralAdapterRV.CustomViewHolder) {
-                            promo.promoStart(holder, requireContext())
+                            Promo.promoStart(holder, requireContext())
                             viewHolder = holder
                         }
                     }

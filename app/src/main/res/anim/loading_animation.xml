@@ -17,15 +17,18 @@
         android:duration="400"
         android:fromXScale="1.0"
         android:fromYScale="1.0"
-        android:toXScale="0.8"
-        android:toYScale="0.8" />
+        android:toXScale="0.75"
+        android:toYScale="0.75" />
 
     <!--    <translate-->
     <!--        android:fromYDelta="-50%p"-->
     <!--        android:repeatCount="infinite"-->
     <!--        android:toYDelta="100%p" />-->
 
-
+    <alpha
+        android:fromAlpha="0.99"
+        android:duration="400"
+        android:toAlpha="0.65" />
 
 
 </set>

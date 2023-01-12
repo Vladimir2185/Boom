@@ -2,33 +2,31 @@ package com.practicum.boom.home.best
 
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.practicum.boom.R
 import com.practicum.boom.api.Product
+import com.practicum.boom.home.promo.Promo
+
 import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_home1.view.*
 import kotlinx.android.synthetic.main.item_product.view.*
 
 class ProductAdapterFH1(
-    private val context: Context,
+    private val context: Context, NUMBER_OF_PROMO: Int,
 ) :
-    GeneralAdapterRV(context) {
+    GeneralAdapterRV(context, NUMBER_OF_PROMO) {
 
     private val HIGHT_OF_PRODUCT_ICON = 1.35
     private val cornerSize = 15f
 
 
     companion object {
-        const val NUMBER_OF_PROMO = 1
+
         const val MAX_POOL_SIZE = 5
 
         const val VIEW_TYPE_PROMO = 0
@@ -68,7 +66,6 @@ class ProductAdapterFH1(
         }
         val view =
             LayoutInflater.from(context).inflate(layout, parent, false)
-
         return ProductViewHolder(view)
     }
 
