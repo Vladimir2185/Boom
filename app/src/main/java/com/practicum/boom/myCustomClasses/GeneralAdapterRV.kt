@@ -3,6 +3,7 @@ package com.practicum.boom.myCustomClasses
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
@@ -14,6 +15,7 @@ import com.practicum.boom.R
 import com.practicum.boom.api.Product
 import com.practicum.boom.api.ShopInfo
 import com.practicum.boom.home.DetailProductInfoFragment
+import com.practicum.boom.home.sale.ProductAdapterFH2
 
 
 abstract class GeneralAdapterRV(
@@ -85,6 +87,8 @@ abstract class GeneralAdapterRV(
             imageButton.setImageResource(R.drawable.ic_baseline_favorite_24)
         imageButtonUpdate = null
     }
+
+
 
     protected fun sale(product: Product, textView: TextView) {
 

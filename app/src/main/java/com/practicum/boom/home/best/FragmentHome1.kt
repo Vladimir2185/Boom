@@ -34,7 +34,6 @@ class FragmentHome1() : Fragment() {
     private val screenInfo = ScreenInfo()
     private var viewHolder: GeneralAdapterRV.CustomViewHolder? = null
 
-    private val promo = Promo
     private val NUMBER_OF_PROMO = 1
 
     override fun onResume() {

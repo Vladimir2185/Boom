@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.item_sale.view.*
+import kotlinx.android.synthetic.main.item_sale_hor_sv.view.*
 
 
 class ProductAdapterFH2(
@@ -20,11 +21,12 @@ class ProductAdapterFH2(
     GeneralAdapterRV(context, NUMBER_OF_PROMO) {
 
     companion object {
-
+        var count = 0
         const val MAX_POOL_SIZE = 5
 
         const val VIEW_TYPE_PROMO = 0
-        const val VIEW_TYPE_MAIN = 1
+        const val VIEW_TYPE_MAIN = 10
+        const val VIEW_TYPE_SCROLL = 1
     }
 
 
@@ -33,13 +35,18 @@ class ProductAdapterFH2(
         val title = itemView.textViewTitle
         val shortDescr = itemView.textViewShortDescription
         val headlineColor = itemView.textViewColorTop
+
     }
 
     override fun getItemViewType(position: Int): Int {
 
-        return if (NUMBER_OF_PROMO > 0 && position in 0 until NUMBER_OF_PROMO)
-            VIEW_TYPE_PROMO
-        else
+        return if (NUMBER_OF_PROMO > 0 && position in 0 until NUMBER_OF_PROMO) {
+            when (position) {
+                0 -> VIEW_TYPE_PROMO
+                1 -> VIEW_TYPE_SCROLL
+                else -> VIEW_TYPE_MAIN
+            }
+        } else
             VIEW_TYPE_MAIN
     }
 
@@ -48,6 +55,7 @@ class ProductAdapterFH2(
 
         val layout = when (viewType) {
             VIEW_TYPE_PROMO -> R.layout.item_promo
+            VIEW_TYPE_SCROLL -> R.layout.item_sale_hor_sv
             VIEW_TYPE_MAIN -> R.layout.item_sale
 
             else -> throw java.lang.RuntimeException("Unknown view type: $viewType")
@@ -55,13 +63,16 @@ class ProductAdapterFH2(
         val view =
             LayoutInflater.from(context).inflate(layout, parent, false)
 
+        saleHorScrollView(view, viewType)
         return SaleViewHolder(view)
     }
 
+
+
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         val offsetPosition = position - NUMBER_OF_PROMO
-
         holder as SaleViewHolder
+
         with(holder) {
             if (offsetPosition >= 0) {
                 val shopInfo = shopInfoList[offsetPosition]
@@ -99,14 +110,27 @@ class ProductAdapterFH2(
     }
 
     override fun getItemCount(): Int {
+
         return (shopInfoList.size + NUMBER_OF_PROMO)
+        // return if (shopInfoList.size > 0) shopInfoList.size + NUMBER_OF_PROMO else 0
     }
 
+    private fun saleHorScrollView(view: View, viewType: Int) {
+        if (viewType == VIEW_TYPE_SCROLL) {
+            val linLay = view.linearLayout_itemSaleHorSV
+            for (item in 1..1) {
+                val viewScroll = LayoutInflater.from(context)
+                    .inflate(R.layout.test_test, linLay, false)
+                linLay.addView(viewScroll)
+            }
+        }
+    }
     override fun onViewAttachedToWindow(holder: CustomViewHolder) {
 
         if (holder.absoluteAdapterPosition == 0 && NUMBER_OF_PROMO > 0) {
             onFragmentListener?.onPromoStart(holder)
         }
+
         super.onViewAttachedToWindow(holder)
     }
 }

@@ -8,17 +8,21 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.DisplayMetrics
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.practicum.boom.home.MainHomeFragment
 import com.practicum.boom.home.sale.FragmentHome2
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_home2.*
+import kotlinx.android.synthetic.main.item_sale_hor_sv.view.*
 
 
 class MainActivity : AppCompatActivity() {

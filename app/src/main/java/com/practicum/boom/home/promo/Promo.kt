@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import com.practicum.boom.MainActivity.ScreenInfo
 import com.practicum.boom.R
+import com.practicum.boom.home.best.ProductAdapterFH1
 import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import kotlinx.android.synthetic.main.item_promo.view.*
 import java.util.concurrent.TimeUnit
@@ -21,7 +22,7 @@ object Promo {
 
     private object Lock {
         var lock = false
-        var sec:Long=0
+        var sec: Long = 0
     }
 
     fun promoStart(holder: GeneralAdapterRV.CustomViewHolder, context: Context) {
@@ -44,11 +45,11 @@ object Promo {
     private fun timeUntilPromoEnd(holder: GeneralAdapterRV.CustomViewHolder) {
         val milliseconds: Long = TimeUnit.HOURS.toMillis(durationOfPromo)
 
-        if (Lock.lock == false) {
-            Lock.lock = true
+        if (Lock.lock) {
+
             val timer = object : CountDownTimer(milliseconds, 1000) {
                 override fun onTick(mSeconds: Long) {
-                    val seconds = mSeconds / 1000
+                    val seconds = Lock.sec
                     with(holder.itemView) {
 
                         textViewSecI_itemPromo.text = (seconds % 10).toString()
@@ -57,7 +58,7 @@ object Promo {
                         textViewMinII_itemPromo.text = (seconds / 60 % 60 / 10).toString()
                         textViewHourI_itemPromo.text = (seconds / 3600 % 10).toString()
                         textViewHourII_itemPromo.text = (seconds / 3600 % 24 / 10).toString()
-                        Log.i("test4", "timer " + mSeconds)
+                        //Log.i("test4", "timer2 " + mSeconds)
                     }
                 }
 
@@ -66,10 +67,22 @@ object Promo {
 
             timer.start()
         }
+        else {
+            Lock.lock = true
+            val timer = object : CountDownTimer(milliseconds, 1000) {
+                override fun onTick(mSeconds: Long) {
+                    Lock.sec=mSeconds / 1000
+
+                }
+                override fun onFinish() {}
+            }
+
+            timer.start()
+        }
 
     }
 
-   private fun snowFlakeAnimation(holder: GeneralAdapterRV.CustomViewHolder) {
+    private fun snowFlakeAnimation(holder: GeneralAdapterRV.CustomViewHolder) {
         with(holder.itemView) {
             imageSnow1.layoutParams.width = (screenInfo.widthInPixels * 0.2).toInt()
             imageSnow2.layoutParams.width = (screenInfo.widthInPixels * 0.5).toInt()

@@ -14,7 +14,10 @@ import com.practicum.boom.home.MainHomeFragment
 import com.practicum.boom.home.promo.Promo
 import com.practicum.boom.myCustomClasses.CustomGridLayoutManager
 import com.practicum.boom.myCustomClasses.GeneralAdapterRV
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home2.*
+import kotlinx.android.synthetic.main.item_sale_hor_sv.*
+import kotlinx.android.synthetic.main.item_sale_hor_sv.view.*
 
 
 class FragmentHome2 : Fragment() {
@@ -27,14 +30,15 @@ class FragmentHome2 : Fragment() {
     private val mainViewModel: MainViewModel by activityViewModels()
     private var scrollStatus = MainHomeFragment.SCROLL_STATUS_DOWN
 
-    private val promo = Promo
-    private val NUMBER_OF_PROMO = 1
+
+    private val NUMBER_OF_PROMO = 2
     private var viewHolder: GeneralAdapterRV.CustomViewHolder? = null
 
     override fun onResume() {
         viewHolder?.let { Promo.promoStart(it, requireContext()) }
         super.onResume()
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,10 +49,12 @@ class FragmentHome2 : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         with(recyclerView_fragmentHome2) {
             val productAdapterFH2 = ProductAdapterFH2(requireActivity(), NUMBER_OF_PROMO)
-
             adapter = productAdapterFH2
+
             mainViewModel.getAllShopInfoList().observe(viewLifecycleOwner, {
                 productAdapterFH2.shopInfoList = it
             })
@@ -81,6 +87,7 @@ class FragmentHome2 : Fragment() {
                         override fun onFavoriteSwitch(favorProduct: Boolean, prodID: String) {
                             mainViewModel.productUpdate(favorProduct, prodID)
                         }
+
                         override fun onPromoStart(holder: GeneralAdapterRV.CustomViewHolder) {
                             Promo.promoStart(holder, requireContext())
                             viewHolder = holder
