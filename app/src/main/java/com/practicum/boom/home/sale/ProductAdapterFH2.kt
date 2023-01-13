@@ -11,6 +11,7 @@ import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.item_for_hor_sv.view.*
 import kotlinx.android.synthetic.main.item_sale.view.*
 import kotlinx.android.synthetic.main.item_sale_hor_sv.view.*
 
@@ -111,17 +112,28 @@ class ProductAdapterFH2(
 
     override fun getItemCount(): Int {
 
-        return (shopInfoList.size + NUMBER_OF_PROMO)
-        // return if (shopInfoList.size > 0) shopInfoList.size + NUMBER_OF_PROMO else 0
+        //return (shopInfoList.size + NUMBER_OF_PROMO)
+         return if (shopInfoList.size > 0) shopInfoList.size + NUMBER_OF_PROMO else 0
     }
 
     private fun saleHorScrollView(view: View, viewType: Int) {
         if (viewType == VIEW_TYPE_SCROLL) {
+
             val linLay = view.linearLayout_itemSaleHorSV
-            for (item in 1..1) {
+
+            for (item in shopInfoList.size-1 downTo 0) {
                 val viewScroll = LayoutInflater.from(context)
-                    .inflate(R.layout.test_test, linLay, false)
+                    .inflate(R.layout.item_for_hor_sv, linLay, false)
+
                 linLay.addView(viewScroll)
+                val shopInfo = shopInfoList[item]
+                viewScroll.conLayout_item_for_sv.layoutParams.width=screenInfo.widthInPixels/3
+                //viewScroll.imageButton_item_for_sv.layoutParams.height=screenInfo.widthInPixels/3
+                viewScroll.textTitle_item_for_sv.text=shopInfo.title
+                Picasso.get()
+                    .load(shopInfo.url)
+                    .error(android.R.drawable.ic_menu_report_image)
+                    .into(viewScroll.imageButton_item_for_sv)
             }
         }
     }

@@ -104,7 +104,7 @@ class ProductAdapterFH1(
 
     //помещает в метод кол-во элентов массива productList т.е. сколько будет в RecyclerView
     override fun getItemCount(): Int {
-        return (productList.size + NUMBER_OF_PROMO)
+        return if (productList.size > 0) productList.size + NUMBER_OF_PROMO else 0
 
     }
 
