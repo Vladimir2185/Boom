@@ -32,7 +32,7 @@ abstract class GeneralAdapterRV(
         set(value) {
             field = value
             notifyItemChanged(positionUpdate, Unit)//Unit or Any() param gives NO Animation
-            imageButtonUpdate?.let { favoriteSwitch(productList[positionUpdate - 1], it) }
+            imageButtonUpdate?.let { favoriteSwitch(productList[positionUpdate], it) }
         }
     private var positionUpdate = 0
     private var imageButtonUpdate: ImageButton? = null
@@ -47,16 +47,16 @@ abstract class GeneralAdapterRV(
     }
 
 
-    fun onFavoriteClick(position: Int, imageButton: ImageButton) {
+    fun onFavoriteClick(offsetPosition: Int, imageButton: ImageButton) {
         imageButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                val product = productList[position]
+                val product = productList[offsetPosition]
                 onFragmentListener?.onFavoriteSwitch(!product.favorite, product.productID)
-                positionUpdate = position + NUMBER_OF_PROMO
+                positionUpdate = offsetPosition + NUMBER_OF_PROMO
                 imageButtonUpdate = imageButton
             }
         })
-        favoriteSwitch(productList[position], imageButton)
+        favoriteSwitch(productList[offsetPosition], imageButton)
     }
 
     protected fun onDetailClick(position: Int, view: View) {
@@ -89,7 +89,6 @@ abstract class GeneralAdapterRV(
     }
 
 
-
     protected fun sale(product: Product, textView: TextView) {
 
         if (product.sale < 50)
@@ -101,9 +100,16 @@ abstract class GeneralAdapterRV(
     }
 
     override fun onViewAttachedToWindow(holder: CustomViewHolder) {
-        if (holder.absoluteAdapterPosition == 0)
+        if (holder.absoluteAdapterPosition == 0 && NUMBER_OF_PROMO > 0)
+
             (holder.itemView.layoutParams as ViewGroup.MarginLayoutParams).topMargin =
                 (marginBetweenIcon * screenInfo.screenDensity).toInt()
+
+        else if (holder.absoluteAdapterPosition in 0 until screenInfo.columnCount() && NUMBER_OF_PROMO == 0)
+
+            (holder.itemView.layoutParams as ViewGroup.MarginLayoutParams).topMargin =
+                (marginBetweenIcon * screenInfo.screenDensity).toInt()
+
         super.onViewAttachedToWindow(holder)
     }
 

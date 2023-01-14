@@ -1,6 +1,7 @@
 package com.practicum.boom.home.best
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -45,7 +46,6 @@ class FragmentHome1() : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
         return inflater.inflate(R.layout.fragment_home1, container, false)
     }
 
@@ -55,8 +55,8 @@ class FragmentHome1() : Fragment() {
         with(recyclerView_fragmentHome1) {
 
             val productAdapterFH1 = ProductAdapterFH1(requireActivity(), NUMBER_OF_PROMO)
-
             with(ProductAdapterFH1) {
+
                 adapter = productAdapterFH1
                 recycledViewPool.setMaxRecycledViews(VIEW_TYPE_PROMO, NUMBER_OF_PROMO)
                 recycledViewPool.setMaxRecycledViews(VIEW_TYPE_UNEVEN, MAX_POOL_SIZE)

@@ -5,9 +5,11 @@ package com.practicum.boom
 
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -19,10 +21,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.practicum.boom.home.MainHomeFragment
+import com.practicum.boom.home.promo.Promo
 import com.practicum.boom.home.sale.FragmentHome2
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home2.*
 import kotlinx.android.synthetic.main.item_sale_hor_sv.view.*
+import kotlinx.android.synthetic.main.main_home_fragment.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -42,15 +46,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        bottomNavigationView.visibility = View.INVISIBLE
-        Handler(Looper.getMainLooper()).postDelayed({
-            bottomNavigationView.visibility = View.VISIBLE
-            imageViewLogo.visibility = View.INVISIBLE
-            animationLayout.visibility = View.INVISIBLE
-            animStop = true
-        }, (2000))
-        loadingAnimation()
 
         windowManager.defaultDisplay.getMetrics(displayMetrics)
 
@@ -81,6 +76,42 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+        Handler(Looper.getMainLooper()).postDelayed({
+            Log.i("test4", "fr2 " + this)
+            vp2_home_fragment.currentItem = 1
+        }, (100))
+        Handler(Looper.getMainLooper()).postDelayed({
+            Log.i("test4", "fr3 " + this)
+            vp2_home_fragment.currentItem = 2
+        }, (200))
+
+        bottomNavigationView.visibility = View.INVISIBLE
+
+        val timer = object : CountDownTimer(5000, 50) {
+            override fun onTick(mSeconds: Long) {
+                if (Promo.lock() && vp2_home_fragment.currentItem == 2) {
+                    finishLoading()
+                    this.cancel()
+                }
+            }
+
+            override fun onFinish() {
+                finishLoading()
+            }
+        }
+
+        timer.start()
+        loadingAnimation()
+    }
+
+    private fun finishLoading() {
+        vp2_home_fragment.currentItem = 0
+        Handler(Looper.getMainLooper()).postDelayed({
+            bottomNavigationView.visibility = View.VISIBLE
+            imageViewLogo.visibility = View.INVISIBLE
+            animationLayout.visibility = View.INVISIBLE
+            animStop = true
+        }, (400))
     }
 
     private fun loadingAnimation() {

@@ -96,7 +96,7 @@ class ProductAdapterFH1(
 
                 sale(product, textViewSale)
                 rating.text = product.ratingDotToComma()
-                fragment1LayoutDrawing(holder, product)
+                fragment1LayoutDrawing(holder)
 
             }
         }
@@ -108,12 +108,13 @@ class ProductAdapterFH1(
 
     }
 
-    private fun fragment1LayoutDrawing(holder: ProductViewHolder, product: Product) {
-
+    private fun fragment1LayoutDrawing(holder: ProductViewHolder) {
+        val offsetPosition = holder.absoluteAdapterPosition - NUMBER_OF_PROMO
+        val product = productList[offsetPosition]
         with(holder) {
             with(constraintLayout) {
 
-                if (position % 2 != 0) {
+                if (offsetPosition % 2 == 0) {
                     layoutParams.height = screenInfo.heightOfProductIcon(HIGHT_OF_PRODUCT_ICON)
 
                     (layoutParams as ViewGroup.MarginLayoutParams).marginEnd =

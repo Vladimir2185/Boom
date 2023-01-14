@@ -22,11 +22,11 @@ class ProductAdapterFH2(
     GeneralAdapterRV(context, NUMBER_OF_PROMO) {
 
     companion object {
-        var count = 0
+
         const val MAX_POOL_SIZE = 5
 
         const val VIEW_TYPE_PROMO = 0
-        const val VIEW_TYPE_MAIN = 10
+        const val VIEW_TYPE_MAIN = 2
         const val VIEW_TYPE_SCROLL = 1
     }
 
@@ -67,7 +67,6 @@ class ProductAdapterFH2(
         saleHorScrollView(view, viewType)
         return SaleViewHolder(view)
     }
-
 
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
@@ -113,7 +112,7 @@ class ProductAdapterFH2(
     override fun getItemCount(): Int {
 
         //return (shopInfoList.size + NUMBER_OF_PROMO)
-         return if (shopInfoList.size > 0) shopInfoList.size + NUMBER_OF_PROMO else 0
+        return if (shopInfoList.size > 0) shopInfoList.size + NUMBER_OF_PROMO else 0
     }
 
     private fun saleHorScrollView(view: View, viewType: Int) {
@@ -121,15 +120,20 @@ class ProductAdapterFH2(
 
             val linLay = view.linearLayout_itemSaleHorSV
 
-            for (item in shopInfoList.size-1 downTo 0) {
+            for (item in shopInfoList.size - 1 downTo 0) {
                 val viewScroll = LayoutInflater.from(context)
                     .inflate(R.layout.item_for_hor_sv, linLay, false)
 
                 linLay.addView(viewScroll)
                 val shopInfo = shopInfoList[item]
-                viewScroll.conLayout_item_for_sv.layoutParams.width=screenInfo.widthInPixels/3
+                if (shopInfoList.size > 3)
+                    viewScroll.conLayout_item_for_sv.layoutParams.width =
+                        (screenInfo.widthInPixels / 3.5).toInt()
+                else
+                    viewScroll.conLayout_item_for_sv.layoutParams.width =
+                        screenInfo.widthInPixels / 3
                 //viewScroll.imageButton_item_for_sv.layoutParams.height=screenInfo.widthInPixels/3
-                viewScroll.textTitle_item_for_sv.text=shopInfo.title
+                viewScroll.textTitle_item_for_sv.text = shopInfo.title
                 Picasso.get()
                     .load(shopInfo.url)
                     .error(android.R.drawable.ic_menu_report_image)
@@ -137,6 +141,7 @@ class ProductAdapterFH2(
             }
         }
     }
+
     override fun onViewAttachedToWindow(holder: CustomViewHolder) {
 
         if (holder.absoluteAdapterPosition == 0 && NUMBER_OF_PROMO > 0) {

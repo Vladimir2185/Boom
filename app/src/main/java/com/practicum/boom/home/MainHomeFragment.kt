@@ -1,8 +1,10 @@
 package com.practicum.boom.home
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +15,11 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.boom.*
 import com.practicum.boom.home.best.FragmentHome1
 import com.practicum.boom.home.holidays.FragmentHome3
+import com.practicum.boom.home.promo.Promo
 import com.practicum.boom.home.sale.FragmentHome2
 import com.practicum.boom.myCustomClasses.CustomScrollView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.item_promo.view.*
 import kotlinx.android.synthetic.main.main_home_fragment.*
 
 
@@ -73,12 +77,16 @@ class MainHomeFragment() : Fragment() {
                 FragmentHome3.newInstance()
             )
 
+
+
+
             for (i in 0 until fragList.size) {
                 textFragTitle.add(tabLayout_home_fragment.getTabAt(i)?.text.toString())
             }
             val vp2Adapter = VP2Adapter(requireActivity(), fragList)
             vp2_home_fragment.adapter = vp2Adapter
-            vp2_home_fragment.currentItem = fragList.size-1
+
+
 
             TabLayoutMediator(tabLayout_home_fragment, vp2_home_fragment) { tab, pos ->
                 tab.text = textFragTitle[pos]
@@ -86,9 +94,7 @@ class MainHomeFragment() : Fragment() {
             //attaching image to tabItem3,because inbuilt set image cant change size of image
             tabLayout_home_fragment.getTabAt(2)?.customView = ivIconTrees_home_fragment
 
-            Handler(Looper.getMainLooper()).postDelayed({
-                vp2_home_fragment.currentItem=0
-            }, (100))
+
 
 
 
@@ -139,7 +145,6 @@ class MainHomeFragment() : Fragment() {
             }
         }
     }
-
 
 
 }
