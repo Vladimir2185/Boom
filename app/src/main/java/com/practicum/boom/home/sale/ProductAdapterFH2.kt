@@ -3,10 +3,13 @@ package com.practicum.boom.home.sale
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import com.practicum.boom.R
+import com.practicum.boom.home.DetailSaleFragment
 import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
@@ -36,7 +39,7 @@ class ProductAdapterFH2(
         val title = itemView.textViewTitle
         val shortDescr = itemView.textViewShortDescription
         val headlineColor = itemView.textViewColorTop
-
+        val constraintLayout = itemView.conLayout_itemSale
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -79,6 +82,14 @@ class ProductAdapterFH2(
 
                 title.text = shopInfo.title
                 shortDescr.text = shopInfo.shortDescription
+
+                constraintLayout.setOnClickListener(object : View.OnClickListener {
+                    override fun onClick(v: View?) {
+                        val detailSale = DetailSaleFragment(offsetPosition, shopInfo)
+                        detailSale.show((context as FragmentActivity).supportFragmentManager, "Tag")
+                    }
+                })
+
 
                 Picasso.get()
                     .load(shopInfo.url)
@@ -126,6 +137,15 @@ class ProductAdapterFH2(
 
                 linLay.addView(viewScroll)
                 val shopInfo = shopInfoList[item]
+
+                viewScroll.imageButton_item_for_sv.setOnClickListener(object : View.OnClickListener {
+                    override fun onClick(v: View?) {
+
+                        val detailSale = DetailSaleFragment(item, shopInfo)
+                        detailSale.show((context as FragmentActivity).supportFragmentManager, "Tag")
+                    }
+                })
+
                 if (shopInfoList.size > 3)
                     viewScroll.conLayout_item_for_sv.layoutParams.width =
                         (screenInfo.widthInPixels / 3.5).toInt()

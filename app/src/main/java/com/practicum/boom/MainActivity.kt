@@ -77,11 +77,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         Handler(Looper.getMainLooper()).postDelayed({
-            Log.i("test4", "fr2 " + this)
             vp2_home_fragment.currentItem = 1
         }, (100))
         Handler(Looper.getMainLooper()).postDelayed({
-            Log.i("test4", "fr3 " + this)
             vp2_home_fragment.currentItem = 2
         }, (200))
 

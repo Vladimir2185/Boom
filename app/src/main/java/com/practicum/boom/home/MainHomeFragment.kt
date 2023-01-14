@@ -70,14 +70,11 @@ class MainHomeFragment() : Fragment() {
                         (tabLayout_home_fragment.layoutParams as ViewGroup.MarginLayoutParams).topMargin
             }
 
-
             val fragList = listOf(
                 FragmentHome1.newInstance(),
                 FragmentHome2.newInstance(),
                 FragmentHome3.newInstance()
             )
-
-
 
 
             for (i in 0 until fragList.size) {
@@ -87,16 +84,11 @@ class MainHomeFragment() : Fragment() {
             vp2_home_fragment.adapter = vp2Adapter
 
 
-
             TabLayoutMediator(tabLayout_home_fragment, vp2_home_fragment) { tab, pos ->
                 tab.text = textFragTitle[pos]
             }.attach()
             //attaching image to tabItem3,because inbuilt set image cant change size of image
             tabLayout_home_fragment.getTabAt(2)?.customView = ivIconTrees_home_fragment
-
-
-
-
 
 
             scrollView_main_home_fragment.onDispatchTouchEvent =

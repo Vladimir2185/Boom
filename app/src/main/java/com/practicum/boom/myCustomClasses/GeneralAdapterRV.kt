@@ -15,6 +15,7 @@ import com.practicum.boom.R
 import com.practicum.boom.api.Product
 import com.practicum.boom.api.ShopInfo
 import com.practicum.boom.home.DetailProductInfoFragment
+import com.practicum.boom.home.DetailSaleFragment
 import com.practicum.boom.home.sale.ProductAdapterFH2
 
 
@@ -46,6 +47,13 @@ abstract class GeneralAdapterRV(
         fun onPromoStart(holder: CustomViewHolder)
     }
 
+    protected fun favoriteSwitch(product: Product, imageButton: ImageButton) {
+        if (product.favorite == false)
+            imageButton.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+        else
+            imageButton.setImageResource(R.drawable.ic_baseline_favorite_24)
+        imageButtonUpdate = null
+    }
 
     fun onFavoriteClick(offsetPosition: Int, imageButton: ImageButton) {
         imageButton.setOnClickListener(object : View.OnClickListener {
@@ -59,13 +67,13 @@ abstract class GeneralAdapterRV(
         favoriteSwitch(productList[offsetPosition], imageButton)
     }
 
-    protected fun onDetailClick(position: Int, view: View) {
+    protected fun onDetailClick(offsetPosition: Int, view: View) {
         view.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                val product = productList[position]
-                val detailInfo = DetailProductInfoFragment(position, product)
-                detailInfo.show((context as FragmentActivity).supportFragmentManager, "Tag")
+                val product = productList[offsetPosition]
+                val detailInfo = DetailProductInfoFragment(offsetPosition, product)
 
+                detailInfo.show((context as FragmentActivity).supportFragmentManager, "Tag")
                 detailInfo.onFavoriteClickListener =
                     object : DetailProductInfoFragment.OnFavoriteClickListener {
                         override fun onFavorClick(position: Int, imageButton: ImageButton) {
@@ -76,16 +84,9 @@ abstract class GeneralAdapterRV(
                             favoriteSwitch(product, imageButton)
                         }
                     }
+
             }
         })
-    }
-
-    protected fun favoriteSwitch(product: Product, imageButton: ImageButton) {
-        if (product.favorite == false)
-            imageButton.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-        else
-            imageButton.setImageResource(R.drawable.ic_baseline_favorite_24)
-        imageButtonUpdate = null
     }
 
 
@@ -104,7 +105,6 @@ abstract class GeneralAdapterRV(
 
             (holder.itemView.layoutParams as ViewGroup.MarginLayoutParams).topMargin =
                 (marginBetweenIcon * screenInfo.screenDensity).toInt()
-
         else if (holder.absoluteAdapterPosition in 0 until screenInfo.columnCount() && NUMBER_OF_PROMO == 0)
 
             (holder.itemView.layoutParams as ViewGroup.MarginLayoutParams).topMargin =
