@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.fragment.app.DialogFragment.STYLE_NORMAL
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.boom.MainActivity.ScreenInfo
@@ -33,7 +34,12 @@ abstract class GeneralAdapterRV(
         set(value) {
             field = value
             notifyItemChanged(positionUpdate, Unit)//Unit or Any() param gives NO Animation
-            imageButtonUpdate?.let { favoriteSwitch(productList[positionUpdate], it) }
+            imageButtonUpdate?.let {
+                favoriteSwitch(
+                    productList[positionUpdate - NUMBER_OF_PROMO],
+                    it
+                )
+            }
         }
     private var positionUpdate = 0
     private var imageButtonUpdate: ImageButton? = null
@@ -55,7 +61,7 @@ abstract class GeneralAdapterRV(
         imageButtonUpdate = null
     }
 
-    fun onFavoriteClick(offsetPosition: Int, imageButton: ImageButton) {
+    protected fun onFavoriteClick(offsetPosition: Int, imageButton: ImageButton) {
         imageButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 val product = productList[offsetPosition]
@@ -73,7 +79,9 @@ abstract class GeneralAdapterRV(
                 val product = productList[offsetPosition]
                 val detailInfo = DetailProductInfoFragment(offsetPosition, product)
 
-                detailInfo.show((context as FragmentActivity).supportFragmentManager, "Tag")
+                detailInfo.setStyle(STYLE_NORMAL, R.style.Theme_Boom)
+                detailInfo.show((context as FragmentActivity).supportFragmentManager, "detailInfo")
+
                 detailInfo.onFavoriteClickListener =
                     object : DetailProductInfoFragment.OnFavoriteClickListener {
                         override fun onFavorClick(position: Int, imageButton: ImageButton) {
@@ -89,6 +97,18 @@ abstract class GeneralAdapterRV(
         })
     }
 
+    protected fun onSaleDetailClick(offsetPosition: Int, view: View) {
+        view.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                val shopInfo = shopInfoList[offsetPosition]
+                val detailSale = DetailSaleFragment(offsetPosition, shopInfo)
+                detailSale.setStyle(STYLE_NORMAL, R.style.Theme_Boom)
+                detailSale.show((context as FragmentActivity).supportFragmentManager, "Tag")
+            }
+        })
+
+
+    }
 
     protected fun sale(product: Product, textView: TextView) {
 

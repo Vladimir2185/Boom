@@ -172,7 +172,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageButtonBack_detailInfo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/scrollView2"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/gradient_dark" />
 
     <ImageButton

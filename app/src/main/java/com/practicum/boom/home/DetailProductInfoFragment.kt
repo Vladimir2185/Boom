@@ -4,19 +4,22 @@ import android.app.Dialog
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ImageButton
+import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.practicum.boom.R
 import com.practicum.boom.api.Product
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_detail_product_info.*
 
 
-class DetailProductInfoFragment(private val position: Int, private val product: Product) :
-    BottomSheetDialogFragment() {
+class DetailProductInfoFragment(private val offsetPosition: Int, private val product: Product) :
+    DialogFragment() {
 
     var onFavoriteClickListener: OnFavoriteClickListener? = null
 
@@ -39,17 +42,17 @@ class DetailProductInfoFragment(private val position: Int, private val product: 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val bottomSheetDialog = BottomSheetDialog(requireContext())
-        bottomSheetDialog.behavior.isDraggable=false
-
-        onFavoriteClickListener?.onFavoriteSwitch(product, imageButtonFavorite_detailInfo)
-        onFavoriteClickListener?.onFavorClick(position, imageButtonFavorite_detailInfo)
-
         imageButtonBack_detailInfo.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 this@DetailProductInfoFragment.dismiss()
             }
         })
+        dialog?.window?.let { it.attributes.windowAnimations = R.style.SideSheetDialogAnimation }
+
+        onFavoriteClickListener?.onFavoriteSwitch(product, imageButtonFavorite_detailInfo)
+        onFavoriteClickListener?.onFavorClick(offsetPosition, imageButtonFavorite_detailInfo)
+
+
 
         textViewTitle_detailInfo.text = product.title
         textViewPrice_detailInfo.text = String.format("from %s", product.priceFormatted())
@@ -61,33 +64,16 @@ class DetailProductInfoFragment(private val position: Int, private val product: 
             text = String.format("from %s", product.priceFormatted(n))
         }
 
-
         Picasso.get()
             .load(product.imageURL)
             .placeholder(android.R.drawable.ic_menu_gallery)
             .error(android.R.drawable.ic_menu_report_image)
             .into(imageView_detailInfo)
 
-        dialog?.window?.let { it.attributes.windowAnimations = R.style.SideSheetDialogAnimation }
+
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = BottomSheetDialog(requireContext(), theme)
-        dialog.setOnShowListener {
 
-            val bottomSheetDialog = it as BottomSheetDialog
-            bottomSheetDialog.behavior.isDraggable=false
-            val parentLayout =
-                bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-            parentLayout?.let { it ->
-                val behaviour = BottomSheetBehavior.from(it)
-                setupFullHeight(it)
-                behaviour.state = BottomSheetBehavior.STATE_EXPANDED
-
-            }
-        }
-        return dialog
-    }
 
     private fun setupFullHeight(bottomSheet: View) {
         val layoutParams = bottomSheet.layoutParams
@@ -99,4 +85,23 @@ class DetailProductInfoFragment(private val position: Int, private val product: 
         Log.i("test4", "onDestroy()")
         super.onDestroy()
     }
+
+    //    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+//
+//        val dialog = BottomSheetDialog(requireContext(), theme)
+//        dialog.setOnShowListener {
+//
+//            val bottomSheetDialog = it as BottomSheetDialog
+//            bottomSheetDialog.behavior.isDraggable=false
+//            val parentLayout =
+//                bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+//            parentLayout?.let { it ->
+//                val behaviour = BottomSheetBehavior.from(it)
+//                //setupFullHeight(it)
+//                //behaviour.state = BottomSheetBehavior.STATE_EXPANDED
+//
+//            }
+//        }
+//        return dialog
+//    }
 }

@@ -83,13 +83,7 @@ class ProductAdapterFH2(
                 title.text = shopInfo.title
                 shortDescr.text = shopInfo.shortDescription
 
-                constraintLayout.setOnClickListener(object : View.OnClickListener {
-                    override fun onClick(v: View?) {
-                        val detailSale = DetailSaleFragment(offsetPosition, shopInfo)
-                        detailSale.show((context as FragmentActivity).supportFragmentManager, "Tag")
-                    }
-                })
-
+                onSaleDetailClick(offsetPosition, constraintLayout)
 
                 Picasso.get()
                     .load(shopInfo.url)
@@ -138,13 +132,8 @@ class ProductAdapterFH2(
                 linLay.addView(viewScroll)
                 val shopInfo = shopInfoList[item]
 
-                viewScroll.imageButton_item_for_sv.setOnClickListener(object : View.OnClickListener {
-                    override fun onClick(v: View?) {
+                onSaleDetailClick(item,viewScroll.imageButton_item_for_sv)
 
-                        val detailSale = DetailSaleFragment(item, shopInfo)
-                        detailSale.show((context as FragmentActivity).supportFragmentManager, "Tag")
-                    }
-                })
 
                 if (shopInfoList.size > 3)
                     viewScroll.conLayout_item_for_sv.layoutParams.width =
