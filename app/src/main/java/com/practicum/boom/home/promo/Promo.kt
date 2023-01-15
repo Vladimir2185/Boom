@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.FragmentActivity
@@ -37,7 +36,7 @@ object Promo {
     }
 
     private fun onPromoClick(holder: GeneralAdapterRV.CustomViewHolder, context: Context) {
-        holder.itemView.cl_itemPromo.setOnClickListener(object : View.OnClickListener {
+        holder.itemView.conLayout_itemPromo.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 val promoBotSheet = PromoBottomSheetFragment()
                 promoBotSheet.show((context as FragmentActivity).supportFragmentManager, "Tag")
@@ -56,12 +55,12 @@ object Promo {
                     val seconds = Lock.sec
                     with(holder.itemView) {
 
-                        textViewSecI_itemPromo.text = (seconds % 10).toString()
-                        textViewSecII_itemPromo.text = (seconds % 60 / 10).toString()
-                        textViewMinI_itemPromo.text = (seconds / 60 % 10).toString()
-                        textViewMinII_itemPromo.text = (seconds / 60 % 60 / 10).toString()
-                        textViewHourI_itemPromo.text = (seconds / 3600 % 10).toString()
-                        textViewHourII_itemPromo.text = (seconds / 3600 % 24 / 10).toString()
+                        textSecI_itemPromo.text = (seconds % 10).toString()
+                        textSecII_itemPromo.text = (seconds % 60 / 10).toString()
+                        textMinI_itemPromo.text = (seconds / 60 % 10).toString()
+                        textMinII_itemPromo.text = (seconds / 60 % 60 / 10).toString()
+                        textHourI_itemPromo.text = (seconds / 3600 % 10).toString()
+                        textHourII_itemPromo.text = (seconds / 3600 % 24 / 10).toString()
                         //Log.i("test4", "timer2 " + mSeconds)
                     }
                 }
@@ -78,12 +77,12 @@ object Promo {
                     if (!Lock.lock) {
                         Lock.lock = true
                         with(holder.itemView) {
-                            textViewSecI_itemPromo.text = (seconds % 10).toString()
-                            textViewSecII_itemPromo.text = (seconds % 60 / 10).toString()
-                            textViewMinI_itemPromo.text = (seconds / 60 % 10).toString()
-                            textViewMinII_itemPromo.text = (seconds / 60 % 60 / 10).toString()
-                            textViewHourI_itemPromo.text = (seconds / 3600 % 10).toString()
-                            textViewHourII_itemPromo.text = (seconds / 3600 % 24 / 10).toString()
+                            textSecI_itemPromo.text = (seconds % 10).toString()
+                            textSecII_itemPromo.text = (seconds % 60 / 10).toString()
+                            textMinI_itemPromo.text = (seconds / 60 % 10).toString()
+                            textMinII_itemPromo.text = (seconds / 60 % 60 / 10).toString()
+                            textHourI_itemPromo.text = (seconds / 3600 % 10).toString()
+                            textHourII_itemPromo.text = (seconds / 3600 % 24 / 10).toString()
                         }
                     }
 

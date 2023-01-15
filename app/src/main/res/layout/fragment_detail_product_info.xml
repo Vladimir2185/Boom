@@ -18,38 +18,38 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textViewPrice_detailInfo"
+                android:id="@+id/textPrice_detailInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:textColor="@color/black_low"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewFullPrice_detailInfo"
+                app:layout_constraintBottom_toBottomOf="@+id/textFullPrice_detailInfo"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textViewFullPrice_detailInfo"
+                app:layout_constraintTop_toTopOf="@+id/textFullPrice_detailInfo"
                 tools:text="от 1 024$ " />
 
             <TextView
-                android:id="@+id/textViewFullPrice_detailInfo"
+                android:id="@+id/textFullPrice_detailInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:textColor="@color/black_low"
                 android:textSize="18sp"
 
-                app:layout_constraintStart_toEndOf="@+id/textViewPrice_detailInfo"
+                app:layout_constraintStart_toEndOf="@+id/textPrice_detailInfo"
                 app:layout_constraintTop_toBottomOf="@+id/imageButtonFavorite_detailInfo"
                 tools:text="от 3 060$ " />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewRating_detailInfo"
+                android:id="@+id/cardRating_detailInfo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="#00FFFFFF"
                 app:cardElevation="0dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewPrice_detailInfo">
+                app:layout_constraintTop_toBottomOf="@+id/textPrice_detailInfo">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
@@ -88,7 +88,7 @@
             </androidx.cardview.widget.CardView>
 
             <ImageView
-                android:id="@+id/imageView_detailInfo"
+                android:id="@+id/image_detailInfo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
@@ -129,7 +129,7 @@
                 app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
 
             <TextView
-                android:id="@+id/textViewTitle_detailInfo"
+                android:id="@+id/textTitle_detailInfo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
@@ -138,7 +138,7 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardViewRating_detailInfo"
+                app:layout_constraintTop_toBottomOf="@+id/cardRating_detailInfo"
                 tools:text="Text title example example example example example example example example    " />
 
             <TextView
@@ -152,7 +152,7 @@
                 android:background="@color/black_low"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewTitle_detailInfo" />
+                app:layout_constraintTop_toBottomOf="@+id/textTitle_detailInfo" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline3"
@@ -165,30 +165,4 @@
 
     </ScrollView>
 
-    <ImageView
-        android:id="@+id/gradientDark"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButtonBack_detailInfo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/gradient_dark" />
-
-    <ImageButton
-        android:id="@+id/imageButtonBack_detailInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/circle_corner"
-        android:backgroundTint="@color/transparent"
-        android:padding="8dp"
-        android:scaleX="1.2"
-        android:scaleY="1.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/car_ui_icon_arrow_back"
-        app:tint="@color/main_gray" />
 </androidx.constraintlayout.widget.ConstraintLayout>

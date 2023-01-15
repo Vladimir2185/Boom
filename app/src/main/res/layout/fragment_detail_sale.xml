@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/image_fragment_detail_sale"
+        android:id="@+id/image_fragmentDetailSale"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
@@ -16,12 +16,12 @@
         app:srcCompat="@drawable/coat" />
 
     <FrameLayout
-        android:id="@+id/FL"
+        android:id="@+id/frame_fragmentDetailSale"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_fragment_detail_sale">
+        app:layout_constraintTop_toBottomOf="@+id/image_fragmentDetailSale">
 
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

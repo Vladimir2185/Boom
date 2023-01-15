@@ -4,13 +4,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cl_itemPromo"
+    android:id="@+id/conLayout_itemPromo"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp">
 
         <ImageView
-            android:id="@+id/imageViewGradient_itemPromo"
+            android:id="@+id/imageGradient_itemPromo"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/gradient_promo"
@@ -70,7 +70,7 @@
             app:tint="@color/white" />
 
         <TextView
-            android:id="@+id/textViewPromo_itemPromo"
+            android:id="@+id/textPromo_itemPromo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -103,13 +103,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageViewGradient_itemPromo"
+            app:layout_constraintBottom_toBottomOf="@+id/imageGradient_itemPromo"
             app:layout_constraintEnd_toStartOf="@+id/imageView4"
-            app:layout_constraintStart_toEndOf="@+id/textViewPromo_itemPromo"
+            app:layout_constraintStart_toEndOf="@+id/textPromo_itemPromo"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/textViewSecI_itemPromo"
+                android:id="@+id/textSecI_itemPromo"
                 style="@style/PromoTimerStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -120,65 +120,65 @@
                 tools:text="6" />
 
             <TextView
-                android:id="@+id/textViewSecII_itemPromo"
+                android:id="@+id/textSecII_itemPromo"
                 style="@style/PromoTimerStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
                 android:background="@drawable/promo_rounded_corner_middle"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textViewSecI_itemPromo"
+                app:layout_constraintEnd_toStartOf="@+id/textSecI_itemPromo"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="3" />
 
             <TextView
-                android:id="@+id/textViewMinI_itemPromo"
+                android:id="@+id/textMinI_itemPromo"
                 style="@style/PromoTimerStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
                 android:background="@drawable/promo_rounded_corner_middle"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textViewSecII_itemPromo"
+                app:layout_constraintEnd_toStartOf="@+id/textSecII_itemPromo"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
                 tools:text="9" />
 
             <TextView
-                android:id="@+id/textViewMinII_itemPromo"
+                android:id="@+id/textMinII_itemPromo"
                 style="@style/PromoTimerStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
                 android:background="@drawable/promo_rounded_corner_middle"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textViewMinI_itemPromo"
+                app:layout_constraintEnd_toStartOf="@+id/textMinI_itemPromo"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
                 tools:text="5" />
 
             <TextView
-                android:id="@+id/textViewHourI_itemPromo"
+                android:id="@+id/textHourI_itemPromo"
                 style="@style/PromoTimerStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
                 android:background="@drawable/promo_rounded_corner_middle"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textViewMinII_itemPromo"
+                app:layout_constraintEnd_toStartOf="@+id/textMinII_itemPromo"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
                 tools:text="2" />
 
             <TextView
-                android:id="@+id/textViewHourII_itemPromo"
+                android:id="@+id/textHourII_itemPromo"
                 style="@style/PromoTimerStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
                 android:background="@drawable/promo_rounded_corner_left"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textViewHourI_itemPromo"
+                app:layout_constraintEnd_toStartOf="@+id/textHourI_itemPromo"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
                 tools:text="1" />

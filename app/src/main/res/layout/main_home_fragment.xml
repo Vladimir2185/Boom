@@ -94,7 +94,7 @@
             android:id="@+id/vp2_home_fragment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="#3F51B5"
+            android:background="@color/main_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tabLayout_home_fragment">

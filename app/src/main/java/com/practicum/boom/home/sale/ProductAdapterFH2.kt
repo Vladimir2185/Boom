@@ -3,13 +3,10 @@ package com.practicum.boom.home.sale
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
 import com.practicum.boom.R
-import com.practicum.boom.home.DetailSaleFragment
 import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
@@ -132,21 +129,21 @@ class ProductAdapterFH2(
                 linLay.addView(viewScroll)
                 val shopInfo = shopInfoList[item]
 
-                onSaleDetailClick(item,viewScroll.imageButton_item_for_sv)
+                onSaleDetailClick(item,viewScroll.imageButton_itemForSV)
 
 
                 if (shopInfoList.size > 3)
-                    viewScroll.conLayout_item_for_sv.layoutParams.width =
+                    viewScroll.conLayout_itemForSV.layoutParams.width =
                         (screenInfo.widthInPixels / 3.5).toInt()
                 else
-                    viewScroll.conLayout_item_for_sv.layoutParams.width =
+                    viewScroll.conLayout_itemForSV.layoutParams.width =
                         screenInfo.widthInPixels / 3
                 //viewScroll.imageButton_item_for_sv.layoutParams.height=screenInfo.widthInPixels/3
-                viewScroll.textTitle_item_for_sv.text = shopInfo.title
+                viewScroll.textTitle_itemForSV.text = shopInfo.title
                 Picasso.get()
                     .load(shopInfo.url)
                     .error(android.R.drawable.ic_menu_report_image)
-                    .into(viewScroll.imageButton_item_for_sv)
+                    .into(viewScroll.imageButton_itemForSV)
             }
         }
     }

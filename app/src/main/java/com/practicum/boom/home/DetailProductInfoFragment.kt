@@ -1,25 +1,20 @@
 package com.practicum.boom.home
 
-import android.app.Dialog
 import android.graphics.Paint
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageButton
-import androidx.fragment.app.DialogFragment
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.practicum.boom.R
 import com.practicum.boom.api.Product
+import com.practicum.boom.myCustomClasses.GeneralDetailFragment
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.base_detail.*
 import kotlinx.android.synthetic.main.fragment_detail_product_info.*
 
 
 class DetailProductInfoFragment(private val offsetPosition: Int, private val product: Product) :
-    DialogFragment() {
+    GeneralDetailFragment() {
 
     var onFavoriteClickListener: OnFavoriteClickListener? = null
 
@@ -28,38 +23,25 @@ class DetailProductInfoFragment(private val offsetPosition: Int, private val pro
         fun onFavoriteSwitch(product: Product, imageButton: ImageButton)
     }
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-
-        return inflater.inflate(R.layout.fragment_detail_product_info, container, false)
-    }
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        imageButtonBack_detailInfo.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                this@DetailProductInfoFragment.dismiss()
-            }
-        })
-        dialog?.window?.let { it.attributes.windowAnimations = R.style.SideSheetDialogAnimation }
+        layoutInflater.inflate(
+            R.layout.fragment_detail_product_info,
+            this.conLayoutAttachTo_baseDetail, true
+        )
 
         onFavoriteClickListener?.onFavoriteSwitch(product, imageButtonFavorite_detailInfo)
         onFavoriteClickListener?.onFavorClick(offsetPosition, imageButtonFavorite_detailInfo)
 
 
 
-        textViewTitle_detailInfo.text = product.title
-        textViewPrice_detailInfo.text = String.format("from %s", product.priceFormatted())
+        textTitle_detailInfo.text = product.title
+        textPrice_detailInfo.text = String.format("from %s", product.priceFormatted())
         textRating_detailInfo.text = product.ratingDotToComma()
 
         val n = (product.price / ((100 - product.sale).toFloat() / 100))
-        textViewFullPrice_detailInfo.apply {
+        textFullPrice_detailInfo.apply {
             paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             text = String.format("from %s", product.priceFormatted(n))
         }
@@ -68,11 +50,10 @@ class DetailProductInfoFragment(private val offsetPosition: Int, private val pro
             .load(product.imageURL)
             .placeholder(android.R.drawable.ic_menu_gallery)
             .error(android.R.drawable.ic_menu_report_image)
-            .into(imageView_detailInfo)
+            .into(image_detailInfo)
 
 
     }
-
 
 
     private fun setupFullHeight(bottomSheet: View) {
@@ -81,10 +62,6 @@ class DetailProductInfoFragment(private val offsetPosition: Int, private val pro
         bottomSheet.layoutParams = layoutParams
     }
 
-    override fun onDestroy() {
-        Log.i("test4", "onDestroy()")
-        super.onDestroy()
-    }
 
     //    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 //

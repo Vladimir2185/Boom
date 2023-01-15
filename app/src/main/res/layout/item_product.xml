@@ -12,7 +12,7 @@
     android:background="@drawable/rounded_corner_right">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imageView_itemProduct"
+        android:id="@+id/image_itemProduct"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline_itemProduct"
@@ -35,7 +35,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textViewPrice_itemProduct"
+        android:id="@+id/textPrice_itemProduct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -48,7 +48,7 @@
         tools:text="245" />
 
     <TextView
-        android:id="@+id/textViewSale_itemProduct"
+        android:id="@+id/textSale_itemProduct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -59,8 +59,8 @@
         android:textColor="@color/white"
         android:textSize="13sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewPrice_itemProduct"
-        app:layout_constraintStart_toEndOf="@+id/textViewPrice_itemProduct"
+        app:layout_constraintBottom_toBottomOf="@+id/textPrice_itemProduct"
+        app:layout_constraintStart_toEndOf="@+id/textPrice_itemProduct"
         app:layout_constraintTop_toTopOf="@+id/guideline_itemProduct"
         tools:text=" -60% " />
 
@@ -87,14 +87,14 @@
         app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewRating_itemProduct"
+        android:id="@+id/cardRating_itemProduct"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         app:cardBackgroundColor="#00FFFFFF"
         app:cardElevation="0dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPrice_itemProduct">
+        app:layout_constraintTop_toBottomOf="@+id/textPrice_itemProduct">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"

@@ -3,30 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/conLayoutAttachTo_baseDetail"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/gradientDark2"
+        android:id="@+id/gradientDark"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/imageButtonBack_detailInfo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/gradient_dark" />
 
     <ImageButton
-        android:id="@+id/imageButtonBack_detailInfo2"
+        android:id="@+id/imageButtonBack_detailInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/circle_corner"
         android:backgroundTint="@color/transparent"
-        android:padding="8dp"
+        android:padding="16dp"
         android:scaleX="1.2"
         android:scaleY="1.2"
         app:layout_constraintStart_toStartOf="parent"

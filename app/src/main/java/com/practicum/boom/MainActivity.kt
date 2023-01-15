@@ -10,13 +10,10 @@ import android.os.Handler
 import android.os.Looper
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -24,8 +21,6 @@ import com.practicum.boom.home.MainHomeFragment
 import com.practicum.boom.home.promo.Promo
 import com.practicum.boom.home.sale.FragmentHome2
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_home2.*
-import kotlinx.android.synthetic.main.item_sale_hor_sv.view.*
 import kotlinx.android.synthetic.main.main_home_fragment.*
 
 
@@ -46,6 +41,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //allTypes()
 
         windowManager.defaultDisplay.getMetrics(displayMetrics)
 
@@ -102,11 +99,25 @@ class MainActivity : AppCompatActivity() {
         loadingAnimation()
     }
 
+    private fun allTypes() {
+        mainViewModel.getAllProductList().observe(this) {
+            val types = mutableListOf<String>()
+            var count = 0
+            for (t in it)
+                types.add(t.type)
+            for (type in types.distinct()) {
+                Log.i("test4", "type: ${type} ")
+                ++count
+            }
+            Log.i("test4", "count: ${count}\n")
+        }
+    }
+
     private fun finishLoading() {
         vp2_home_fragment.currentItem = 0
         Handler(Looper.getMainLooper()).postDelayed({
             bottomNavigationView.visibility = View.VISIBLE
-            imageViewLogo.visibility = View.INVISIBLE
+            imageLogo.visibility = View.INVISIBLE
             animationLayout.visibility = View.INVISIBLE
             animStop = true
         }, (400))

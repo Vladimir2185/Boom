@@ -1,7 +1,6 @@
 package com.practicum.boom.home.sale
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -15,10 +14,7 @@ import com.practicum.boom.home.MainHomeFragment
 import com.practicum.boom.home.promo.Promo
 import com.practicum.boom.myCustomClasses.CustomGridLayoutManager
 import com.practicum.boom.myCustomClasses.GeneralAdapterRV
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home2.*
-import kotlinx.android.synthetic.main.item_sale_hor_sv.*
-import kotlinx.android.synthetic.main.item_sale_hor_sv.view.*
 
 
 class FragmentHome2 : Fragment() {
@@ -53,24 +49,24 @@ class FragmentHome2 : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        with(recyclerView_fragmentHome2) {
+        with(recycler_fragmentHome2) {
             val productAdapterFH2 = ProductAdapterFH2(requireActivity(), NUMBER_OF_PROMO)
             adapter = productAdapterFH2
 
-            mainViewModel.getAllShopInfoList().observe(viewLifecycleOwner, {
+            mainViewModel.getAllShopInfoList().observe(viewLifecycleOwner) {
                 productAdapterFH2.shopInfoList = it
-            })
+            }
             with(mainViewModel.liveScrollStatus) {
-                observe(viewLifecycleOwner, {
+                observe(viewLifecycleOwner) {
                     scrollStatus = it
-                })
+                }
 
 
                 //setup CustomGridLayoutManager and freezing/unfreezing recyclerView scrolling by isScrollEnabled param
                 val layoutManager =
                     CustomGridLayoutManager(requireContext(), 1, true)
 
-                recyclerView_fragmentHome2.layoutManager = layoutManager
+                recycler_fragmentHome2.layoutManager = layoutManager
 
                 addOnItemTouchListener(object :
                     RecyclerView.OnItemTouchListener {

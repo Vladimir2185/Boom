@@ -1,7 +1,6 @@
 package com.practicum.boom
 
 import android.app.Application
-import android.content.ContentValues
 import android.util.Log
 import androidx.constraintlayout.helper.widget.MotionEffect.TAG
 import androidx.lifecycle.AndroidViewModel
@@ -14,7 +13,6 @@ import com.practicum.boom.api.ApiFactory
 import com.practicum.boom.api.Product
 import com.practicum.boom.api.ShopInfo
 import com.practicum.boom.database.AppDatabase
-import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -23,7 +21,6 @@ import io.reactivex.schedulers.Schedulers
 open class MainViewModel(application: Application) : AndroidViewModel(application) {
     companion object {
         const val type = "socks" //"tires"
-
     }
 
     val liveScrollStatus: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
@@ -47,15 +44,19 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
         return db.shopInfoDao().getAllShopInfoList()
     }
 
-    fun getAllListOfProducts(): LiveData<List<Product>> {
+    fun getAllProductList(): LiveData<List<Product>> {
         return db.productInfoDao().getAllProductList()
+    }
+    fun getBestProduct(): LiveData<List<Product>>{
+        return db.productInfoDao().getBestProduct()
     }
 
     fun getListOfProductsByType(typeOfProduct: String): LiveData<List<Product>> {
         return db.productInfoDao().getProductListByType(typeOfProduct)
     }
 
-    fun getItemProduct(prodID: String): LiveData<Product> {
+
+    fun getProductItem(prodID: String): LiveData<Product> {
         return db.productInfoDao().getProductItem(prodID)
     }
 

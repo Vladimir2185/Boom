@@ -1,27 +1,19 @@
-package com.practicum.boom.home.best
+package com.practicum.boom.home
 
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.practicum.boom.R
-import com.practicum.boom.api.Product
-import com.practicum.boom.home.promo.Promo
-import com.practicum.boom.home.sale.ProductAdapterFH2
 
 import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_home1.view.*
 import kotlinx.android.synthetic.main.item_product.view.*
-import kotlinx.android.synthetic.main.item_promo.view.*
 
-class ProductAdapterFH1(
+class BaseProductAdapter(
     private val context: Context, NUMBER_OF_PROMO: Int,
 ) :
     GeneralAdapterRV(context, NUMBER_OF_PROMO) {
@@ -41,10 +33,10 @@ class ProductAdapterFH1(
 
 
     class ProductViewHolder(itemView: View) : CustomViewHolder(itemView) {
-        val ivProduct = itemView.imageView_itemProduct
+        val ivProduct = itemView.image_itemProduct
         val button = itemView.button_itemProduct
-        val textViewPrice = itemView.textViewPrice_itemProduct
-        val textViewSale = itemView.textViewSale_itemProduct
+        val textViewPrice = itemView.textPrice_itemProduct
+        val textViewSale = itemView.textSale_itemProduct
         val imageButtonFavorite = itemView.imageButtonFavorite_itemProduct
         val constraintLayout = itemView.conLayout_itemProduct
         val rating = itemView.textRating_itemProduct

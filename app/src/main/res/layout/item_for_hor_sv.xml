@@ -2,23 +2,23 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/conLayout_item_for_sv"
+    android:id="@+id/conLayout_itemForSV"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <ImageButton
-        android:id="@+id/imageButton_item_for_sv"
+        android:id="@+id/imageButton_itemForSV"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="@+id/imageHoleBorder"
+        app:layout_constraintBottom_toBottomOf="@+id/imageHoleBorder_itemForSV"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@drawable/coat" />
 
     <ImageView
-        android:id="@+id/imageHoleBorder"
+        android:id="@+id/imageHoleBorder_itemForSV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
@@ -28,7 +28,7 @@
         app:srcCompat="@drawable/hole_border" />
 
     <TextView
-        android:id="@+id/textTitle_item_for_sv"
+        android:id="@+id/textTitle_itemForSV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -39,7 +39,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageHoleBorder"
+        app:layout_constraintTop_toBottomOf="@id/imageHoleBorder_itemForSV"
         tools:text="TextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
