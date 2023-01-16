@@ -1,15 +1,18 @@
 package com.practicum.boom.myCustomClasses
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.boom.MainActivity
+import com.practicum.boom.MainActivity.Companion.SCROLL_STATUS_DOWN
 import com.practicum.boom.MainViewModel
 import com.practicum.boom.R
 import com.practicum.boom.home.BaseProductAdapter
@@ -17,15 +20,21 @@ import com.practicum.boom.home.MainHomeFragment
 import com.practicum.boom.home.promo.Promo
 import kotlinx.android.synthetic.main.fragment_base_general.*
 
-open class GeneralBaseFragment : Fragment() {
+open class GeneralBaseFragment(private val type: String = "socks") : Fragment() {
     protected val mainViewModel: MainViewModel by activityViewModels()
-    protected var scrollStatus = MainHomeFragment.SCROLL_STATUS_DOWN
+    protected var scrollStatus = SCROLL_STATUS_DOWN
     protected val screenInfo = MainActivity.ScreenInfo()
     protected var viewHolder: GeneralAdapterRV.CustomViewHolder? = null
 
-    protected open val NUMBER_OF_PROMO = 0
-    protected open val TYPE = "socks" //"tires"
 
+    protected open val NUMBER_OF_PROMO = 0
+
+    fun marginTopRV() = (screenInfo.screenDensity * 8).toInt()
+
+    override fun onDestroy() {
+        Log.i("test4", "onDestroy() GBF")
+        super.onDestroy()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -40,13 +49,16 @@ open class GeneralBaseFragment : Fragment() {
     }
 
     protected open fun getProduct(baseProductAdapter: BaseProductAdapter) {
-        mainViewModel.getListOfProductsByType(MainViewModel.type).observe(viewLifecycleOwner) {
+        mainViewModel.getListOfProductsByType(type).observe(viewLifecycleOwner) {
             baseProductAdapter.productList = it
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (conLayout_fragmentBaseGeneral.layoutParams as ViewGroup.MarginLayoutParams).topMargin =
+            marginTopRV()
 
         with(recycler_base) {
 

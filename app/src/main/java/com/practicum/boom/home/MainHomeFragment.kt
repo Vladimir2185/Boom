@@ -1,10 +1,8 @@
 package com.practicum.boom.home
 
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,20 +11,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.boom.*
+import com.practicum.boom.MainActivity.Companion.SCROLL_STATUS_DOWN
+import com.practicum.boom.MainActivity.Companion.SCROLL_STATUS_MIDDLE
+import com.practicum.boom.MainActivity.Companion.SCROLL_STATUS_UP
 import com.practicum.boom.home.best.FragmentHome1
 import com.practicum.boom.home.holidays.FragmentHome3
-import com.practicum.boom.home.promo.Promo
 import com.practicum.boom.home.sale.FragmentHome2
 import com.practicum.boom.myCustomClasses.CustomScrollView
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.item_promo.view.*
 import kotlinx.android.synthetic.main.main_home_fragment.*
 
 
 class MainHomeFragment() : Fragment() {
     private var textFragTitle = mutableListOf<String>()
     private val mainViewModel: MainViewModel by activityViewModels()
-    private var hightSearch = 0
+    private var triggerBorder = 0
     private var scrollStatus = SCROLL_STATUS_DOWN
     private val smoothCount = 20  // responsible for smoothness of closer
     private val closingTime = 8  // responsible for time of closing of closer
@@ -35,9 +34,7 @@ class MainHomeFragment() : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() = MainHomeFragment()
-        const val SCROLL_STATUS_UP = 1
-        const val SCROLL_STATUS_MIDDLE = 0
-        const val SCROLL_STATUS_DOWN = -1
+
     }
 
     override fun onCreateView(
@@ -65,7 +62,7 @@ class MainHomeFragment() : Fragment() {
                 }
             }
             cardView_home_fragment.doOnLayout {
-                hightSearch = it.height +
+                triggerBorder = it.height +
                         (cardView_home_fragment.layoutParams as ViewGroup.MarginLayoutParams).topMargin +
                         (tabLayout_home_fragment.layoutParams as ViewGroup.MarginLayoutParams).topMargin
             }
@@ -91,6 +88,7 @@ class MainHomeFragment() : Fragment() {
             tabLayout_home_fragment.getTabAt(2)?.customView = ivIconTrees_home_fragment
 
 
+
             scrollView_main_home_fragment.onDispatchTouchEvent =
                 object : CustomScrollView.OnDispatchTouchEvent {
                     override fun onDispatchTouch(action_up: Boolean): Int {
@@ -98,9 +96,9 @@ class MainHomeFragment() : Fragment() {
                         with(scrollView_main_home_fragment) {
                             if (scrollY <= 0)
                                 value = SCROLL_STATUS_DOWN
-                            else if (scrollY >= hightSearch) {
+                            else if (scrollY >= triggerBorder) {
                                 value = SCROLL_STATUS_UP
-                                scrollY = hightSearch
+                                scrollY = triggerBorder
                             } else
                                 value = SCROLL_STATUS_MIDDLE
                         }
@@ -116,17 +114,17 @@ class MainHomeFragment() : Fragment() {
     //smoothly brings to the position
     fun closer() {
         with(scrollView_main_home_fragment) {
-            if (scrollY > hightSearch * 0.55 && scrollY < hightSearch) {
-                val temp = (hightSearch - scrollY) / smoothCount
+            if (scrollY > triggerBorder * 0.55 && scrollY < triggerBorder) {
+                val temp = (triggerBorder - scrollY) / smoothCount
                 for (i in 1..smoothCount) {
                     Handler(Looper.getMainLooper()).postDelayed({
-                        if (i == smoothCount && scrollY != hightSearch - 1) scrollY =
-                            hightSearch - 1
+                        if (i == smoothCount && scrollY != triggerBorder - 1) scrollY =
+                            triggerBorder - 1
                         else scrollY += temp
                     }, (closingTime * i).toLong())
                 }
             }
-            if (scrollY <= hightSearch * 0.55) {
+            if (scrollY <= triggerBorder * 0.55) {
                 val temp = scrollY / smoothCount
                 for (i in 1..smoothCount) {
                     Handler(Looper.getMainLooper()).postDelayed({

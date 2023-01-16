@@ -120,19 +120,6 @@ abstract class GeneralAdapterRV(
         }
     }
 
-    override fun onViewAttachedToWindow(holder: CustomViewHolder) {
-        if (holder.absoluteAdapterPosition == 0 && NUMBER_OF_PROMO > 0)
-
-            (holder.itemView.layoutParams as ViewGroup.MarginLayoutParams).topMargin =
-                (marginBetweenIcon * screenInfo.screenDensity).toInt()
-        else if (holder.absoluteAdapterPosition in 0 until screenInfo.columnCount() && NUMBER_OF_PROMO == 0)
-
-            (holder.itemView.layoutParams as ViewGroup.MarginLayoutParams).topMargin =
-                (marginBetweenIcon * screenInfo.screenDensity).toInt()
-
-        super.onViewAttachedToWindow(holder)
-    }
-
 
     open class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
 

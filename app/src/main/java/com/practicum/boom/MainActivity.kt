@@ -31,6 +31,9 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private val displayMetrics = DisplayMetrics()
+        const val SCROLL_STATUS_UP = 1
+        const val SCROLL_STATUS_MIDDLE = 0
+        const val SCROLL_STATUS_DOWN = -1
     }
 
     //intercept all events if you need
@@ -42,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //allTypes()
+       // allTypes()
 
         windowManager.defaultDisplay.getMetrics(displayMetrics)
 

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
+import com.practicum.boom.MainActivity.Companion.SCROLL_STATUS_DOWN
 import com.practicum.boom.MainViewModel
 import com.practicum.boom.R
 import com.practicum.boom.home.MainHomeFragment
@@ -25,7 +26,7 @@ class FragmentHome2 : Fragment() {
     }
 
     private val mainViewModel: MainViewModel by activityViewModels()
-    private var scrollStatus = MainHomeFragment.SCROLL_STATUS_DOWN
+    private var scrollStatus = SCROLL_STATUS_DOWN
 
 
     private val NUMBER_OF_PROMO = 2

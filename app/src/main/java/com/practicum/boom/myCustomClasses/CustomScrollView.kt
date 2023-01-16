@@ -4,10 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.widget.ScrollView
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
-import com.practicum.boom.MainViewModel
-import com.practicum.boom.home.MainHomeFragment.Companion.SCROLL_STATUS_DOWN
+import com.practicum.boom.MainActivity.Companion.SCROLL_STATUS_DOWN
 
 open class CustomScrollView @JvmOverloads constructor(
     context: Context?,
