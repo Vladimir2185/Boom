@@ -3,6 +3,7 @@ package com.practicum.boom.home
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.activityViewModels
@@ -44,7 +45,16 @@ class DetailSaleFragment(private val offsetPosition: Int, private val shopInfo: 
                 R.layout.fragment_detail_sale, conLayoutAttachTo_baseDetail, true
             )
 
-            val fragment = GeneralBaseFragment("dress")
+            val type:String = when (offsetPosition) {
+                0 -> "dress"
+                1 -> "calendars"
+                2 -> "thermos flasks"
+                3 -> "bags purses belts"
+                4 -> "women's fur coats"
+                else -> {"shoes"}
+            }
+            val fragment = GeneralBaseFragment(type)
+
 
             textTitle_fragmentDetailSale.text = shopInfo.title
             textShortDescr_fragmentDetailSale.text = shopInfo.shortDescription
@@ -53,12 +63,15 @@ class DetailSaleFragment(private val offsetPosition: Int, private val shopInfo: 
                 .error(android.R.drawable.ic_menu_report_image)
                 .into(image_fragmentDetailSale, object : Callback {
                     override fun onSuccess() {
-                        childFragmentManager.beginTransaction()
-                            .replace(R.id.frame_fragmentDetailSale, fragment)
-                            .commit()
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            childFragmentManager.beginTransaction()
+                                .replace(R.id.frame_fragmentDetailSale, fragment)
+                                .commit()
+                        }, (10))
                     }
 
                     override fun onError(e: Exception?) {
+
                     }
                 })
 

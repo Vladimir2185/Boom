@@ -31,6 +31,7 @@ open class GeneralDetailFragment :
         dialog?.window?.let { it.attributes.windowAnimations = R.style.SideSheetDialogAnimation }
     }
     override fun onDestroy() {
+
         Log.i("test4", "onDestroy()")
         super.onDestroy()
     }

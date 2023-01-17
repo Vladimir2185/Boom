@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.DialogFragment.STYLE_NORMAL
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,7 @@ import com.practicum.boom.api.ShopInfo
 import com.practicum.boom.home.DetailProductInfoFragment
 import com.practicum.boom.home.DetailSaleFragment
 import com.practicum.boom.home.sale.ProductAdapterFH2
+import kotlinx.android.synthetic.main.main_home_fragment.*
 
 
 abstract class GeneralAdapterRV(
@@ -45,6 +47,8 @@ abstract class GeneralAdapterRV(
     private var imageButtonUpdate: ImageButton? = null
     protected val marginBetweenIcon = 8
     protected val screenInfo = ScreenInfo()
+    private var detailInfo: DetailProductInfoFragment? = null
+    private var detailSale: DetailSaleFragment? = null
 
     var onFragmentListener: OnFragmentListener? = null
 
@@ -77,22 +81,33 @@ abstract class GeneralAdapterRV(
         view.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 val product = productList[offsetPosition]
-                val detailInfo = DetailProductInfoFragment(offsetPosition, product)
+                if (detailInfo == null) {
 
-                detailInfo.setStyle(STYLE_NORMAL, R.style.Theme_Boom)
-                detailInfo.show((context as FragmentActivity).supportFragmentManager, "detailInfo")
+                    detailInfo = DetailProductInfoFragment(offsetPosition, product)
 
-                detailInfo.onFavoriteClickListener =
-                    object : DetailProductInfoFragment.OnFavoriteClickListener {
-                        override fun onFavorClick(position: Int, imageButton: ImageButton) {
-                            onFavoriteClick(position, imageButton)
+                    detailInfo!!.setStyle(STYLE_NORMAL, R.style.Theme_Boom)
+                    detailInfo!!.show(
+                        (context as FragmentActivity).supportFragmentManager, "detailInfo"
+                    )
+
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        detailInfo = null
+                    }, (500))
+
+                    detailInfo!!.onFavoriteClickListener =
+                        object : DetailProductInfoFragment.OnFavoriteClickListener {
+                            override fun onFavorClick(position: Int, imageButton: ImageButton) {
+                                onFavoriteClick(position, imageButton)
+                            }
+
+                            override fun onFavoriteSwitch(
+                                product: Product,
+                                imageButton: ImageButton
+                            ) {
+                                favoriteSwitch(product, imageButton)
+                            }
                         }
-
-                        override fun onFavoriteSwitch(product: Product, imageButton: ImageButton) {
-                            favoriteSwitch(product, imageButton)
-                        }
-                    }
-
+                }
             }
         })
     }
@@ -101,9 +116,14 @@ abstract class GeneralAdapterRV(
         view.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 val shopInfo = shopInfoList[offsetPosition]
-                val detailSale = DetailSaleFragment(offsetPosition, shopInfo)
-                detailSale.setStyle(STYLE_NORMAL, R.style.Theme_Boom)
-                detailSale.show((context as FragmentActivity).supportFragmentManager, "Tag")
+                if (detailSale == null) {
+                    detailSale = DetailSaleFragment(offsetPosition, shopInfo)
+                    detailSale!!.setStyle(STYLE_NORMAL, R.style.Theme_Boom)
+                    detailSale!!.show((context as FragmentActivity).supportFragmentManager, "Tag")
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        detailSale = null
+                    }, (500))
+                }
             }
         })
 
