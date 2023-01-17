@@ -6,30 +6,30 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.practicum.boom.MainActivity
+import com.practicum.boom.MainActivity.ScreenInfo
 import com.practicum.boom.MainActivity.Companion.SCROLL_STATUS_DOWN
 import com.practicum.boom.MainViewModel
 import com.practicum.boom.R
-import com.practicum.boom.home.BaseProductAdapter
-import com.practicum.boom.home.MainHomeFragment
-import com.practicum.boom.home.promo.Promo
+import com.practicum.boom.boom.home.BaseProductAdapter
+import com.practicum.boom.boom.home.promo.Promo
 import kotlinx.android.synthetic.main.fragment_base_general.*
 
 open class GeneralBaseFragment(private val type: String = "socks") : Fragment() {
     protected val mainViewModel: MainViewModel by activityViewModels()
     protected var scrollStatus = SCROLL_STATUS_DOWN
-    protected val screenInfo = MainActivity.ScreenInfo()
     protected var viewHolder: GeneralAdapterRV.CustomViewHolder? = null
 
 
     protected open val NUMBER_OF_PROMO = 0
 
-    fun marginTopRV() = (screenInfo.screenDensity * 8).toInt()
+    companion object {
+
+        //fun marginTopRV() = (ScreenInfo().screenDensity * 8).toInt()
+    }
 
     override fun onDestroy() {
         Log.i("test4", "onDestroy() GBF")
@@ -48,29 +48,27 @@ open class GeneralBaseFragment(private val type: String = "socks") : Fragment() 
         super.onResume()
     }
 
-    protected open fun getProduct(baseProductAdapter: BaseProductAdapter) {
-        mainViewModel.getListOfProductsByType(type).observe(viewLifecycleOwner) {
-            baseProductAdapter.productList = it
-        }
-    }
+
+    // protected open fun setAdapter() = BaseProductAdapter(requireActivity(), NUMBER_OF_PROMO)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (conLayout_fragmentBaseGeneral.layoutParams as ViewGroup.MarginLayoutParams).topMargin =
-            marginTopRV()
+//        (conLayout_fragmentBaseGeneral.layoutParams as ViewGroup.MarginLayoutParams).topMargin =
+//            marginTopRV()
 
         with(recycler_base) {
 
-            val baseProductAdapter = BaseProductAdapter(requireActivity(), NUMBER_OF_PROMO)
+            val productAdapter = BaseProductAdapter(requireActivity(), NUMBER_OF_PROMO)
+
             with(BaseProductAdapter) {
 
-                adapter = baseProductAdapter
+                adapter = productAdapter
                 recycledViewPool.setMaxRecycledViews(VIEW_TYPE_PROMO, NUMBER_OF_PROMO)
                 recycledViewPool.setMaxRecycledViews(VIEW_TYPE_UNEVEN, MAX_POOL_SIZE)
                 recycledViewPool.setMaxRecycledViews(VIEW_TYPE_EVEN, MAX_POOL_SIZE)
             }
-            getProduct(baseProductAdapter)
+            getProduct(productAdapter)
             with(mainViewModel.liveScrollStatus) {
                 observe(viewLifecycleOwner) {
                     scrollStatus = it
@@ -79,14 +77,14 @@ open class GeneralBaseFragment(private val type: String = "socks") : Fragment() 
 
                 //setup CustomGridLayoutManager and freezing/unfreezing recyclerView scrolling by isScrollEnabled param
                 val layoutManager =
-                    CustomGridLayoutManager(requireContext(), screenInfo.columnCount(), true)
+                    CustomGridLayoutManager(requireContext(), ScreenInfo().columnCount(), true)
 
                 layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
                         // 5 is the sum of items in one repeated section
                         return if (NUMBER_OF_PROMO > 0) {
                             when (position) {
-                                in 0 until NUMBER_OF_PROMO -> screenInfo.columnCount()
+                                in 0 until NUMBER_OF_PROMO -> ScreenInfo().columnCount()
                                 else -> 1
                             }
                         } else 1
@@ -107,7 +105,7 @@ open class GeneralBaseFragment(private val type: String = "socks") : Fragment() 
                 })
 
 
-                baseProductAdapter.onFragmentListener =
+                productAdapter.onFragmentListener =
                     object : GeneralAdapterRV.OnFragmentListener {
                         override fun onFavoriteSwitch(favorProduct: Boolean, prodID: String) {
                             mainViewModel.productUpdate(favorProduct, prodID)
@@ -122,5 +120,10 @@ open class GeneralBaseFragment(private val type: String = "socks") : Fragment() 
         }
     }
 
+    protected open fun getProduct(productAdapter: BaseProductAdapter) {
+        mainViewModel.getListOfProductsByType(type).observe(viewLifecycleOwner) {
+            productAdapter.productList = it
+        }
+    }
 
 }

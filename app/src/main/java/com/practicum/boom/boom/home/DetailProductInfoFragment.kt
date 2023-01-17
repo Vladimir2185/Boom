@@ -1,4 +1,4 @@
-package com.practicum.boom.home
+package com.practicum.boom.boom.home
 
 import android.graphics.Paint
 import android.os.Bundle

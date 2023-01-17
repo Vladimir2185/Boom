@@ -1,9 +1,8 @@
-package com.practicum.boom.home
+package com.practicum.boom.boom.home
 
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.activityViewModels
@@ -21,7 +20,6 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.base_detail.*
 import kotlinx.android.synthetic.main.fragment_detail_sale.*
-import java.lang.Exception
 
 
 class DetailSaleFragment(private val offsetPosition: Int, private val shopInfo: ShopInfo) :
@@ -83,26 +81,9 @@ class DetailSaleFragment(private val offsetPosition: Int, private val shopInfo: 
                 conLayout_fragmentDetailSale.doOnLayout {
 
                     frame_fragmentDetailSale.layoutParams.height =
-                        h - it.height + triggerBorder + fragment.marginTopRV() + 1
+                        h - it.height + triggerBorder  + 1
                 }
             }
-            scrollView_fragmentDetailSale.setOnScrollChangeListener(object :
-                View.OnScrollChangeListener {
-                override fun onScrollChange(
-                    v: View?,
-                    scrollX: Int,
-                    scrollY: Int,
-                    oldScrollX: Int,
-                    oldScrollY: Int
-                ) {
-//                    textTitle_fragmentDetailSale.doOnLayout { it.scrollX = -scrollY / 3 }
-//                    textShortDescr_fragmentDetailSale.doOnLayout { it.scrollX = -scrollY / 3 }
-//                    image_fragmentDetailSale.doOnLayout {
-//                        it.scrollY = scrollY / 3
-//                        it.alpha = (triggerBorder - scrollY) / triggerBorder.toFloat()
-//                    }
-                }
-            })
 
 
             scrollView_fragmentDetailSale.onDispatchTouchEvent =

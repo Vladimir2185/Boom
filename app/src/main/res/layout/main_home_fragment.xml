@@ -2,7 +2,7 @@
 <com.practicum.boom.myCustomClasses.CustomScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scrollView_main_home_fragment"
+    android:id="@+id/scrollView_mainHomeFragment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:scrollbars="none">
@@ -10,13 +10,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
 
 
-        android:id="@+id/conLay_main_home_fragment"
+        android:id="@+id/conLay_mainHomeFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView_home_fragment"
+            android:id="@+id/cardSearch_mainHomeFragment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
@@ -31,12 +31,13 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.SearchView
-                android:id="@+id/svSearch"
+                android:id="@+id/svSearch_mainHomeFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:layout_margin="2dp"
                 android:background="@color/main_gray"
-
+                android:clickable="false"
                 app:iconifiedByDefault="false"
                 app:queryBackground="@android:color/transparent"
                 app:queryHint="@string/hintSearch" />
@@ -51,7 +52,7 @@
             android:theme="@style/Theme.Boom2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView_home_fragment"
+            app:layout_constraintTop_toBottomOf="@+id/cardSearch_mainHomeFragment"
             app:tabIconTintMode="add"
             app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium">
 
@@ -77,7 +78,7 @@
         </com.google.android.material.tabs.TabLayout>
 
         <ImageView
-            android:id="@+id/ivIconTrees_home_fragment"
+            android:id="@+id/ivIconTrees_mainHomeFragment"
             android:layout_width="133dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -91,7 +92,7 @@
             app:srcCompat="@drawable/christmas_trees" />
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/vp2_home_fragment"
+            android:id="@+id/vp2_mainHomeFragment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/main_gray"

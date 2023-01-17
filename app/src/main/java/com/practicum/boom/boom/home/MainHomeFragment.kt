@@ -1,11 +1,13 @@
-package com.practicum.boom.home
+package com.practicum.boom.boom.home
 
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -14,9 +16,9 @@ import com.practicum.boom.*
 import com.practicum.boom.MainActivity.Companion.SCROLL_STATUS_DOWN
 import com.practicum.boom.MainActivity.Companion.SCROLL_STATUS_MIDDLE
 import com.practicum.boom.MainActivity.Companion.SCROLL_STATUS_UP
-import com.practicum.boom.home.best.FragmentHome1
-import com.practicum.boom.home.holidays.FragmentHome3
-import com.practicum.boom.home.sale.FragmentHome2
+import com.practicum.boom.boom.home.best.FragmentHome1
+import com.practicum.boom.boom.home.holidays.FragmentHome3
+import com.practicum.boom.boom.home.sale.FragmentHome2
 import com.practicum.boom.myCustomClasses.CustomScrollView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_home_fragment.*
@@ -58,12 +60,12 @@ class MainHomeFragment() : Fragment() {
             tabLayout_home_fragment.doOnLayout {
                 val tabLay = it.height
                 requireActivity().mainWindow.doOnLayout {
-                    vp2_home_fragment.layoutParams.height = it.height - tabLay + 1
+                    vp2_mainHomeFragment.layoutParams.height = it.height - tabLay + 1
                 }
             }
-            cardView_home_fragment.doOnLayout {
+            cardSearch_mainHomeFragment.doOnLayout {
                 triggerBorder = it.height +
-                        (cardView_home_fragment.layoutParams as ViewGroup.MarginLayoutParams).topMargin +
+                        (cardSearch_mainHomeFragment.layoutParams as ViewGroup.MarginLayoutParams).topMargin +
                         (tabLayout_home_fragment.layoutParams as ViewGroup.MarginLayoutParams).topMargin
             }
 
@@ -78,22 +80,30 @@ class MainHomeFragment() : Fragment() {
                 textFragTitle.add(tabLayout_home_fragment.getTabAt(i)?.text.toString())
             }
             val vp2Adapter = VP2Adapter(requireActivity(), fragList)
-            vp2_home_fragment.adapter = vp2Adapter
+            vp2_mainHomeFragment.adapter = vp2Adapter
 
 
-            TabLayoutMediator(tabLayout_home_fragment, vp2_home_fragment) { tab, pos ->
+            TabLayoutMediator(tabLayout_home_fragment, vp2_mainHomeFragment) { tab, pos ->
                 tab.text = textFragTitle[pos]
             }.attach()
             //attaching image to tabItem3,because inbuilt set image cant change size of image
-            tabLayout_home_fragment.getTabAt(2)?.customView = ivIconTrees_home_fragment
+            tabLayout_home_fragment.getTabAt(2)?.customView = ivIconTrees_mainHomeFragment
 
 
+            svSearch_mainHomeFragment.setOnQueryTextFocusChangeListener(object :
+                View.OnFocusChangeListener {
+                override fun onFocusChange(v: View?, hasFocus: Boolean) {
+                    svSearch_mainHomeFragment.clearFocus()
+                    requireActivity().bottomNavigationView.selectedItemId = R.id.item_2
+                }
+            })
 
-            scrollView_main_home_fragment.onDispatchTouchEvent =
+
+            scrollView_mainHomeFragment.onDispatchTouchEvent =
                 object : CustomScrollView.OnDispatchTouchEvent {
                     override fun onDispatchTouch(action_up: Boolean): Int {
                         // Log.i("test2", "scrollY " + scrollView_main_home_fragment.scrollY)
-                        with(scrollView_main_home_fragment) {
+                        with(scrollView_mainHomeFragment) {
                             if (scrollY <= 0)
                                 value = SCROLL_STATUS_DOWN
                             else if (scrollY >= triggerBorder) {
@@ -113,7 +123,7 @@ class MainHomeFragment() : Fragment() {
 
     //smoothly brings to the position
     fun closer() {
-        with(scrollView_main_home_fragment) {
+        with(scrollView_mainHomeFragment) {
             if (scrollY > triggerBorder * 0.55 && scrollY < triggerBorder) {
                 val temp = (triggerBorder - scrollY) / smoothCount
                 for (i in 1..smoothCount) {

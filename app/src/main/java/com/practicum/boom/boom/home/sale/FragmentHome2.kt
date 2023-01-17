@@ -1,4 +1,4 @@
-package com.practicum.boom.home.sale
+package com.practicum.boom.boom.home.sale
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.practicum.boom.MainActivity.Companion.SCROLL_STATUS_DOWN
 import com.practicum.boom.MainViewModel
 import com.practicum.boom.R
-import com.practicum.boom.home.MainHomeFragment
-import com.practicum.boom.home.promo.Promo
+import com.practicum.boom.boom.home.MainHomeFragment
+import com.practicum.boom.boom.home.promo.Promo
 import com.practicum.boom.myCustomClasses.CustomGridLayoutManager
 import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import kotlinx.android.synthetic.main.fragment_home2.*

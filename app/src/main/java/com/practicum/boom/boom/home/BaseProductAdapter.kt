@@ -1,4 +1,4 @@
-package com.practicum.boom.home
+package com.practicum.boom.boom.home
 
 
 import android.content.Context
@@ -111,7 +111,7 @@ class BaseProductAdapter(
                     layoutParams.height = screenInfo.heightOfProductIcon(HIGHT_OF_PRODUCT_ICON)
 
                     (layoutParams as ViewGroup.MarginLayoutParams).marginEnd =
-                        (marginBetweenIcon * screenInfo.screenDensity).toInt()
+                        (marginBetweenIcon * screenInfo.screenDensity).toInt()/2
 
                     ivProduct.shapeAppearanceModel = ShapeAppearanceModel()
                         .toBuilder()
@@ -122,6 +122,9 @@ class BaseProductAdapter(
                         .build()
                 } else {
                     layoutParams.height = screenInfo.heightOfProductIcon(HIGHT_OF_PRODUCT_ICON)
+
+                    (layoutParams as ViewGroup.MarginLayoutParams).marginStart =
+                        (marginBetweenIcon * screenInfo.screenDensity).toInt()/2
 
                     background = context.getDrawable(R.drawable.rounded_corner_left)
 

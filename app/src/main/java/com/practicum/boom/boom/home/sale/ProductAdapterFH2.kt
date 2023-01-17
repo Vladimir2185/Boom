@@ -1,4 +1,4 @@
-package com.practicum.boom.home.sale
+package com.practicum.boom.boom.home.sale
 
 import android.content.Context
 import android.graphics.Bitmap

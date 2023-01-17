@@ -9,7 +9,7 @@
     app:cardCornerRadius="18dp"
     app:cardElevation="0dp"
     app:cardMaxElevation="0dp"
-    tools:context=".home.promo.PromoBottomSheetFragment">
+    tools:context=".boom.home.promo.PromoBottomSheetFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.practicum.boom.home.holidays
+package com.practicum.boom.boom.home.holidays
 
 import android.os.Bundle
 import android.view.View

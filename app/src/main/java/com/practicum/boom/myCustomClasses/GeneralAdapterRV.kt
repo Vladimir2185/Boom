@@ -16,9 +16,9 @@ import com.practicum.boom.MainActivity.ScreenInfo
 import com.practicum.boom.R
 import com.practicum.boom.api.Product
 import com.practicum.boom.api.ShopInfo
-import com.practicum.boom.home.DetailProductInfoFragment
-import com.practicum.boom.home.DetailSaleFragment
-import com.practicum.boom.home.sale.ProductAdapterFH2
+import com.practicum.boom.boom.home.DetailProductInfoFragment
+import com.practicum.boom.boom.home.DetailSaleFragment
+import com.practicum.boom.boom.home.sale.ProductAdapterFH2
 import kotlinx.android.synthetic.main.main_home_fragment.*
 
 

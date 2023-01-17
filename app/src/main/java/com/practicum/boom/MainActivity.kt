@@ -17,9 +17,10 @@ import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.practicum.boom.home.MainHomeFragment
-import com.practicum.boom.home.promo.Promo
-import com.practicum.boom.home.sale.FragmentHome2
+import com.practicum.boom.boom.home.MainHomeFragment
+import com.practicum.boom.boom.home.promo.Promo
+import com.practicum.boom.boom.home.sale.FragmentHome2
+import com.practicum.boom.boom.search.MainSearchFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_home_fragment.*
 
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         //creation of main navigation fragments
         val listOfMainFragments = listOf(
             MainHomeFragment.newInstance(),
-            FragmentHome2.newInstance()
+            MainSearchFragment.newInstance()
         )
 
 
@@ -77,17 +78,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         Handler(Looper.getMainLooper()).postDelayed({
-            vp2_home_fragment.currentItem = 1
+            vp2_mainHomeFragment.currentItem = 1
         }, (100))
         Handler(Looper.getMainLooper()).postDelayed({
-            vp2_home_fragment.currentItem = 2
+            vp2_mainHomeFragment.currentItem = 2
         }, (200))
 
         bottomNavigationView.visibility = View.INVISIBLE
 
         val timer = object : CountDownTimer(5000, 50) {
             override fun onTick(mSeconds: Long) {
-                if (Promo.lock() && vp2_home_fragment.currentItem == 2) {
+                if (Promo.lock() && vp2_mainHomeFragment.currentItem == 2) {
                     finishLoading()
                     this.cancel()
                 }
@@ -117,7 +118,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun finishLoading() {
-        vp2_home_fragment.currentItem = 0
+        vp2_mainHomeFragment.currentItem = 0
         Handler(Looper.getMainLooper()).postDelayed({
             bottomNavigationView.visibility = View.VISIBLE
             imageLogo.visibility = View.INVISIBLE
@@ -199,6 +200,8 @@ class MainActivity : AppCompatActivity() {
             return if (widthScreen() / 250 > 2) widthScreen() / 250 else 2 //если больше 2, то 250/2, иначе 2
         }
     }
+
+
 
 
 /*object : MyFrameLayout(requireContext()){

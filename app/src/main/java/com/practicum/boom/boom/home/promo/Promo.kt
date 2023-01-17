@@ -1,4 +1,4 @@
-package com.practicum.boom.home.promo
+package com.practicum.boom.boom.home.promo
 
 import android.content.Context
 import android.os.CountDownTimer
