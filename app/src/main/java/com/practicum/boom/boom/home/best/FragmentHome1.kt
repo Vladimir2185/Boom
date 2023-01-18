@@ -1,8 +1,10 @@
 package com.practicum.boom.boom.home.best
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.practicum.boom.boom.home.BaseProductAdapter
+import com.practicum.boom.boom.home.promo.Promo
 import com.practicum.boom.myCustomClasses.GeneralBaseFragment
 
 

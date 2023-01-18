@@ -24,7 +24,7 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     val liveScrollStatus: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
-
+    val liveOnResumeStatus: MutableLiveData<Unit> by lazy { MutableLiveData<Unit>() }
 
     private val compositeDisposable = CompositeDisposable()
     private val db = AppDatabase.getInstance(application)
@@ -35,8 +35,9 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
     var productArray = listOf<Product>()
 
     init {
-        readFromFirebase()
         loadData()
+        readFromFirebase()
+
     }
 
 
@@ -44,10 +45,15 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
         return db.shopInfoDao().getAllShopInfoList()
     }
 
+    fun getInfoByType(typeOfInfo: String): LiveData<List<ShopInfo>> {
+        return db.shopInfoDao().getInfoByType(typeOfInfo)
+    }
+
     fun getAllProductList(): LiveData<List<Product>> {
         return db.productInfoDao().getAllProductList()
     }
-    fun getBestProduct(): LiveData<List<Product>>{
+
+    fun getBestProduct(): LiveData<List<Product>> {
         return db.productInfoDao().getBestProduct()
     }
 
@@ -73,35 +79,65 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     private fun readFromFirebase() {
-        val shopList = mutableListOf<ShopInfo>()
-        val disposable = Observable.just(Unit)
-            .subscribeOn(Schedulers.io())
-            .subscribe({
-                dbFB.collection("sale")
-                    .get()
-                    .addOnSuccessListener { result ->
-                        for (document in result) {
-                            val id = document.id
-                            val title = document.data["title"].toString()
-                            val shortDescr = document.data["shortDescription"].toString()
-                            val longDescr = document.data["longDescription"].toString()
 
-                            val gsReference =
-                                storageFB.getReferenceFromUrl(document.data["url"].toString())
-                            gsReference.downloadUrl
-                                .addOnSuccessListener { result ->
-                                    val url = result.toString()
-                                    val shopInfo = ShopInfo(id, title, shortDescr, longDescr, url)
-                                    shopList.add(shopInfo)
-                                }
+        val shopList = mutableListOf<ShopInfo>()
+        fun dbInsert() {
+            val disposable = Observable.just(Unit)
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    db.shopInfoDao().insertShopInfoList(shopList)
+                }, {})
+            compositeDisposable.add(disposable)
+        }
+        dbFB.collection("sale")
+            .get()
+            .addOnSuccessListener { result ->
+
+                for (document in result) {
+                    val id = document.id
+                    val title = document.data["title"].toString()
+                    val shortDescr = document.data["shortDescription"].toString()
+                    val longDescr = document.data["longDescription"].toString()
+
+                    val gsReference =
+                        storageFB.getReferenceFromUrl(document.data["url"].toString())
+                    gsReference.downloadUrl
+                        .addOnSuccessListener { result ->
+                            val url = result.toString()
+                            val shopInfo = ShopInfo(id, title, shortDescr, longDescr, url)
+                            shopList.add(shopInfo)
+
                         }
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.w(TAG, "Error getting documents.", exception)
-                    }
-                db.shopInfoDao().insertShopInfoList(shopList)
-            }, {})
-        compositeDisposable.add(disposable)
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents.", exception)
+            }
+        dbFB.collection("types")
+            .get()
+            .addOnSuccessListener { result ->
+
+                for ((i, document) in result.withIndex()) {
+
+                    val id = document.id
+                    val title = document.data["title"].toString()
+                    val gsReference =
+                        storageFB.getReferenceFromUrl(document.data["url"].toString())
+                    gsReference.downloadUrl
+                        .addOnSuccessListener { result2 ->
+                            val url = result2.toString()
+                            val shopInfo = ShopInfo(id, title, "type", "NOT_MAIN", url)
+                            shopList.add(shopInfo)
+                            if (i == result.size()-1)
+                            dbInsert()
+                        }
+
+                }
+
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents.", exception)
+            }
     }
 
     private fun loadData() {

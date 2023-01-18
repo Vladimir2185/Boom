@@ -29,12 +29,13 @@ class TypeAdapter(
 
     class TypeViewHolder(itemView: View) : CustomViewHolder(itemView) {
         val imageType = itemView.image_itemType
+        val title = itemView.textTitle_itemType
         val constraintLayout = itemView.conLayout_itemType
 
     }
 
     override fun getItemViewType(position: Int): Int {
-        val offsetPosition = position  + 1
+        val offsetPosition = position + 1
 
         return if ((offsetPosition + 3) % 3 == 1)
             VIEW_TYPE_LEFT
@@ -67,82 +68,81 @@ class TypeAdapter(
             // Log.i("test4", "position " + position)
 
             if (offsetPosition >= 0) {
-                val product = productList[offsetPosition]
+                val shopInfo = shopInfoList[offsetPosition]
 
 
 //                onFavoriteClick(offsetPosition, imageButtonFavorite)
 //                onDetailClick(offsetPosition, constraintLayout)
-
+                title.text = shopInfo.title
                 fragment1LayoutDrawing(holder)
 
             }
         }
     }
 
-    //помещает в метод кол-во элентов массива productList т.е. сколько будет в RecyclerView
+    //помещает в метод кол-во элентов массива shopInfoList т.е. сколько будет в RecyclerView
     override fun getItemCount(): Int {
-        return if (productList.size > 0) productList.size + NUMBER_OF_PROMO else 0
+        return if (shopInfoList.size > 0) shopInfoList.size + NUMBER_OF_PROMO else 0
 
     }
 
     private fun fragment1LayoutDrawing(holder: TypeViewHolder) {
-        val offsetPosition = holder.absoluteAdapterPosition+1
-        val product = productList[holder.absoluteAdapterPosition]
+        val offsetPosition = holder.absoluteAdapterPosition + 1
+        val sd = screenInfo.screenDensity
+        val shopInfo = shopInfoList[holder.absoluteAdapterPosition]
         with(holder) {
             with(constraintLayout) {
 
                 if ((offsetPosition + 3) % 3 == 1) {
-                    layoutParams.height = screenInfo.widthInPixels/3
+                    layoutParams.height = screenInfo.widthInPixels / 3
 
                     (constraintLayout.layoutParams as ViewGroup.MarginLayoutParams).marginEnd =
-                        (marginBetweenIcon * screenInfo.screenDensity).toInt()/2
+                        (marginBetweenIcon * sd).toInt() / 2 + (2 * sd).toInt()
 
                     imageType.shapeAppearanceModel = ShapeAppearanceModel()
                         .toBuilder()
                         .setTopRightCorner(
                             CornerFamily.ROUNDED,
-                            cornerSize * screenInfo.screenDensity
+                            cornerSize * sd
                         )
                         .build()
                 } else if ((offsetPosition + 3) % 3 == 2) {
-                    layoutParams.height = screenInfo.widthInPixels/3
+                    layoutParams.height = screenInfo.widthInPixels / 3
                     (layoutParams as ViewGroup.MarginLayoutParams).marginEnd =
-                        (marginBetweenIcon * screenInfo.screenDensity).toInt()/2+1
+                        (marginBetweenIcon * sd).toInt() / 4 + (0 * sd).toInt()
                     (layoutParams as ViewGroup.MarginLayoutParams).marginStart =
-                        (marginBetweenIcon * screenInfo.screenDensity).toInt()/2+1
+                        (marginBetweenIcon * sd).toInt() / 4 + (0 * sd).toInt()
                     background = context.getDrawable(R.drawable.rounded_corner_middle)
 
                     imageType.shapeAppearanceModel = ShapeAppearanceModel()
                         .toBuilder()
                         .setTopRightCorner(
                             CornerFamily.ROUNDED,
-                            cornerSize * screenInfo.screenDensity
+                            cornerSize * sd
                         )
                         .setTopLeftCorner(
                             CornerFamily.ROUNDED,
-                            cornerSize * screenInfo.screenDensity
+                            cornerSize * sd
                         )
                         .build()
-                }
-                else   {
-                    layoutParams.height = screenInfo.widthInPixels/3
+                } else {
+                    layoutParams.height = screenInfo.widthInPixels / 3
                     (layoutParams as ViewGroup.MarginLayoutParams).marginStart =
-                        (marginBetweenIcon * screenInfo.screenDensity).toInt()/2
+                        (marginBetweenIcon * sd).toInt() / 2 + (2 * sd).toInt()
                     background = context.getDrawable(R.drawable.rounded_corner_left)
 
                     imageType.shapeAppearanceModel = ShapeAppearanceModel()
                         .toBuilder()
                         .setTopLeftCorner(
                             CornerFamily.ROUNDED,
-                            cornerSize * screenInfo.screenDensity
+                            cornerSize * sd
                         )
                         .build()
                 }
 
 
                 Picasso.get()
-                    //.load(product.imageURL)
-                    .load(R.drawable.dog)
+                    .load(shopInfo.url)
                     .error(android.R.drawable.ic_menu_report_image)
                     .into(imageType)
             }

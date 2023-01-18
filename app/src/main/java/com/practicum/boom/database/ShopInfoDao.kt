@@ -10,8 +10,12 @@ import com.practicum.boom.api.ShopInfo
 
 @Dao
 interface ShopInfoDao {
-    @Query("SELECT * FROM shopInfo_list ORDER BY url ASC")
+    @Query("SELECT * FROM shopInfo_list WHERE longDescription != 'NOT_MAIN' ORDER BY url ASC")
     fun getAllShopInfoList(): LiveData<List<ShopInfo>>
+
+    @Query("SELECT * FROM shopInfo_list WHERE shortDescription == :typeOfInfo  ORDER BY url ASC")
+    fun getInfoByType(typeOfInfo: String): LiveData<List<ShopInfo>>
+
 
     @Insert(entity = ShopInfo::class, onConflict = OnConflictStrategy.REPLACE)
     fun insertShopInfoList(shopInfoList: List<ShopInfo>)

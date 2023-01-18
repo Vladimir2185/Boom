@@ -1,5 +1,6 @@
 package com.practicum.boom.boom.home
 
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -7,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.SearchView
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
@@ -18,10 +20,12 @@ import com.practicum.boom.MainActivity.Companion.SCROLL_STATUS_MIDDLE
 import com.practicum.boom.MainActivity.Companion.SCROLL_STATUS_UP
 import com.practicum.boom.boom.home.best.FragmentHome1
 import com.practicum.boom.boom.home.holidays.FragmentHome3
+import com.practicum.boom.boom.home.promo.Promo
 import com.practicum.boom.boom.home.sale.FragmentHome2
 import com.practicum.boom.myCustomClasses.CustomScrollView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_home_fragment.*
+import kotlinx.android.synthetic.main.main_search_fragment.*
 
 
 class MainHomeFragment() : Fragment() {
@@ -39,6 +43,12 @@ class MainHomeFragment() : Fragment() {
 
     }
 
+
+    override fun onResume() {
+        mainViewModel.liveOnResumeStatus.value =null
+        super.onResume()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,6 +60,9 @@ class MainHomeFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val searchIcon =
+            svSearch_mainHomeFragment.findViewById(androidx.appcompat.R.id.search_mag_icon) as ImageView
+        searchIcon.setColorFilter(Color.rgb( 128, 128, 128))
 
         with(mainViewModel.liveScrollStatus) {
             observe(viewLifecycleOwner, {

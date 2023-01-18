@@ -43,6 +43,7 @@ open class GeneralBaseFragment(private val type: String = "socks") : Fragment() 
         return inflater.inflate(R.layout.fragment_base_general, container, false)
     }
 
+
     override fun onResume() {
         viewHolder?.let { Promo.promoStart(it, requireContext()) }
         super.onResume()
@@ -69,6 +70,10 @@ open class GeneralBaseFragment(private val type: String = "socks") : Fragment() 
                 recycledViewPool.setMaxRecycledViews(VIEW_TYPE_EVEN, MAX_POOL_SIZE)
             }
             getProduct(productAdapter)
+
+            mainViewModel.liveOnResumeStatus.observe(viewLifecycleOwner) {
+                onResume()
+            }
             with(mainViewModel.liveScrollStatus) {
                 observe(viewLifecycleOwner) {
                     scrollStatus = it
