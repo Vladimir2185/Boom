@@ -23,16 +23,16 @@ import com.practicum.boom.boom.home.holidays.FragmentHome3
 import com.practicum.boom.boom.home.promo.Promo
 import com.practicum.boom.boom.home.sale.FragmentHome2
 import com.practicum.boom.myCustomClasses.CustomScrollView
+import com.practicum.boom.myCustomClasses.GeneralFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_home_fragment.*
 import kotlinx.android.synthetic.main.main_search_fragment.*
 
 
-class MainHomeFragment() : Fragment() {
+class MainHomeFragment() : GeneralFragment() {
     private var textFragTitle = mutableListOf<String>()
-    private val mainViewModel: MainViewModel by activityViewModels()
+
     private var triggerBorder = 0
-    private var scrollStatus = SCROLL_STATUS_DOWN
     private val smoothCount = 20  // responsible for smoothness of closer
     private val closingTime = 8  // responsible for time of closing of closer
 
@@ -64,11 +64,7 @@ class MainHomeFragment() : Fragment() {
             svSearch_mainHomeFragment.findViewById(androidx.appcompat.R.id.search_mag_icon) as ImageView
         searchIcon.setColorFilter(Color.rgb( 128, 128, 128))
 
-        with(mainViewModel.liveScrollStatus) {
-            observe(viewLifecycleOwner, {
-                scrollStatus = it
 
-            })
 
             tabLayout_home_fragment.doOnLayout {
                 val tabLay = it.height
@@ -111,7 +107,7 @@ class MainHomeFragment() : Fragment() {
                 }
             })
 
-
+        with(mainViewModel.liveScrollStatus) {
             scrollView_mainHomeFragment.onDispatchTouchEvent =
                 object : CustomScrollView.OnDispatchTouchEvent {
                     override fun onDispatchTouch(action_up: Boolean): Int {

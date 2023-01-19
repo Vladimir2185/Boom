@@ -3,12 +3,10 @@ package com.practicum.boom.myCustomClasses
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.DialogFragment.STYLE_NORMAL
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -18,8 +16,6 @@ import com.practicum.boom.api.Product
 import com.practicum.boom.api.ShopInfo
 import com.practicum.boom.boom.home.DetailProductInfoFragment
 import com.practicum.boom.boom.home.DetailSaleFragment
-import com.practicum.boom.boom.home.sale.ProductAdapterFH2
-import kotlinx.android.synthetic.main.main_home_fragment.*
 
 
 abstract class GeneralAdapterRV(
@@ -112,7 +108,7 @@ abstract class GeneralAdapterRV(
         })
     }
 
-    protected fun onSaleDetailClick(offsetPosition: Int, view: View) {
+    protected fun onCategoryClick(offsetPosition: Int, view: View) {
         view.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 val shopInfo = shopInfoList[offsetPosition]

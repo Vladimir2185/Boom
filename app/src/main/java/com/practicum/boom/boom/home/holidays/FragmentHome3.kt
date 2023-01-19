@@ -2,10 +2,10 @@ package com.practicum.boom.boom.home.holidays
 
 import android.os.Bundle
 import android.view.View
-import com.practicum.boom.myCustomClasses.GeneralBaseFragment
+import com.practicum.boom.myCustomClasses.BaseFragment
 
 
-class FragmentHome3 : GeneralBaseFragment("tires") {
+class FragmentHome3 : BaseFragment("tires") {
 
     companion object {
         @JvmStatic

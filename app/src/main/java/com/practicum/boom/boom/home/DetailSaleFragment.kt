@@ -5,15 +5,13 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.core.view.doOnLayout
-import androidx.fragment.app.activityViewModels
 import com.practicum.boom.MainActivity.Companion.SCROLL_STATUS_DOWN
 import com.practicum.boom.MainActivity.Companion.SCROLL_STATUS_MIDDLE
 import com.practicum.boom.MainActivity.Companion.SCROLL_STATUS_UP
-import com.practicum.boom.MainViewModel
 import com.practicum.boom.R
 import com.practicum.boom.api.ShopInfo
+import com.practicum.boom.myCustomClasses.BaseFragment
 import com.practicum.boom.myCustomClasses.CustomScrollView
-import com.practicum.boom.myCustomClasses.GeneralBaseFragment
 import com.practicum.boom.myCustomClasses.GeneralDetailFragment
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -25,67 +23,65 @@ import kotlinx.android.synthetic.main.fragment_detail_sale.*
 class DetailSaleFragment(private val offsetPosition: Int, private val shopInfo: ShopInfo) :
     GeneralDetailFragment() {
 
-    private val mainViewModel: MainViewModel by activityViewModels()
+
     private var triggerBorder = 0
-    private var scrollStatus = SCROLL_STATUS_DOWN
+
     private val smoothCount = 20  // responsible for smoothness of closer
     private val closingTime = 8
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(mainViewModel.liveScrollStatus) {
-            observe(viewLifecycleOwner, {
-                scrollStatus = it
 
-            })
-            layoutInflater.inflate(
-                R.layout.fragment_detail_sale, conLayoutAttachTo_baseDetail, true
-            )
+        layoutInflater.inflate(
+            R.layout.fragment_detail_sale, conLayoutAttachTo_baseDetail, true
+        )
 
-            val type:String = when (offsetPosition) {
-                0 -> "dress"
-                1 -> "calendars"
-                2 -> "thermos flasks"
-                3 -> "bags purses belts"
-                4 -> "women's fur coats"
-                else -> {"shoes"}
+        val type: String = when (offsetPosition) {
+            0 -> "dress"
+            1 -> "calendars"
+            2 -> "thermos flasks"
+            3 -> "bags purses belts"
+            4 -> "women's fur coats"
+            else -> {
+                "shoes"
             }
-            val fragment = GeneralBaseFragment(type)
+        }
+        val fragment = BaseFragment(type)
 
 
-            textTitle_fragmentDetailSale.text = shopInfo.title
-            textShortDescr_fragmentDetailSale.text = shopInfo.shortDescription
-            Picasso.get()
-                .load(shopInfo.url)
-                .error(android.R.drawable.ic_menu_report_image)
-                .into(image_fragmentDetailSale, object : Callback {
-                    override fun onSuccess() {
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            childFragmentManager.beginTransaction()
-                                .replace(R.id.frame_fragmentDetailSale, fragment)
-                                .commit()
-                        }, (10))
-                    }
-
-                    override fun onError(e: Exception?) {
-
-                    }
-                })
-
-            image_fragmentDetailSale.doOnLayout {
-                triggerBorder = it.height
-            }
-            requireActivity().conLayoutMain.doOnLayout {
-                val h = it.height
-                conLayout_fragmentDetailSale.doOnLayout {
-
-                    frame_fragmentDetailSale.layoutParams.height =
-                        h - it.height + triggerBorder  + 1
+        textTitle_fragmentDetailSale.text = shopInfo.title
+        textShortDescr_fragmentDetailSale.text = shopInfo.shortDescription
+        Picasso.get()
+            .load(shopInfo.url)
+            .error(android.R.drawable.ic_menu_report_image)
+            .into(image_fragmentDetailSale, object : Callback {
+                override fun onSuccess() {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        childFragmentManager.beginTransaction()
+                            .replace(R.id.frame_fragmentDetailSale, fragment)
+                            .commit()
+                    }, (10))
                 }
+
+                override fun onError(e: Exception?) {
+
+                }
+            })
+
+        image_fragmentDetailSale.doOnLayout {
+            triggerBorder = it.height
+        }
+        requireActivity().conLayoutMain.doOnLayout {
+            val h = it.height
+            conLayout_fragmentDetailSale.doOnLayout {
+
+                frame_fragmentDetailSale.layoutParams.height =
+                    h - it.height + triggerBorder + 1
             }
+        }
 
-
+        with(mainViewModel.liveScrollStatus) {
             scrollView_fragmentDetailSale.onDispatchTouchEvent =
                 object : CustomScrollView.OnDispatchTouchEvent {
                     override fun onDispatchTouch(action_up: Boolean): Int {

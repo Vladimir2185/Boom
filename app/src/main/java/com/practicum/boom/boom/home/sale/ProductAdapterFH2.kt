@@ -80,7 +80,7 @@ class ProductAdapterFH2(
                 title.text = shopInfo.title
                 shortDescr.text = shopInfo.shortDescription
 
-                onSaleDetailClick(offsetPosition, constraintLayout)
+                onCategoryClick(offsetPosition, constraintLayout)
 
                 Picasso.get()
                     .load(shopInfo.url)
@@ -129,7 +129,7 @@ class ProductAdapterFH2(
                 linLay.addView(viewScroll)
                 val shopInfo = shopInfoList[item]
 
-                onSaleDetailClick(item,viewScroll.imageButton_itemForSV)
+                onCategoryClick(item,viewScroll.imageButton_itemForSV)
 
 
                 if (shopInfoList.size > 3)
