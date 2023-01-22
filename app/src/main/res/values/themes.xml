@@ -25,7 +25,10 @@
     <style name="Theme.Boom3Red" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">#F4364C</item>
     </style>
-
+    <style name="TextTypeTitle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:textColor">@color/black_low</item>
+        <item name="android:textSize">20sp</item>
+    </style>
     <style name="PromoTimerStyle">
         <item name="android:textColor">@color/main_gray</item>
         <item name="android:textSize">20sp</item>

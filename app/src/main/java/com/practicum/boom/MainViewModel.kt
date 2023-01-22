@@ -20,7 +20,7 @@ import io.reactivex.schedulers.Schedulers
 
 open class MainViewModel(application: Application) : AndroidViewModel(application) {
     companion object {
-        const val type = "socks" //"tires"
+        const val TYPE = "socks" //"tires"
     }
 
     val liveScrollStatus: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
@@ -152,7 +152,7 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
                 }
                 Log.i("test4", "size " + productArray.size)
                 for (p in productArray) {
-                    p.type = type
+                    p.type = TYPE
                     p.rating = ((1..50).random()).toFloat() / 10
                     p.sale = (30..70).random()
 

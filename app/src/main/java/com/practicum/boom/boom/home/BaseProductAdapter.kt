@@ -2,7 +2,6 @@ package com.practicum.boom.boom.home
 
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,7 @@ import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_product.view.*
 
-class BaseProductAdapter(
+open class BaseProductAdapter(
     private val context: Context, NUMBER_OF_PROMO: Int,
 ) :
     GeneralAdapterRV(context, NUMBER_OF_PROMO) {
@@ -146,13 +145,4 @@ class BaseProductAdapter(
         }
     }
 
-
-    override fun onViewAttachedToWindow(holder: CustomViewHolder) {
-
-        if (holder.absoluteAdapterPosition == 0 && NUMBER_OF_PROMO > 0) {
-            onFragmentListener?.onPromoStart(holder)
-
-        }
-        super.onViewAttachedToWindow(holder)
-    }
 }

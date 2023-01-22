@@ -52,7 +52,7 @@ class ProductAdapterFH2(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SaleViewHolder {
-        //Log.i("test3", "onCreateViewHolder " + ++count)
+        //Log.i("test4", "onCreateViewHolder " + ++count)
 
         val layout = when (viewType) {
             VIEW_TYPE_PROMO -> R.layout.item_promo
@@ -123,37 +123,29 @@ class ProductAdapterFH2(
             val linLay = view.linearLayout_itemSaleHorSV
 
             for (item in shopInfoList.size - 1 downTo 0) {
-                val viewScroll = LayoutInflater.from(context)
+                val linLayItem = LayoutInflater.from(context)
                     .inflate(R.layout.item_for_hor_sv, linLay, false)
 
-                linLay.addView(viewScroll)
+                linLay.addView(linLayItem)
                 val shopInfo = shopInfoList[item]
 
-                onCategoryClick(item,viewScroll.imageButton_itemForSV)
+                onCategoryClick(item,linLayItem.imageButton_itemForSV)
 
 
                 if (shopInfoList.size > 3)
-                    viewScroll.conLayout_itemForSV.layoutParams.width =
+                    linLayItem.conLayout_itemForSV.layoutParams.width =
                         (screenInfo.widthInPixels / 3.5).toInt()
                 else
-                    viewScroll.conLayout_itemForSV.layoutParams.width =
+                    linLayItem.conLayout_itemForSV.layoutParams.width =
                         screenInfo.widthInPixels / 3
                 //viewScroll.imageButton_item_for_sv.layoutParams.height=screenInfo.widthInPixels/3
-                viewScroll.textTitle_itemForSV.text = shopInfo.title
+                linLayItem.textTitle_itemForSV.text = shopInfo.title
                 Picasso.get()
                     .load(shopInfo.url)
                     .error(android.R.drawable.ic_menu_report_image)
-                    .into(viewScroll.imageButton_itemForSV)
+                    .into(linLayItem.imageButton_itemForSV)
             }
         }
     }
 
-    override fun onViewAttachedToWindow(holder: CustomViewHolder) {
-
-        if (holder.absoluteAdapterPosition == 0 && NUMBER_OF_PROMO > 0) {
-            onFragmentListener?.onPromoStart(holder)
-        }
-
-        super.onViewAttachedToWindow(holder)
-    }
 }

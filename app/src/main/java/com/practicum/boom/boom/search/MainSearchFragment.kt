@@ -7,18 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.view.doOnLayout
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import com.practicum.boom.MainActivity.ScreenInfo
-import com.practicum.boom.MainViewModel
 import com.practicum.boom.R
+import com.practicum.boom.myCustomClasses.GeneralFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_search_fragment.*
 
 
-class MainSearchFragment() : Fragment() {
-    protected val mainViewModel: MainViewModel by activityViewModels()
-    private val NUMBER_OF_PROMO = 0
+class MainSearchFragment() : GeneralFragment() {
 
     companion object {
         @JvmStatic
@@ -66,15 +62,13 @@ class MainSearchFragment() : Fragment() {
                 }
             }
         }
-        with(recycler_mainSearchFragment) {
 
+        productAdapter = SearchAdapter(requireActivity(), NUMBER_OF_PROMO)
+        recycler_mainSearchFragment.adapter = productAdapter
 
-            val productAdapter = TypeAdapter(requireActivity(), NUMBER_OF_PROMO)
-            adapter = productAdapter
-
-            mainViewModel.getInfoByType("type").observe(viewLifecycleOwner) {
-                productAdapter.shopInfoList = it
-            }
+        mainViewModel.getInfoByType("type").observe(viewLifecycleOwner) {
+            productAdapter.shopInfoList = it
         }
+        interfaceClick()
     }
 }

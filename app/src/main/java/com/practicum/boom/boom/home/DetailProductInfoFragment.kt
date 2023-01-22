@@ -7,21 +7,20 @@ import android.view.WindowManager
 import android.widget.ImageButton
 import com.practicum.boom.R
 import com.practicum.boom.api.Product
+import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import com.practicum.boom.myCustomClasses.GeneralDetailFragment
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.base_detail.*
 import kotlinx.android.synthetic.main.fragment_detail_product_info.*
 
 
-class DetailProductInfoFragment(private val offsetPosition: Int, private val product: Product) :
+class DetailProductInfoFragment(
+    private val offsetPosition: Int,
+    private val product: Product,
+    private val productAdapter: GeneralAdapterRV
+) :
     GeneralDetailFragment() {
 
-    var onFavoriteClickListener: OnFavoriteClickListener? = null
-
-    interface OnFavoriteClickListener {
-        fun onFavorClick(position: Int, imageButton: ImageButton)
-        fun onFavoriteSwitch(product: Product, imageButton: ImageButton)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,9 +30,7 @@ class DetailProductInfoFragment(private val offsetPosition: Int, private val pro
             this.conLayoutAttachTo_baseDetail, true
         )
 
-        onFavoriteClickListener?.onFavoriteSwitch(product, imageButtonFavorite_detailInfo)
-        onFavoriteClickListener?.onFavorClick(offsetPosition, imageButtonFavorite_detailInfo)
-
+       productAdapter.onFavoriteClick(offsetPosition, imageButtonFavorite_detailInfo)
 
 
         textTitle_detailInfo.text = product.title

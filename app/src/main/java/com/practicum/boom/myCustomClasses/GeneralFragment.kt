@@ -1,16 +1,22 @@
 package com.practicum.boom.myCustomClasses
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.boom.MainActivity
 import com.practicum.boom.MainViewModel
-import com.practicum.boom.boom.home.BaseProductAdapter
+import com.practicum.boom.R
+import com.practicum.boom.api.Product
+import com.practicum.boom.api.ShopInfo
+import com.practicum.boom.boom.home.DetailProductInfoFragment
+import com.practicum.boom.boom.home.DetailSaleFragment
 import com.practicum.boom.boom.home.promo.Promo
+import com.practicum.boom.boom.search.TypeCategoryFragment
 
 open class GeneralFragment : Fragment() {
     protected val mainViewModel: MainViewModel by activityViewModels()
@@ -57,15 +63,38 @@ open class GeneralFragment : Fragment() {
     protected fun interfaceClick() {
         productAdapter.onFragmentListener =
             object : GeneralAdapterRV.OnFragmentListener {
-                override fun onFavoriteSwitch(favorProduct: Boolean, prodID: String) {
+                override fun onFavoriteSwitchInterface(favorProduct: Boolean, prodID: String) {
                     mainViewModel.productUpdate(favorProduct, prodID)
                 }
 
-                override fun onPromoStart(holder: GeneralAdapterRV.CustomViewHolder) {
+                override fun onPromoStartInterface(holder: GeneralAdapterRV.CustomViewHolder) {
                     Promo.promoStart(holder, requireContext())
                     viewHolder = holder
                 }
+
+                override fun onDetailClickInterface(offsetPosition: Int, product: Product) {
+                    val detailInfo =
+                        DetailProductInfoFragment(offsetPosition, product, productAdapter)
+
+                    detailInfo.setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_Boom)
+                    detailInfo.show(requireActivity().supportFragmentManager, "detailInfo")
+                }
+
+                override fun onCategoryClickInterface(offsetPosition: Int, shopInfo: ShopInfo) {
+                    val detailSale = DetailSaleFragment(offsetPosition, shopInfo)
+                    detailSale.setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_Boom)
+                    detailSale.show(
+                        (context as FragmentActivity).supportFragmentManager, "detailSale"
+                    )
+                }
+                override fun onTypeClickInterface(offsetPosition: Int, shopInfo: ShopInfo) {
+                    val typeCategory = TypeCategoryFragment(offsetPosition, shopInfo)
+                    typeCategory.setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_Boom)
+                    typeCategory.show(requireActivity().supportFragmentManager, "typeCategory")
+                }
             }
+
+
 
     }
 }

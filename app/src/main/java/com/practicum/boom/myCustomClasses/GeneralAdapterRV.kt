@@ -7,15 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.fragment.app.DialogFragment.STYLE_NORMAL
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.boom.MainActivity.ScreenInfo
 import com.practicum.boom.R
 import com.practicum.boom.api.Product
 import com.practicum.boom.api.ShopInfo
-import com.practicum.boom.boom.home.DetailProductInfoFragment
-import com.practicum.boom.boom.home.DetailSaleFragment
 
 
 abstract class GeneralAdapterRV(
@@ -43,14 +39,18 @@ abstract class GeneralAdapterRV(
     private var imageButtonUpdate: ImageButton? = null
     protected val marginBetweenIcon = 8
     protected val screenInfo = ScreenInfo()
-    private var detailInfo: DetailProductInfoFragment? = null
-    private var detailSale: DetailSaleFragment? = null
+    private var lockClick = false
+
 
     var onFragmentListener: OnFragmentListener? = null
 
     interface OnFragmentListener {
-        fun onFavoriteSwitch(favorProduct: Boolean, prodID: String)
-        fun onPromoStart(holder: CustomViewHolder)
+        fun onFavoriteSwitchInterface(favorProduct: Boolean, prodID: String)
+        fun onPromoStartInterface(holder: CustomViewHolder)
+        fun onDetailClickInterface(offsetPosition: Int, product: Product)
+        fun onCategoryClickInterface(offsetPosition: Int, shopInfo: ShopInfo)
+        fun onTypeClickInterface(offsetPosition: Int, shopInfo: ShopInfo)
+
     }
 
     protected fun favoriteSwitch(product: Product, imageButton: ImageButton) {
@@ -61,11 +61,11 @@ abstract class GeneralAdapterRV(
         imageButtonUpdate = null
     }
 
-    protected fun onFavoriteClick(offsetPosition: Int, imageButton: ImageButton) {
+    fun onFavoriteClick(offsetPosition: Int, imageButton: ImageButton) {
         imageButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 val product = productList[offsetPosition]
-                onFragmentListener?.onFavoriteSwitch(!product.favorite, product.productID)
+                onFragmentListener?.onFavoriteSwitchInterface(!product.favorite, product.productID)
                 positionUpdate = offsetPosition + NUMBER_OF_PROMO
                 imageButtonUpdate = imageButton
             }
@@ -77,32 +77,13 @@ abstract class GeneralAdapterRV(
         view.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 val product = productList[offsetPosition]
-                if (detailInfo == null) {
-
-                    detailInfo = DetailProductInfoFragment(offsetPosition, product)
-
-                    detailInfo!!.setStyle(STYLE_NORMAL, R.style.Theme_Boom)
-                    detailInfo!!.show(
-                        (context as FragmentActivity).supportFragmentManager, "detailInfo"
-                    )
+                if (!lockClick) {
+                    lockClick = true
+                    onFragmentListener?.onDetailClickInterface(offsetPosition, product)
 
                     Handler(Looper.getMainLooper()).postDelayed({
-                        detailInfo = null
+                        lockClick = false
                     }, (500))
-
-                    detailInfo!!.onFavoriteClickListener =
-                        object : DetailProductInfoFragment.OnFavoriteClickListener {
-                            override fun onFavorClick(position: Int, imageButton: ImageButton) {
-                                onFavoriteClick(position, imageButton)
-                            }
-
-                            override fun onFavoriteSwitch(
-                                product: Product,
-                                imageButton: ImageButton
-                            ) {
-                                favoriteSwitch(product, imageButton)
-                            }
-                        }
                 }
             }
         })
@@ -112,18 +93,30 @@ abstract class GeneralAdapterRV(
         view.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 val shopInfo = shopInfoList[offsetPosition]
-                if (detailSale == null) {
-                    detailSale = DetailSaleFragment(offsetPosition, shopInfo)
-                    detailSale!!.setStyle(STYLE_NORMAL, R.style.Theme_Boom)
-                    detailSale!!.show((context as FragmentActivity).supportFragmentManager, "Tag")
+                if (!lockClick) {
+                    lockClick = true
+                    onFragmentListener?.onCategoryClickInterface(offsetPosition, shopInfo)
                     Handler(Looper.getMainLooper()).postDelayed({
-                        detailSale = null
+                        lockClick = false
                     }, (500))
                 }
             }
         })
+    }
 
-
+    protected fun onTypeClick(offsetPosition: Int, view: View) {
+        view.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                val shopInfo = shopInfoList[offsetPosition]
+                if (!lockClick) {
+                    lockClick = true
+                    onFragmentListener?.onTypeClickInterface(offsetPosition, shopInfo)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        lockClick = false
+                    }, (500))
+                }
+            }
+        })
     }
 
     protected fun sale(product: Product, textView: TextView) {
@@ -136,6 +129,14 @@ abstract class GeneralAdapterRV(
         }
     }
 
+    override fun onViewAttachedToWindow(holder: CustomViewHolder) {
+
+        if (holder.absoluteAdapterPosition == 0 && NUMBER_OF_PROMO > 0) {
+            onFragmentListener?.onPromoStartInterface(holder)
+        }
+
+        super.onViewAttachedToWindow(holder)
+    }
 
     open class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
 

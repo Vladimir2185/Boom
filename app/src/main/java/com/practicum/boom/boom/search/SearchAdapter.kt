@@ -11,7 +11,7 @@ import com.practicum.boom.myCustomClasses.GeneralAdapterRV
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_type.view.*
 
-class TypeAdapter(
+class SearchAdapter(
     private val context: Context, NUMBER_OF_PROMO: Int,
 ) :
     GeneralAdapterRV(context, NUMBER_OF_PROMO) {
@@ -70,9 +70,7 @@ class TypeAdapter(
             if (offsetPosition >= 0) {
                 val shopInfo = shopInfoList[offsetPosition]
 
-
-//                onFavoriteClick(offsetPosition, imageButtonFavorite)
-//                onDetailClick(offsetPosition, constraintLayout)
+                onTypeClick(offsetPosition, constraintLayout)
                 title.text = shopInfo.title
                 fragment1LayoutDrawing(holder)
 
