@@ -69,7 +69,7 @@ class TypeCategoryFragment(private val offsetPosition: Int, private val shopInfo
         mainViewModel.getListOfProductsByType("desktop").observe(viewLifecycleOwner) {
             productAdapter.productList = it
 
-            mainViewModel.getAllShopInfoList().observe(viewLifecycleOwner) {
+            mainViewModel.getInfoByType("type").observe(viewLifecycleOwner) {
                 productAdapter.shopInfoList = it
             }
 
